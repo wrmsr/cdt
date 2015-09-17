@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mkdir -p src/main/java
 mkdir -p src/test/java
 mkdir target
