@@ -1,0 +1,20 @@
+mkdir -p src/main/java
+mkdir -p src/test/java
+mkdir target
+
+cp -rvn core/org.eclipse.cdt.core/browser/org src/main/java
+cp -rvn core/org.eclipse.cdt.core/model/org src/main/java
+cp -rvn core/org.eclipse.cdt.core/parser/org src/main/java
+cp -rvn core/org.eclipse.cdt.core/src/org src/main/java
+cp -rvn core/org.eclipse.cdt.core/templateengine/org  src/main/java
+cp -rvn core/org.eclipse.cdt.core/utils/org  src/main/java
+cp -rvn lrparser/org.eclipse.cdt.core.lrparser/old/org  src/main/java
+cp -rvn lrparser/org.eclipse.cdt.core.lrparser/src/org  src/main/java
+cp -rvn lrparser/org.eclipse.cdt.core.lrparser.tests/src/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/parser/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/misc/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/model/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/regression/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/suite/org src/test/java
+cp -rvn core/org.eclipse.cdt.core.tests/resources src/test/
+
