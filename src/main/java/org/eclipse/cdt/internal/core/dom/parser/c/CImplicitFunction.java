@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * IBM - Initial API and implementation
  *******************************************************************************/
@@ -17,56 +17,63 @@ import org.eclipse.cdt.core.dom.ast.IScope;
 /**
  * The CImplicitFunction is used to represent implicit functions that exist on the translation
  * unit but are not actually part of the physical AST created by CDT.
- * 
+ *
  * An example is GCC built-in functions.
- * 
+ *
  * @author dsteffle
  */
-public class CImplicitFunction extends CExternalFunction {
+public class CImplicitFunction
+        extends CExternalFunction
+{
 
-    private IParameter[] parms=null;
-    private IScope scope=null;
-    private boolean takesVarArgs=false;
-    private char[] name=null;
-    
-    public CImplicitFunction(char[] name, IScope scope, IFunctionType type, IParameter[] parms, boolean takesVarArgs) {
+    private IParameter[] parms = null;
+    private IScope scope = null;
+    private boolean takesVarArgs = false;
+    private char[] name = null;
+
+    public CImplicitFunction(char[] name, IScope scope, IFunctionType type, IParameter[] parms, boolean takesVarArgs)
+    {
         super(null, null);
-        this.name=name;
-        this.scope=scope;
-        this.type=type;
-        this.parms=parms;
-        this.takesVarArgs=takesVarArgs;
+        this.name = name;
+        this.scope = scope;
+        this.type = type;
+        this.parms = parms;
+        this.takesVarArgs = takesVarArgs;
     }
-    
 
     @Override
-	public IParameter[] getParameters() {
+    public IParameter[] getParameters()
+    {
         return parms;
     }
-    
+
     @Override
-	public IFunctionType getType() {
+    public IFunctionType getType()
+    {
         return type;
     }
-    
+
     @Override
-	public boolean takesVarArgs() {
+    public boolean takesVarArgs()
+    {
         return takesVarArgs;
     }
-    
+
     @Override
-	public String getName() {
+    public String getName()
+    {
         return String.valueOf(name);
     }
-    
+
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return name;
     }
-    
+
     @Override
-	public IScope getScope() {
+    public IScope getScope()
+    {
         return scope;
     }
-    
 }

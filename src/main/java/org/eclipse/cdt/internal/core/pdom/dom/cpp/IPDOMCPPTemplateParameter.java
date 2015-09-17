@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IBinding;
@@ -19,21 +19,25 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Interface for template parameters stored in the index.
  */
-public interface IPDOMCPPTemplateParameter extends IInternalPDOMNode, ICPPTemplateParameter {
+public interface IPDOMCPPTemplateParameter
+        extends IInternalPDOMNode, ICPPTemplateParameter
+{
 
-	IPDOMCPPTemplateParameter[] EMPTY_ARRAY = {};
+    IPDOMCPPTemplateParameter[] EMPTY_ARRAY = {};
 
-	/**
-	 * Default values are updated after the class template is stored, because we
-	 * may have to refer to the other template parameters.
-	 */
-	void configure(ICPPTemplateParameter templateParameter);
-	
-	void update(PDOMLinkage linkage, IBinding newBinding) throws CoreException;
+    /**
+     * Default values are updated after the class template is stored, because we
+     * may have to refer to the other template parameters.
+     */
+    void configure(ICPPTemplateParameter templateParameter);
 
-	/**
-	 * parameters of template template parameters need to be deleted.
-	 * @throws CoreException 
-	 */
-	void forceDelete(PDOMLinkage pdom) throws CoreException;
+    void update(PDOMLinkage linkage, IBinding newBinding)
+            throws CoreException;
+
+    /**
+     * parameters of template template parameters need to be deleted.
+     * @throws CoreException
+     */
+    void forceDelete(PDOMLinkage pdom)
+            throws CoreException;
 }

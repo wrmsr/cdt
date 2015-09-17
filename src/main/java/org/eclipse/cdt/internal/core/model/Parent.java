@@ -4,100 +4,118 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.ICElement;
 
-public abstract class Parent extends CElement {
+import java.util.ArrayList;
+import java.util.List;
 
-	public Parent (ICElement parent, String name, int type) {
-		super (parent, name, type);
-	}
+public abstract class Parent
+        extends CElement
+{
 
-	// members
-	
-	/**
-	 * Adds a child to the current element.
-	 * Implementations override this method to support children
-	 */
-	@Override
-	public void addChild(ICElement member) throws CModelException {
-		getElementInfo().addChild(member);
-	}
+    public Parent(ICElement parent, String name, int type)
+    {
+        super(parent, name, type);
+    }
 
-	/**
-	 * Removes a child to the current element.
-	 * Implementations override this method to support children
-	 */
-	public void removeChild(ICElement member) throws CModelException {
-		getElementInfo().removeChild(member);
-	}
+    // members
 
-	public void removeChildren () throws CModelException {
-		getElementInfo().removeChildren();
-	}
+    /**
+     * Adds a child to the current element.
+     * Implementations override this method to support children
+     */
+    @Override
+    public void addChild(ICElement member)
+            throws CModelException
+    {
+        getElementInfo().addChild(member);
+    }
 
-	/**
-	 * Gets the children of this element.
-	 * Returns null if the element does not support children
-	 * Implementations override this method to support children
-	 */		
-	public ICElement[] getChildren() throws CModelException {
-		CElementInfo info = getElementInfo();
-		if (info != null)
-			return info.getChildren();
-		return NO_ELEMENTS;
-	}
+    /**
+     * Removes a child to the current element.
+     * Implementations override this method to support children
+     */
+    public void removeChild(ICElement member)
+            throws CModelException
+    {
+        getElementInfo().removeChild(member);
+    }
 
-	/**
-	 * Gets the children of a certain type
-	 * @param type
-	 * @return ArrayList
-	 */
-	public List<ICElement> getChildrenOfType(int type) throws CModelException {
-		ICElement[] children = getChildren();
-		int size = children.length;
-		ArrayList<ICElement> list = new ArrayList<ICElement>(size);
-		for (int i = 0; i < size; ++i) {
-			CElement elt = (CElement)children[i];
-			if (elt.getElementType() == type) {
-				list.add(elt);
-			}
-		}
-		return list;
-	}
+    public void removeChildren()
+            throws CModelException
+    {
+        getElementInfo().removeChildren();
+    }
 
-	public boolean hasChildren () {
-		try {
-			return getElementInfo().hasChildren();
-		} catch (CModelException e) {
-			return false;
-		}
-	}
+    /**
+     * Gets the children of this element.
+     * Returns null if the element does not support children
+     * Implementations override this method to support children
+     */
+    public ICElement[] getChildren()
+            throws CModelException
+    {
+        CElementInfo info = getElementInfo();
+        if (info != null) {
+            return info.getChildren();
+        }
+        return NO_ELEMENTS;
+    }
 
-	protected void setChanged () {
-		try {
-			getElementInfo().setChanged();
-		} catch (CModelException e) {
-			// ignore
-		}
-	}
+    /**
+     * Gets the children of a certain type
+     * @param type
+     * @return ArrayList
+     */
+    public List<ICElement> getChildrenOfType(int type)
+            throws CModelException
+    {
+        ICElement[] children = getChildren();
+        int size = children.length;
+        ArrayList<ICElement> list = new ArrayList<ICElement>(size);
+        for (int i = 0; i < size; ++i) {
+            CElement elt = (CElement) children[i];
+            if (elt.getElementType() == type) {
+                list.add(elt);
+            }
+        }
+        return list;
+    }
 
-	protected boolean hasChanged () {
-		try {
-			return getElementInfo().hasChanged();
-		} catch (CModelException e) {
-			return false;
-		}
-	}
+    public boolean hasChildren()
+    {
+        try {
+            return getElementInfo().hasChildren();
+        }
+        catch (CModelException e) {
+            return false;
+        }
+    }
 
+    protected void setChanged()
+    {
+        try {
+            getElementInfo().setChanged();
+        }
+        catch (CModelException e) {
+            // ignore
+        }
+    }
+
+    protected boolean hasChanged()
+    {
+        try {
+            return getElementInfo().hasChanged();
+        }
+        catch (CModelException e) {
+            return false;
+        }
+    }
 }

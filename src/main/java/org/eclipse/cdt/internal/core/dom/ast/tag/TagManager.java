@@ -4,16 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Eidsness - Initial implementation
+ * Andrew Eidsness - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.ast.tag;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -27,75 +22,92 @@ import org.eclipse.cdt.internal.core.pdom.tag.PDOMTaggable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-public class TagManager {
-	private static final String EXTENSION_POINT = "tagger"; //$NON-NLS-1$
-	private static TagManager INSTANCE;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-	private Map<String, TaggerDescriptor> taggers;
+public class TagManager
+{
+    private static final String EXTENSION_POINT = "tagger"; //$NON-NLS-1$
+    private static TagManager INSTANCE;
 
-	public static TagManager getInstance() {
-		if (INSTANCE == null)
-			INSTANCE = new TagManager();
-		return INSTANCE;
-	}
+    private Map<String, TaggerDescriptor> taggers;
 
-	private TagManager() {
-		taggers = loadExtensions();
-	}
+    public static TagManager getInstance()
+    {
+        if (INSTANCE == null) {
+            INSTANCE = new TagManager();
+        }
+        return INSTANCE;
+    }
 
-	private static Map<String, TaggerDescriptor> loadExtensions() {
-		Map<String, TaggerDescriptor> taggers = new HashMap<String, TaggerDescriptor>();
+    private TagManager()
+    {
+        taggers = loadExtensions();
+    }
 
-		// Load the extensions
-		IConfigurationElement[] elements = Platform.getExtensionRegistry()
-				.getConfigurationElementsFor(CCorePlugin.PLUGIN_ID, EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
-			TaggerDescriptor desc = new TaggerDescriptor(element);
-			taggers.put(desc.getId(), desc);
-		}
+    private static Map<String, TaggerDescriptor> loadExtensions()
+    {
+        Map<String, TaggerDescriptor> taggers = new HashMap<String, TaggerDescriptor>();
 
-		return taggers;
-	}
+        // Load the extensions
+        IConfigurationElement[] elements = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(CCorePlugin.PLUGIN_ID, EXTENSION_POINT);
+        for (IConfigurationElement element : elements) {
+            TaggerDescriptor desc = new TaggerDescriptor(element);
+            taggers.put(desc.getId(), desc);
+        }
 
-	/**
-	 * Provides an opportunity for the specified tagger to process the given values. The tagger will
-	 * only run if its enablement expression returns true for the arguments.
-	 */
-	public ITag process(String taggerId, ITagWriter tagWriter, IBinding binding, IASTName ast) {
-		TaggerDescriptor desc = taggers.get(taggerId);
-		if (desc == null)
-			return null;
+        return taggers;
+    }
 
-		IBindingTagger tagger = desc.getBindingTaggerFor(binding, ast);
-		return tagger == null ? null : tagger.process(tagWriter, binding, ast);
-	}
+    /**
+     * Provides an opportunity for the specified tagger to process the given values. The tagger will
+     * only run if its enablement expression returns true for the arguments.
+     */
+    public ITag process(String taggerId, ITagWriter tagWriter, IBinding binding, IASTName ast)
+    {
+        TaggerDescriptor desc = taggers.get(taggerId);
+        if (desc == null) {
+            return null;
+        }
 
-	/** Provides an opportunity for all enabled taggers to process the given values. */
-	public Iterable<ITag> process(ITagWriter tagWriter, IBinding binding, IASTName ast) {
-		List<ITag> tags = new LinkedList<ITag>();
-		for (TaggerDescriptor desc : taggers.values()) {
-			IBindingTagger tagger = desc.getBindingTaggerFor(binding, ast);
-			if (tagger != null) {
-				ITag tag = tagger.process(tagWriter, binding, ast);
-				if (tag != null)
-					tags.add(tag);
-			}
-		}
+        IBindingTagger tagger = desc.getBindingTaggerFor(binding, ast);
+        return tagger == null ? null : tagger.process(tagWriter, binding, ast);
+    }
 
-		return tags;
-	}
+    /** Provides an opportunity for all enabled taggers to process the given values. */
+    public Iterable<ITag> process(ITagWriter tagWriter, IBinding binding, IASTName ast)
+    {
+        List<ITag> tags = new LinkedList<ITag>();
+        for (TaggerDescriptor desc : taggers.values()) {
+            IBindingTagger tagger = desc.getBindingTaggerFor(binding, ast);
+            if (tagger != null) {
+                ITag tag = tagger.process(tagWriter, binding, ast);
+                if (tag != null) {
+                    tags.add(tag);
+                }
+            }
+        }
 
-	/** Adds or removes tags from the destination to ensure that it has the same tag information as the source. */
-	public void syncTags(IPDOMBinding dst, IBinding src) {
-		// don't try to copy any tags when there are no contributors to this extension point
-		if (dst == null || taggers.isEmpty())
-			return;
+        return tags;
+    }
 
-		ITagReader tagReader = CCorePlugin.getTagService().findTagReader(src);
-		if (tagReader == null)
-			return;
+    /** Adds or removes tags from the destination to ensure that it has the same tag information as the source. */
+    public void syncTags(IPDOMBinding dst, IBinding src)
+    {
+        // don't try to copy any tags when there are no contributors to this extension point
+        if (dst == null || taggers.isEmpty()) {
+            return;
+        }
 
-		ITagWriter tagWriter = new PDOMTaggable(dst.getPDOM(), dst.getRecord());
-		tagWriter.setTags(tagReader.getTags());
-	}
+        ITagReader tagReader = CCorePlugin.getTagService().findTagReader(src);
+        if (tagReader == null) {
+            return;
+        }
+
+        ITagWriter tagWriter = new PDOMTaggable(dst.getPDOM(), dst.getRecord());
+        tagWriter.setTags(tagReader.getTags());
+    }
 }

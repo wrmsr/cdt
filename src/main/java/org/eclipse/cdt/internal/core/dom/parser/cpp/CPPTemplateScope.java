@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - Initial API and implementation 
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -21,35 +21,44 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateScope;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPTemplates;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
 
-public class CPPTemplateScope extends CPPScope implements ICPPTemplateScope {
+public class CPPTemplateScope
+        extends CPPScope
+        implements ICPPTemplateScope
+{
 
-	public CPPTemplateScope(IASTNode physicalNode) {
-		super(physicalNode);
-	}
+    public CPPTemplateScope(IASTNode physicalNode)
+    {
+        super(physicalNode);
+    }
 
-	@Override
-	public EScopeKind getKind() {
-		return EScopeKind.eTemplateDeclaration;
-	}
+    @Override
+    public EScopeKind getKind()
+    {
+        return EScopeKind.eTemplateDeclaration;
+    }
 
-	@Override
-	public ICPPTemplateDefinition getTemplateDefinition() {
-		return null;
-	}
-	
-	@Override
-	public ICPPASTTemplateDeclaration getTemplateDeclaration() {
-		return (ICPPASTTemplateDeclaration) getPhysicalNode();
-	}
+    @Override
+    public ICPPTemplateDefinition getTemplateDefinition()
+    {
+        return null;
+    }
 
-	@Override
-	public IName getScopeName() {
-		ICPPASTTemplateDeclaration template = (ICPPASTTemplateDeclaration) getPhysicalNode();
-		return CPPTemplates.getTemplateName(template);
-	}
+    @Override
+    public ICPPASTTemplateDeclaration getTemplateDeclaration()
+    {
+        return (ICPPASTTemplateDeclaration) getPhysicalNode();
+    }
 
-	@Override
-	public IScope getParent() {
-		return CPPVisitor.getContainingNonTemplateScope(getPhysicalNode());
-	}
+    @Override
+    public IName getScopeName()
+    {
+        ICPPASTTemplateDeclaration template = (ICPPASTTemplateDeclaration) getPhysicalNode();
+        return CPPTemplates.getTemplateName(template);
+    }
+
+    @Override
+    public IScope getParent()
+    {
+        return CPPVisitor.getContainingNonTemplateScope(getPhysicalNode());
+    }
 }

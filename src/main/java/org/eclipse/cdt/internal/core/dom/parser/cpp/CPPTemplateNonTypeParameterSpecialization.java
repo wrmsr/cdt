@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Nathan Ridge
+ * Nathan Ridge
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -25,65 +25,78 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateNonTypeParameter;
  *
  * This class can represent a specialization of either an AST or a PDOM template parameter.
  */
-public class CPPTemplateNonTypeParameterSpecialization extends CPPTemplateParameterSpecialization
-		implements ICPPTemplateNonTypeParameter {
-	private final IType fType;
+public class CPPTemplateNonTypeParameterSpecialization
+        extends CPPTemplateParameterSpecialization
+        implements ICPPTemplateNonTypeParameter
+{
+    private final IType fType;
 
-	public CPPTemplateNonTypeParameterSpecialization(ICPPSpecialization owner, ICPPScope scope,
-			ICPPTemplateNonTypeParameter specialized, ICPPTemplateArgument defaultValue, IType type) {
-		super(owner, scope, specialized, defaultValue);
+    public CPPTemplateNonTypeParameterSpecialization(ICPPSpecialization owner, ICPPScope scope,
+            ICPPTemplateNonTypeParameter specialized, ICPPTemplateArgument defaultValue, IType type)
+    {
+        super(owner, scope, specialized, defaultValue);
 
-		this.fType = type;
-	}
+        this.fType = type;
+    }
 
-	@Override
-	public ICPPTemplateNonTypeParameter getSpecializedBinding() {
-		return (ICPPTemplateNonTypeParameter) super.getSpecializedBinding();
-	}
+    @Override
+    public ICPPTemplateNonTypeParameter getSpecializedBinding()
+    {
+        return (ICPPTemplateNonTypeParameter) super.getSpecializedBinding();
+    }
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
+    @Override
+    public boolean isMutable()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isExternC() {
-		return false;
-	}
+    @Override
+    public boolean isExternC()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
+    @Override
+    public boolean isStatic()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isExtern() {
-		return false;
-	}
+    @Override
+    public boolean isExtern()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isRegister() {
-		return false;
-	}
+    @Override
+    public boolean isRegister()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isAuto() {
-		return false;
-	}
+    @Override
+    public boolean isAuto()
+    {
+        return false;
+    }
 
-	@Override
-	public IType getType() {
-		return fType;
-	}
+    @Override
+    public IType getType()
+    {
+        return fType;
+    }
 
-	@Override
-	public IValue getInitialValue() {
-		return getDefaultValue().getNonTypeValue();
-	}
+    @Override
+    public IValue getInitialValue()
+    {
+        return getDefaultValue().getNonTypeValue();
+    }
 
-	@Override
-	@Deprecated
-	public IASTExpression getDefault() {
-		return null;
-	}
+    @Override
+    @Deprecated
+    public IASTExpression getDefault()
+    {
+        return null;
+    }
 }

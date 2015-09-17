@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * IBM Corporation - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -20,11 +20,14 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateParameterMap;
 /**
  * Specialization of a constructor for a class-template or class-template specialization
  */
-public class CPPConstructorSpecialization extends CPPMethodSpecialization
-		implements ICPPConstructor {
+public class CPPConstructorSpecialization
+        extends CPPMethodSpecialization
+        implements ICPPConstructor
+{
 
-	public CPPConstructorSpecialization(ICPPConstructor orig, ICPPClassType owner,
-			ICPPTemplateParameterMap argMap, ICPPFunctionType type, IType[] exceptionSpecs) {
-		super(orig, owner, argMap, type, exceptionSpecs);
-	}
+    public CPPConstructorSpecialization(ICPPConstructor orig, ICPPClassType owner,
+            ICPPTemplateParameterMap argMap, ICPPFunctionType type, IType[] exceptionSpecs)
+    {
+        super(orig, owner, argMap, type, exceptionSpecs);
+    }
 }

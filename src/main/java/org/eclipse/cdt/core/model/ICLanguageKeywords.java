@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Anton Leherbauer (Wind River Systems) - initial API and implementation
+ * Anton Leherbauer (Wind River Systems) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
@@ -16,25 +16,26 @@ package org.eclipse.cdt.core.model;
  *
  * @since 4.0
  */
-public interface ICLanguageKeywords {
-	/**
-	 * Returns the keywords defined for this language, excluding built-in types.
-	 *
-	 * @return an array of keywords, never <code>null</code>
-	 */
-	public abstract String[] getKeywords();
+public interface ICLanguageKeywords
+{
+    /**
+     * Returns the keywords defined for this language, excluding built-in types.
+     *
+     * @return an array of keywords, never <code>null</code>
+     */
+    public abstract String[] getKeywords();
 
-	/**
-	 * Returns the built-in type names defined for this language.
-	 *
-	 * @return an array of names, never <code>null</code>
-	 */
-	public abstract String[] getBuiltinTypes();
+    /**
+     * Returns the built-in type names defined for this language.
+     *
+     * @return an array of names, never <code>null</code>
+     */
+    public abstract String[] getBuiltinTypes();
 
-	/**
-	 * Returns the preprocessor keywords (directives) defined for this language.
-	 *
-	 * @return an array of keywords, never <code>null</code>
-	 */
-	public abstract String[] getPreprocessorKeywords();
+    /**
+     * Returns the preprocessor keywords (directives) defined for this language.
+     *
+     * @return an array of keywords, never <code>null</code>
+     */
+    public abstract String[] getPreprocessorKeywords();
 }

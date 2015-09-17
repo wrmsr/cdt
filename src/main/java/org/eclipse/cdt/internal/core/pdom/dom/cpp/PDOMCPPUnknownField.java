@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
@@ -21,60 +21,78 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.IIndexScope;
 import org.eclipse.core.runtime.CoreException;
 
-public class PDOMCPPUnknownField extends CPPUnknownField implements IIndexFragmentBinding {
-	private final IIndexFragment fFragment;
+public class PDOMCPPUnknownField
+        extends CPPUnknownField
+        implements IIndexFragmentBinding
+{
+    private final IIndexFragment fFragment;
 
-	public PDOMCPPUnknownField(IIndexFragment frag, IType owner, char[] name) {
-		super(owner, name);
-		fFragment= frag;
-	}
+    public PDOMCPPUnknownField(IIndexFragment frag, IType owner, char[] name)
+    {
+        super(owner, name);
+        fFragment = frag;
+    }
 
-	@Override
-	public boolean isFileLocal() throws CoreException {
-		return false;
-	}
+    @Override
+    public boolean isFileLocal()
+            throws CoreException
+    {
+        return false;
+    }
 
-	@Override
-	public IIndexFile getLocalToFile() throws CoreException {
-		return null;
-	}
+    @Override
+    public IIndexFile getLocalToFile()
+            throws CoreException
+    {
+        return null;
+    }
 
-	@Override
-	public IIndexFragment getFragment() {
-		return fFragment;
-	}
+    @Override
+    public IIndexFragment getFragment()
+    {
+        return fFragment;
+    }
 
-	@Override
-	public boolean hasDefinition() throws CoreException {
-		return false;
-	}
+    @Override
+    public boolean hasDefinition()
+            throws CoreException
+    {
+        return false;
+    }
 
-	@Override
-	public boolean hasDeclaration() throws CoreException {
-		return true;
-	}
+    @Override
+    public boolean hasDeclaration()
+            throws CoreException
+    {
+        return true;
+    }
 
-	@Override
-	public int getBindingConstant() {
-		return IIndexCPPBindingConstants.CPP_UNKNOWN_FIELD;
-	}
+    @Override
+    public int getBindingConstant()
+    {
+        return IIndexCPPBindingConstants.CPP_UNKNOWN_FIELD;
+    }
 
-	@Override
-	public long getBindingID() {
-		return 0;
-	}
-	
-	@Override
-	public IIndexFragmentBinding getOwner() {
-		return (IIndexFragmentBinding) super.getOwner();
-	}
-	
-	@Override
-	public IIndexScope getScope() {
-		try {
-			return (IIndexScope) super.getScope();
-		} catch (DOMException e) {
-			return null;
-		}
-	}
+    @Override
+    public long getBindingID()
+    {
+        return 0;
+    }
+
+    @Override
+    public IIndexFragmentBinding getOwner()
+    {
+        return (IIndexFragmentBinding) super.getOwner();
+    }
+
+    @Override
+    public IIndexScope getScope()
+    {
+        try {
+            return (IIndexScope) super.getScope();
+        }
+        catch (DOMException e) {
+            return null;
+        }
+    }
 }

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  * James Blackburn (Broadcom Corp.)
@@ -41,64 +41,67 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @see ICStorageElement
  * @see ICProjectDescription
  * @see ICConfigurationDescription
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICSettingsStorage {
-	/**
-	 * returns the storage of the specified id
-	 * @param id any custom string value uniquely representing the storage
-	 * @return {@link ICStorageElement} if the settings storage does not contain the information of
-	 * the specified id an empty storage is created and returned
-	 * @throws CoreException
-	 *
-	 * @see {@link ICStorageElement}
-	 */
-	ICStorageElement getStorage(String id, boolean create) throws CoreException;
+public interface ICSettingsStorage
+{
+    /**
+     * returns the storage of the specified id
+     * @param id any custom string value uniquely representing the storage
+     * @return {@link ICStorageElement} if the settings storage does not contain the information of
+     * the specified id an empty storage is created and returned
+     * @throws CoreException
+     *
+     * @see {@link ICStorageElement}
+     */
+    ICStorageElement getStorage(String id, boolean create)
+            throws CoreException;
 
-	/**
-	 * Remove the storage module with the given ID from this ICSettingsStorage
-	 * @param id
-	 * @throws CoreException
-	 */
-	void removeStorage(String id) throws CoreException;
+    /**
+     * Remove the storage module with the given ID from this ICSettingsStorage
+     * @param id
+     * @throws CoreException
+     */
+    void removeStorage(String id)
+            throws CoreException;
 
-	/**
-	 * Import an existing ICStorageElement storage module into the ICSettingsStorage
-	 * Returns a handle on the newly imported ICSettingsStorage
-	 * 
-	 * NB Storage IDs are unique in an ICSettingsStorage.   Importing a storage
-	 * will replace any other storage with equivalent id 
-	 * @param id name of the storage to be imported
-	 * @param el ICStorageElement to be imported
-	 * @return ICStorageElement representing the imported storage
-	 * @throws UnsupportedOperationException
-	 * @since 5.1
-	 */
-	public ICStorageElement importStorage(String id, ICStorageElement el) throws UnsupportedOperationException, CoreException;
+    /**
+     * Import an existing ICStorageElement storage module into the ICSettingsStorage
+     * Returns a handle on the newly imported ICSettingsStorage
+     *
+     * NB Storage IDs are unique in an ICSettingsStorage.   Importing a storage
+     * will replace any other storage with equivalent id
+     * @param id name of the storage to be imported
+     * @param el ICStorageElement to be imported
+     * @return ICStorageElement representing the imported storage
+     * @throws UnsupportedOperationException
+     * @since 5.1
+     */
+    public ICStorageElement importStorage(String id, ICStorageElement el)
+            throws UnsupportedOperationException, CoreException;
 
-	/**
-	 * Returns whether any non-persisted changes exist in this tree
-	 * @return boolean indicating whether any elements in this tree have been modified
-	 * @since 5.1
-	 */
-	public boolean isModified();
+    /**
+     * Returns whether any non-persisted changes exist in this tree
+     * @return boolean indicating whether any elements in this tree have been modified
+     * @since 5.1
+     */
+    public boolean isModified();
 
-	/**
-	 * Return whether this Settings Storage is currently read only
-	 * @return whether this storage is readonly
-	 * @since 5.1
-	 */
-	public boolean isReadOnly();
+    /**
+     * Return whether this Settings Storage is currently read only
+     * @return whether this storage is readonly
+     * @since 5.1
+     */
+    public boolean isReadOnly();
 
-	/**
-	 * Mark this Settings Storage as read only.  If keepModify is set
-	 * then modified flag will not be reset
-	 * @param readOnly
-	 * @param keepModify
-	 * @since 5.1
-	 */
-	void setReadOnly(boolean readOnly, boolean keepModify);
-
+    /**
+     * Mark this Settings Storage as read only.  If keepModify is set
+     * then modified flag will not be reset
+     * @param readOnly
+     * @param keepModify
+     * @since 5.1
+     */
+    void setReadOnly(boolean readOnly, boolean keepModify);
 }

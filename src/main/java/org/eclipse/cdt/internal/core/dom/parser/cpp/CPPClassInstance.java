@@ -4,13 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Andrew Niefer (IBM) - Initial API and implementation
- *     Bryan Wilkinson (QNX)
- *     Andrew Ferguson (Symbian)
- *     Sergey Prigogin (Google)
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM) - Initial API and implementation
+ * Bryan Wilkinson (QNX)
+ * Andrew Ferguson (Symbian)
+ * Sergey Prigogin (Google)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -30,91 +30,110 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPTemplates;
 /**
  * The result of instantiating a class template or an explicit specialization of a class template.
  */
-public class CPPClassInstance extends CPPClassSpecialization implements ICPPTemplateInstance {
-	private final ICPPTemplateArgument[] arguments;
+public class CPPClassInstance
+        extends CPPClassSpecialization
+        implements ICPPTemplateInstance
+{
+    private final ICPPTemplateArgument[] arguments;
 
-	public CPPClassInstance(ICPPClassType orig, IBinding owner, CPPTemplateParameterMap argMap, ICPPTemplateArgument[] args) {
-		super(orig, owner, argMap);
-		this.arguments= args;
-	}
+    public CPPClassInstance(ICPPClassType orig, IBinding owner, CPPTemplateParameterMap argMap, ICPPTemplateArgument[] args)
+    {
+        super(orig, owner, argMap);
+        this.arguments = args;
+    }
 
-	@Override
-	public ICPPTemplateDefinition getTemplateDefinition() {
-		return (ICPPTemplateDefinition) getSpecializedBinding();
-	}
-	
-	@Override
-	public ICPPTemplateArgument[] getTemplateArguments() {
-		return arguments;
-	}
+    @Override
+    public ICPPTemplateDefinition getTemplateDefinition()
+    {
+        return (ICPPTemplateDefinition) getSpecializedBinding();
+    }
 
-	@Override
-	protected ICPPClassSpecializationScope getSpecializationScope() {
-		// An instance with a definition has no specialization scope.
-		checkForDefinition();
-		if (getDefinition() != null)
-			return null;
-		
-		return super.getSpecializationScope();
-	}
+    @Override
+    public ICPPTemplateArgument[] getTemplateArguments()
+    {
+        return arguments;
+    }
 
-	@Override
-	public boolean isExplicitSpecialization() {
-		// An instance with a declaration is an explicit specialization.
-		checkForDefinition();
-		if (getDefinition() != null)
-			return true;
-		final IASTNode[] decls = getDeclarations();
-		if (decls != null && decls.length > 0 && decls[0] != null)
-			return true;
-		
-		return false;
-	}
+    @Override
+    protected ICPPClassSpecializationScope getSpecializationScope()
+    {
+        // An instance with a definition has no specialization scope.
+        checkForDefinition();
+        if (getDefinition() != null) {
+            return null;
+        }
 
-	@Override
-	@Deprecated
-	public IType[] getArguments() {
-		return CPPTemplates.getArguments(getTemplateArguments());
-	}
+        return super.getSpecializationScope();
+    }
 
-	/**
-	 * For debugging only.
-	 */
-	@Override
-	public String toString() {
-		return getName() + " " + ASTTypeUtil.getArgumentListString(arguments, true); //$NON-NLS-1$
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof ICPPClassType && isSameType((ICPPClassType) obj);
-	}
+    @Override
+    public boolean isExplicitSpecialization()
+    {
+        // An instance with a declaration is an explicit specialization.
+        checkForDefinition();
+        if (getDefinition() != null) {
+            return true;
+        }
+        final IASTNode[] decls = getDeclarations();
+        if (decls != null && decls.length > 0 && decls[0] != null) {
+            return true;
+        }
 
-	@Override
-	public boolean isSameType(IType type) {
-		if (type == this)
-			return true;
-		if (type instanceof ITypedef)
-			return type.isSameType(this);
+        return false;
+    }
 
-		return isSameClassInstance(this, type);
-	}
+    @Override
+    @Deprecated
+    public IType[] getArguments()
+    {
+        return CPPTemplates.getArguments(getTemplateArguments());
+    }
 
-	public static boolean isSameClassInstance(ICPPClassSpecialization classInstance, IType type) {
-		assert classInstance instanceof ICPPTemplateInstance;
-		
-		// Require a class instance.
-		if (!(type instanceof ICPPClassSpecialization) || !(type instanceof ICPPTemplateInstance) ||
-				type instanceof IProblemBinding) {
-			return false;
-		}
+    /**
+     * For debugging only.
+     */
+    @Override
+    public String toString()
+    {
+        return getName() + " " + ASTTypeUtil.getArgumentListString(arguments, true); //$NON-NLS-1$
+    }
 
-		final ICPPClassSpecialization classSpec2 = (ICPPClassSpecialization) type;
-		final ICPPClassType orig1= classInstance.getSpecializedBinding();
-		final ICPPClassType orig2= classSpec2.getSpecializedBinding();
-		if (!orig1.isSameType(orig2))
-			return false;
-		
-		return CPPTemplates.haveSameArguments((ICPPTemplateInstance) classInstance, (ICPPTemplateInstance) type);
-	}
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof ICPPClassType && isSameType((ICPPClassType) obj);
+    }
+
+    @Override
+    public boolean isSameType(IType type)
+    {
+        if (type == this) {
+            return true;
+        }
+        if (type instanceof ITypedef) {
+            return type.isSameType(this);
+        }
+
+        return isSameClassInstance(this, type);
+    }
+
+    public static boolean isSameClassInstance(ICPPClassSpecialization classInstance, IType type)
+    {
+        assert classInstance instanceof ICPPTemplateInstance;
+
+        // Require a class instance.
+        if (!(type instanceof ICPPClassSpecialization) || !(type instanceof ICPPTemplateInstance) ||
+                type instanceof IProblemBinding) {
+            return false;
+        }
+
+        final ICPPClassSpecialization classSpec2 = (ICPPClassSpecialization) type;
+        final ICPPClassType orig1 = classInstance.getSpecializedBinding();
+        final ICPPClassType orig2 = classSpec2.getSpecializedBinding();
+        if (!orig1.isSameType(orig2)) {
+            return false;
+        }
+
+        return CPPTemplates.haveSameArguments((ICPPTemplateInstance) classInstance, (ICPPTemplateInstance) type);
+    }
 }

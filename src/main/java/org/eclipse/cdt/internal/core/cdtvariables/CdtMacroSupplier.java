@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -23,55 +23,57 @@ import org.osgi.framework.Bundle;
 
 /**
  * This supplier is used to suply MBS-predefined macros
- * 
+ *
  * @since 3.0
  */
-public class CdtMacroSupplier extends CoreMacroSupplierBase {
-	public static final String VAR_CONFIG_NAME = "ConfigName"; //$NON-NLS-1$
-	public static final String VAR_CONFIG_DESCRIPTION = "ConfigDescription"; //$NON-NLS-1$
-	public static final String VAR_PROJ_NAME = "ProjName"; //$NON-NLS-1$
-	public static final String VAR_PROJ_DIR_PATH = "ProjDirPath"; //$NON-NLS-1$
-	public static final String VAR_WORKSPACE_DIR_PATH = "WorkspaceDirPath"; //$NON-NLS-1$
-	public static final String VAR_DIRECTORY_DELIMITER = "DirectoryDelimiter"; //$NON-NLS-1$
-	public static final String VAR_PATH_DELIMITER = "PathDelimiter"; //$NON-NLS-1$
-	public static final String VAR_ECLIPSE_VERSION = "EclipseVersion"; //$NON-NLS-1$
-	public static final String VAR_CDT_VERSION = "CDTVersion"; //$NON-NLS-1$
-	public static final String VAR_HOST_OS_NAME = "HostOsName"; //$NON-NLS-1$
-	public static final String VAR_HOST_ARCH_NAME = "HostArchName"; //$NON-NLS-1$
-	public static final String VAR_OS_TYPE = "OsType"; //$NON-NLS-1$
-	public static final String VAR_ARCH_TYPE = "ArchType"; //$NON-NLS-1$
+public class CdtMacroSupplier
+        extends CoreMacroSupplierBase
+{
+    public static final String VAR_CONFIG_NAME = "ConfigName"; //$NON-NLS-1$
+    public static final String VAR_CONFIG_DESCRIPTION = "ConfigDescription"; //$NON-NLS-1$
+    public static final String VAR_PROJ_NAME = "ProjName"; //$NON-NLS-1$
+    public static final String VAR_PROJ_DIR_PATH = "ProjDirPath"; //$NON-NLS-1$
+    public static final String VAR_WORKSPACE_DIR_PATH = "WorkspaceDirPath"; //$NON-NLS-1$
+    public static final String VAR_DIRECTORY_DELIMITER = "DirectoryDelimiter"; //$NON-NLS-1$
+    public static final String VAR_PATH_DELIMITER = "PathDelimiter"; //$NON-NLS-1$
+    public static final String VAR_ECLIPSE_VERSION = "EclipseVersion"; //$NON-NLS-1$
+    public static final String VAR_CDT_VERSION = "CDTVersion"; //$NON-NLS-1$
+    public static final String VAR_HOST_OS_NAME = "HostOsName"; //$NON-NLS-1$
+    public static final String VAR_HOST_ARCH_NAME = "HostArchName"; //$NON-NLS-1$
+    public static final String VAR_OS_TYPE = "OsType"; //$NON-NLS-1$
+    public static final String VAR_ARCH_TYPE = "ArchType"; //$NON-NLS-1$
 
-	private static CdtMacroSupplier fInstance;
-	
-	private static final String fConfigurationMacros[] = new String[] {
-		VAR_CONFIG_NAME,
-		VAR_CONFIG_DESCRIPTION,
-		VAR_PROJ_NAME,
-		VAR_PROJ_DIR_PATH,
+    private static CdtMacroSupplier fInstance;
+
+    private static final String fConfigurationMacros[] = new String[] {
+            VAR_CONFIG_NAME,
+            VAR_CONFIG_DESCRIPTION,
+            VAR_PROJ_NAME,
+            VAR_PROJ_DIR_PATH,
 //		"BuildArtifactFileName",	//$NON-NLS-1$
 //		"BuildArtifactFileExt",	//$NON-NLS-1$
 //		"BuildArtifactFileBaseName",	//$NON-NLS-1$
 //		"BuildArtifactFilePrefix",	//$NON-NLS-1$
 //		"TargetOsList",	//$NON-NLS-1$
 //		"TargetArchList",	//$NON-NLS-1$
-	};
+    };
 
-	private static final String fWorkspaceMacros[] = new String[] {
-		VAR_WORKSPACE_DIR_PATH,
-		VAR_DIRECTORY_DELIMITER,
-		VAR_PATH_DELIMITER,
-	};
+    private static final String fWorkspaceMacros[] = new String[] {
+            VAR_WORKSPACE_DIR_PATH,
+            VAR_DIRECTORY_DELIMITER,
+            VAR_PATH_DELIMITER,
+    };
 
-	private static final String fCDTEclipseMacros[] = new String[] {
-		VAR_ECLIPSE_VERSION,
-		VAR_CDT_VERSION,
+    private static final String fCDTEclipseMacros[] = new String[] {
+            VAR_ECLIPSE_VERSION,
+            VAR_CDT_VERSION,
 //		"MBSVersion",	//$NON-NLS-1$
-		VAR_HOST_OS_NAME,
-		VAR_HOST_ARCH_NAME,
-		VAR_OS_TYPE,
-		VAR_ARCH_TYPE,
-	};
-	
+            VAR_HOST_OS_NAME,
+            VAR_HOST_ARCH_NAME,
+            VAR_OS_TYPE,
+            VAR_ARCH_TYPE,
+    };
+
 	
 /*	private String getExplicitFileMacroValue(String name, IPath inputFileLocation, IPath outputFileLocation, IConfiguration cfg){
 		String value = null;
@@ -136,91 +138,105 @@ public class CdtMacroSupplier extends CoreMacroSupplierBase {
 		return value;
 	}*/
 
-	public String[] getMacroNames(int contextType){
-		return getMacroNames(contextType,true);
-	}
+    public String[] getMacroNames(int contextType)
+    {
+        return getMacroNames(contextType, true);
+    }
 
-	private String[] getMacroNames(int contextType, boolean clone){
-		String names[] = null;
-		switch(contextType){
-		case ICoreVariableContextInfo.CONTEXT_CONFIGURATION:
-			names = fConfigurationMacros; 
-			break;
-		case ICoreVariableContextInfo.CONTEXT_WORKSPACE:
-			names = fWorkspaceMacros; 
-			break;
-		case ICoreVariableContextInfo.CONTEXT_INSTALLATIONS:
-			names = fCDTEclipseMacros; 
-			break;
-		case ICoreVariableContextInfo.CONTEXT_ECLIPSEENV:
-			break;
-		}
-		if(names != null)
-			return clone ? (String[])names.clone() : names;
-		return null;
-	}
+    private String[] getMacroNames(int contextType, boolean clone)
+    {
+        String names[] = null;
+        switch (contextType) {
+            case ICoreVariableContextInfo.CONTEXT_CONFIGURATION:
+                names = fConfigurationMacros;
+                break;
+            case ICoreVariableContextInfo.CONTEXT_WORKSPACE:
+                names = fWorkspaceMacros;
+                break;
+            case ICoreVariableContextInfo.CONTEXT_INSTALLATIONS:
+                names = fCDTEclipseMacros;
+                break;
+            case ICoreVariableContextInfo.CONTEXT_ECLIPSEENV:
+                break;
+        }
+        if (names != null) {
+            return clone ? (String[]) names.clone() : names;
+        }
+        return null;
+    }
 
-	private CdtMacroSupplier(){
-		
-	}
+    private CdtMacroSupplier()
+    {
 
-	public static CdtMacroSupplier getInstance(){
-		if(fInstance == null)
-			fInstance = new CdtMacroSupplier();
-		return fInstance;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.managedbuilder.macros.IBuildMacroSupplier#getMacro(java.lang.String, int, java.lang.Object)
-	 */
-	@Override
-	public ICdtVariable getMacro(String macroName, int contextType,
-			Object contextData) {
-		ICdtVariable macro = null; 
-		switch(contextType){
-		case ICoreVariableContextInfo.CONTEXT_CONFIGURATION:
-			if(contextData instanceof ICConfigurationDescription){
-				macro = getMacro(macroName, (ICConfigurationDescription)contextData);
-			}
-			break;
-		case ICoreVariableContextInfo.CONTEXT_WORKSPACE:
-			if(contextData == null || contextData instanceof IWorkspace){
-				macro = getMacro(macroName, (IWorkspace)contextData);
-			}
-			break;
-		case ICoreVariableContextInfo.CONTEXT_INSTALLATIONS:
-			if(contextData == null){
-				macro = getMacro(macroName);
-			}
-			break;
-		case ICoreVariableContextInfo.CONTEXT_ECLIPSEENV:
-			break;
-		}
-		
-		return macro;
-	}
+    }
 
-	private IProject getProject(ICConfigurationDescription cfgDes){
-		ICProjectDescription des = cfgDes.getProjectDescription();
-		return des != null ? des.getProject() : null;
-	}
-	
-	public ICdtVariable getMacro(String macroName, ICConfigurationDescription cfg){
-		ICdtVariable macro = null;
-		if (VAR_CONFIG_NAME.equals(macroName)) {
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,cfg.getName());
-		}
-		else if (VAR_CONFIG_DESCRIPTION.equals(macroName)) {
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,cfg.getDescription());
-		} else if (VAR_PROJ_NAME.equals(macroName)) {
-			IProject project = getProject(cfg);
-			if(project != null)
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,project.getName());
-		} else if (VAR_PROJ_DIR_PATH.equals(macroName)) {
-			IProject project = getProject(cfg);
-			if(project != null && project.getLocation() != null) // in the EFS world getLocation() can return null
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,project.getLocation().toString());
-		}
+    public static CdtMacroSupplier getInstance()
+    {
+        if (fInstance == null) {
+            fInstance = new CdtMacroSupplier();
+        }
+        return fInstance;
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.managedbuilder.macros.IBuildMacroSupplier#getMacro(java.lang.String, int, java.lang.Object)
+     */
+    @Override
+    public ICdtVariable getMacro(String macroName, int contextType,
+            Object contextData)
+    {
+        ICdtVariable macro = null;
+        switch (contextType) {
+            case ICoreVariableContextInfo.CONTEXT_CONFIGURATION:
+                if (contextData instanceof ICConfigurationDescription) {
+                    macro = getMacro(macroName, (ICConfigurationDescription) contextData);
+                }
+                break;
+            case ICoreVariableContextInfo.CONTEXT_WORKSPACE:
+                if (contextData == null || contextData instanceof IWorkspace) {
+                    macro = getMacro(macroName, (IWorkspace) contextData);
+                }
+                break;
+            case ICoreVariableContextInfo.CONTEXT_INSTALLATIONS:
+                if (contextData == null) {
+                    macro = getMacro(macroName);
+                }
+                break;
+            case ICoreVariableContextInfo.CONTEXT_ECLIPSEENV:
+                break;
+        }
+
+        return macro;
+    }
+
+    private IProject getProject(ICConfigurationDescription cfgDes)
+    {
+        ICProjectDescription des = cfgDes.getProjectDescription();
+        return des != null ? des.getProject() : null;
+    }
+
+    public ICdtVariable getMacro(String macroName, ICConfigurationDescription cfg)
+    {
+        ICdtVariable macro = null;
+        if (VAR_CONFIG_NAME.equals(macroName)) {
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, cfg.getName());
+        }
+        else if (VAR_CONFIG_DESCRIPTION.equals(macroName)) {
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, cfg.getDescription());
+        }
+        else if (VAR_PROJ_NAME.equals(macroName)) {
+            IProject project = getProject(cfg);
+            if (project != null) {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, project.getName());
+            }
+        }
+        else if (VAR_PROJ_DIR_PATH.equals(macroName)) {
+            IProject project = getProject(cfg);
+            if (project != null && project.getLocation() != null) // in the EFS world getLocation() can return null
+            {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, project.getLocation().toString());
+            }
+        }
 /*		else if("BuildArtifactFileName".equals(macroName)){	//$NON-NLS-1$
 			String name = cfg.getArtifactName();
 			String ext = cfg.getArtifactExtension();
@@ -377,9 +393,9 @@ public class CdtMacroSupplier extends CoreMacroSupplierBase {
 			if(version != null)
 				macro = new BuildMacro(macroName,IBuildMacro.VALUE_TEXT,version.toString());
 		}*/
-		return macro;
-	}
-	
+        return macro;
+    }
+
 //	private String getBaseName(String name){
 //		String value = null;
 //		int index = name.lastIndexOf('.');
@@ -397,110 +413,122 @@ public class CdtMacroSupplier extends CoreMacroSupplierBase {
 //			value = name.substring(index+1);
 //		return value;
 //	}
-	
-/*	public IBuildMacro getMacro(String macroName, IManagedProject mngProj){
-		IBuildMacro macro = null;
-		if (VAR_PROJ_NAME.equals(macroName)) {
-			macro = new BuildMacro(macroName,IBuildMacro.VALUE_TEXT,mngProj.getOwner().getName());
-		}
-		else if (VAR_PROJ_DIR_PATH.equals(macroName)) {
-			macro = new BuildMacro(macroName,IBuildMacro.VALUE_PATH_DIR,mngProj.getOwner().getLocation().toOSString());
-		}
-		return macro;
-	}
-*/	
-	public ICdtVariable getMacro(String macroName, IWorkspace wsp){
-		if(wsp == null)
-			wsp = ResourcesPlugin.getWorkspace();
-		ICdtVariable macro = null;
-		if (VAR_WORKSPACE_DIR_PATH.equals(macroName)) {
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_PATH_DIR,wsp.getRoot().getLocation().toOSString());
-		} else if (VAR_DIRECTORY_DELIMITER.equals(macroName)) {
-			if(isWin32()){
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,"\\");	//$NON-NLS-1$
-			} else {
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,"/");	//$NON-NLS-1$
-			}
-		} else if (VAR_PATH_DELIMITER.equals(macroName)) {
-			if(isWin32()){
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,";");	//$NON-NLS-1$
-			} else {
-				macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,":");	//$NON-NLS-1$
-			}
-		}
-		return macro;
-	}
-	
-	private boolean isWin32(){
-		String os = System.getProperty("os.name").toLowerCase(); //$NON-NLS-1$
-		if (os.startsWith("windows ")) //$NON-NLS-1$
-			return true;
-		return false;
-	}
 
-	public ICdtVariable getMacro(String macroName){
-		ICdtVariable macro = null;
-		if (VAR_ECLIPSE_VERSION.equals(macroName)) {
-			Bundle bundle = Platform.getBundle("org.eclipse.platform");	//$NON-NLS-1$
-			String version = bundle != null ? 
-					(String)bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION) :
-						null;
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,version);
-		}
-		else if (VAR_CDT_VERSION.equals(macroName)) {
-			String version = CCorePlugin.getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,version);
-		}
+    /*	public IBuildMacro getMacro(String macroName, IManagedProject mngProj){
+            IBuildMacro macro = null;
+            if (VAR_PROJ_NAME.equals(macroName)) {
+                macro = new BuildMacro(macroName,IBuildMacro.VALUE_TEXT,mngProj.getOwner().getName());
+            }
+            else if (VAR_PROJ_DIR_PATH.equals(macroName)) {
+                macro = new BuildMacro(macroName,IBuildMacro.VALUE_PATH_DIR,mngProj.getOwner().getLocation().toOSString());
+            }
+            return macro;
+        }
+    */
+    public ICdtVariable getMacro(String macroName, IWorkspace wsp)
+    {
+        if (wsp == null) {
+            wsp = ResourcesPlugin.getWorkspace();
+        }
+        ICdtVariable macro = null;
+        if (VAR_WORKSPACE_DIR_PATH.equals(macroName)) {
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_PATH_DIR, wsp.getRoot().getLocation().toOSString());
+        }
+        else if (VAR_DIRECTORY_DELIMITER.equals(macroName)) {
+            if (isWin32()) {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, "\\");    //$NON-NLS-1$
+            }
+            else {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, "/");    //$NON-NLS-1$
+            }
+        }
+        else if (VAR_PATH_DELIMITER.equals(macroName)) {
+            if (isWin32()) {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, ";");    //$NON-NLS-1$
+            }
+            else {
+                macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, ":");    //$NON-NLS-1$
+            }
+        }
+        return macro;
+    }
+
+    private boolean isWin32()
+    {
+        String os = System.getProperty("os.name").toLowerCase(); //$NON-NLS-1$
+        if (os.startsWith("windows ")) //$NON-NLS-1$
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public ICdtVariable getMacro(String macroName)
+    {
+        ICdtVariable macro = null;
+        if (VAR_ECLIPSE_VERSION.equals(macroName)) {
+            Bundle bundle = Platform.getBundle("org.eclipse.platform");    //$NON-NLS-1$
+            String version = bundle != null ?
+                    (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION) :
+                    null;
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, version);
+        }
+        else if (VAR_CDT_VERSION.equals(macroName)) {
+            String version = CCorePlugin.getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, version);
+        }
 /*		else if("MBSVersion".equals(macroName)){	//$NON-NLS-1$
 			String version = ManagedBuildManager.getBuildInfoVersion().toString();
 			macro = new BuildMacro(macroName,IBuildMacro.VALUE_TEXT,version);
 		}*/
-		else if (VAR_HOST_OS_NAME.equals(macroName)) {
-			String os = System.getProperty("os.name"); //$NON-NLS-1$
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,os);
-		}
-		else if (VAR_HOST_ARCH_NAME.equals(macroName)) {
-			String arch = System.getProperty("os.arch"); //$NON-NLS-1$
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,arch);
-		}
-		else if (VAR_OS_TYPE.equals(macroName)) {
-			String os = Platform.getOS();
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,os);
-		}
-		else if (VAR_ARCH_TYPE.equals(macroName)) {
-			String arch = Platform.getOSArch();
-			macro = new CdtVariable(macroName,ICdtVariable.VALUE_TEXT,arch);
-		}
+        else if (VAR_HOST_OS_NAME.equals(macroName)) {
+            String os = System.getProperty("os.name"); //$NON-NLS-1$
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, os);
+        }
+        else if (VAR_HOST_ARCH_NAME.equals(macroName)) {
+            String arch = System.getProperty("os.arch"); //$NON-NLS-1$
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, arch);
+        }
+        else if (VAR_OS_TYPE.equals(macroName)) {
+            String os = Platform.getOS();
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, os);
+        }
+        else if (VAR_ARCH_TYPE.equals(macroName)) {
+            String arch = Platform.getOSArch();
+            macro = new CdtVariable(macroName, ICdtVariable.VALUE_TEXT, arch);
+        }
 
-		return macro;
-	}
+        return macro;
+    }
 
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.managedbuilder.macros.IBuildMacroSupplier#getMacros(int, java.lang.Object)
+     */
+    @Override
+    public ICdtVariable[] getMacros(int contextType, Object contextData)
+    {
+        String names[] = getMacroNames(contextType, false);
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.managedbuilder.macros.IBuildMacroSupplier#getMacros(int, java.lang.Object)
-	 */
-	@Override
-	public ICdtVariable[] getMacros(int contextType, Object contextData) {
-		String names[] = getMacroNames(contextType,false);
-		
-		if(names != null){
-			ICdtVariable macros[] = new ICdtVariable[names.length];
-			int num = 0;
-			for (String name : names) {
-				ICdtVariable macro = getMacro(name,contextType,contextData);
-				if(macro != null)
-					macros[num++] = macro;
-			}
-			if(macros.length != num){
-				ICdtVariable tmp[] = new ICdtVariable[num];
-				if(num > 0)
-					System.arraycopy(macros,0,tmp,0,num);
-				macros = tmp;
-			}
-			return macros;
-		}
-		return null;
-	}
+        if (names != null) {
+            ICdtVariable macros[] = new ICdtVariable[names.length];
+            int num = 0;
+            for (String name : names) {
+                ICdtVariable macro = getMacro(name, contextType, contextData);
+                if (macro != null) {
+                    macros[num++] = macro;
+                }
+            }
+            if (macros.length != num) {
+                ICdtVariable tmp[] = new ICdtVariable[num];
+                if (num > 0) {
+                    System.arraycopy(macros, 0, tmp, 0, num);
+                }
+                macros = tmp;
+            }
+            return macros;
+        }
+        return null;
+    }
 	
 /*	private IPath getBuilderCWD(IConfiguration cfg){
 		IPath workingDirectory = null;
@@ -522,5 +550,5 @@ public class CdtMacroSupplier extends CoreMacroSupplierBase {
 		}
 		return workingDirectory;
 	}
-*/	
+*/
 }

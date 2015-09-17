@@ -4,16 +4,16 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.resources;
 
+import org.eclipse.cdt.core.parser.IExtendedScannerInfo;
+
 import java.util.Collections;
 import java.util.Map;
-
-import org.eclipse.cdt.core.parser.IExtendedScannerInfo;
 
 /**
  * #@noextend This class is not intended to be subclassed by clients.
@@ -24,63 +24,72 @@ import org.eclipse.cdt.core.parser.IExtendedScannerInfo;
  * @deprecated Since CDT 4.0 not used for the "new style" projects.
  */
 @Deprecated
-public class ScannerInfo implements IExtendedScannerInfo {
+public class ScannerInfo
+        implements IExtendedScannerInfo
+{
 
-	private final Map<String, String> fMacroMap;
-	private final String[] fSystemIncludePaths;
-	private final String[] fMacroFiles;
-	private final String[] fIncludeFiles;
-	private final String[] fLocalIncludePaths;
-	final static String[] EMPTY_ARRAY_STRING = new String[0];
+    private final Map<String, String> fMacroMap;
+    private final String[] fSystemIncludePaths;
+    private final String[] fMacroFiles;
+    private final String[] fIncludeFiles;
+    private final String[] fLocalIncludePaths;
+    final static String[] EMPTY_ARRAY_STRING = new String[0];
 
-	protected ScannerInfo(String[] systemIncludePaths, String[] localIncludePaths, String[] includeFiles,
-			Map<String, String> macroMap, String[] macroFiles) {
-		fSystemIncludePaths = (systemIncludePaths == null) ? EMPTY_ARRAY_STRING : systemIncludePaths;
-		fLocalIncludePaths = (localIncludePaths == null) ? EMPTY_ARRAY_STRING : localIncludePaths;
-		fIncludeFiles = (includeFiles == null) ? EMPTY_ARRAY_STRING : includeFiles;
-		fMacroFiles = (macroFiles == null) ? EMPTY_ARRAY_STRING : macroFiles;
-		fMacroMap= nonNullMap(macroMap);
-	}
+    protected ScannerInfo(String[] systemIncludePaths, String[] localIncludePaths, String[] includeFiles,
+            Map<String, String> macroMap, String[] macroFiles)
+    {
+        fSystemIncludePaths = (systemIncludePaths == null) ? EMPTY_ARRAY_STRING : systemIncludePaths;
+        fLocalIncludePaths = (localIncludePaths == null) ? EMPTY_ARRAY_STRING : localIncludePaths;
+        fIncludeFiles = (includeFiles == null) ? EMPTY_ARRAY_STRING : includeFiles;
+        fMacroFiles = (macroFiles == null) ? EMPTY_ARRAY_STRING : macroFiles;
+        fMacroMap = nonNullMap(macroMap);
+    }
 
-	private Map<String, String> nonNullMap(Map<String, String> macroMap) {
-		if (macroMap == null) {
-			return Collections.emptyMap();
-		}
-		return macroMap;
-	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.cdt.core.build.managed.IScannerInfo#getIncludePaths()
-	 */
-	@Override
-	public synchronized String[] getIncludePaths() {
-		return fSystemIncludePaths;
-	}
+    private Map<String, String> nonNullMap(Map<String, String> macroMap)
+    {
+        if (macroMap == null) {
+            return Collections.emptyMap();
+        }
+        return macroMap;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.cdt.core.build.managed.IScannerInfo#getIncludePaths()
-	 */
-	@Override
-	public synchronized Map<String, String> getDefinedSymbols() {
-		return fMacroMap;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.cdt.core.build.managed.IScannerInfo#getIncludePaths()
+     */
+    @Override
+    public synchronized String[] getIncludePaths()
+    {
+        return fSystemIncludePaths;
+    }
 
-	@Override
-	public String[] getMacroFiles() {
-		return fMacroFiles;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.cdt.core.build.managed.IScannerInfo#getIncludePaths()
+     */
+    @Override
+    public synchronized Map<String, String> getDefinedSymbols()
+    {
+        return fMacroMap;
+    }
 
-	@Override
-	public String[] getIncludeFiles() {
-		return fIncludeFiles;
-	}
+    @Override
+    public String[] getMacroFiles()
+    {
+        return fMacroFiles;
+    }
 
-	@Override
-	public String[] getLocalIncludePath() {
-		return fLocalIncludePaths;
-	}
+    @Override
+    public String[] getIncludeFiles()
+    {
+        return fIncludeFiles;
+    }
 
+    @Override
+    public String[] getLocalIncludePath()
+    {
+        return fLocalIncludePaths;
+    }
 }

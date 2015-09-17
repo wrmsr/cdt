@@ -4,83 +4,102 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Eidsness - Initial implementation
+ * Andrew Eidsness - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.tag;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.internal.core.pdom.db.BTree;
 import org.eclipse.cdt.internal.core.pdom.db.IBTreeVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-public class BTreeIterable<T> implements Iterable<T> {
-	public static interface Descriptor<T> {
-		public int compare(long record) throws CoreException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-		public T create(long record);
-	}
+public class BTreeIterable<T>
+        implements Iterable<T>
+{
+    public static interface Descriptor<T>
+    {
+        public int compare(long record)
+                throws CoreException;
 
-	private final BTree btree;
-	private final Descriptor<T> descriptor;
+        public T create(long record);
+    }
 
-	public BTreeIterable(BTree btree, Descriptor<T> descriptor) {
-		this.btree = btree;
-		this.descriptor = descriptor;
-	}
+    private final BTree btree;
+    private final Descriptor<T> descriptor;
 
-	@Override
-	public Iterator<T> iterator() {
-		Visitor v = new Visitor();
-		try {
-			btree.accept(v);
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-			return Collections.<T>emptyList().iterator();
-		}
-		return new BTreeIterator(v.records);
-	}
+    public BTreeIterable(BTree btree, Descriptor<T> descriptor)
+    {
+        this.btree = btree;
+        this.descriptor = descriptor;
+    }
 
-	private class Visitor implements IBTreeVisitor {
-		public final List<Long> records = new ArrayList<>();
+    @Override
+    public Iterator<T> iterator()
+    {
+        Visitor v = new Visitor();
+        try {
+            btree.accept(v);
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+            return Collections.<T>emptyList().iterator();
+        }
+        return new BTreeIterator(v.records);
+    }
 
-		@Override
-		public int compare(long record) throws CoreException {
-			return BTreeIterable.this.descriptor.compare(record);
-		}
+    private class Visitor
+            implements IBTreeVisitor
+    {
+        public final List<Long> records = new ArrayList<>();
 
-		@Override
-		public boolean visit(long record) throws CoreException {
-			records.add(Long.valueOf(record));
-			return true;
-		}
-	}
+        @Override
+        public int compare(long record)
+                throws CoreException
+        {
+            return BTreeIterable.this.descriptor.compare(record);
+        }
 
-	private class BTreeIterator implements Iterator<T> {
-		private final Iterator<Long> records;
+        @Override
+        public boolean visit(long record)
+                throws CoreException
+        {
+            records.add(Long.valueOf(record));
+            return true;
+        }
+    }
 
-		public BTreeIterator(Iterable<Long> records) {
-			this.records = records.iterator();
-		}
+    private class BTreeIterator
+            implements Iterator<T>
+    {
+        private final Iterator<Long> records;
 
-		@Override
-		public void remove() {
-		}
+        public BTreeIterator(Iterable<Long> records)
+        {
+            this.records = records.iterator();
+        }
 
-		@Override
-		public boolean hasNext() {
-			return records.hasNext();
-		}
+        @Override
+        public void remove()
+        {
+        }
 
-		@Override
-		public T next() {
-			return BTreeIterable.this.descriptor.create(records.next());
-		}
-	}
+        @Override
+        public boolean hasNext()
+        {
+            return records.hasNext();
+        }
+
+        @Override
+        public T next()
+        {
+            return BTreeIterable.this.descriptor.create(records.next());
+        }
+    }
 }

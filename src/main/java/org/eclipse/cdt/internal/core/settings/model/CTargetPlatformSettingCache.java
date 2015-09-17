@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -16,45 +16,55 @@ import org.eclipse.cdt.core.settings.model.ICTargetPlatformSetting;
 import org.eclipse.cdt.core.settings.model.extension.CTargetPlatformData;
 import org.eclipse.cdt.core.settings.model.extension.impl.CDefaultTargetPlatformData;
 
-public class CTargetPlatformSettingCache extends CDefaultTargetPlatformData
-		implements ICTargetPlatformSetting, ICachedData {
-	private CConfigurationDescriptionCache fCfgCache;
-	CTargetPlatformSettingCache(CTargetPlatformData base, CConfigurationDescriptionCache cfgCache){
-		fId = base.getId();
+public class CTargetPlatformSettingCache
+        extends CDefaultTargetPlatformData
+        implements ICTargetPlatformSetting, ICachedData
+{
+    private CConfigurationDescriptionCache fCfgCache;
 
-		fCfgCache = cfgCache;
+    CTargetPlatformSettingCache(CTargetPlatformData base, CConfigurationDescriptionCache cfgCache)
+    {
+        fId = base.getId();
 
-		fCfgCache.addTargetPlatformSetting(this);
+        fCfgCache = cfgCache;
 
-		copyDataFrom(base);
-	}
+        fCfgCache.addTargetPlatformSetting(this);
 
+        copyDataFrom(base);
+    }
 
-	@Override
-	public ICConfigurationDescription getConfiguration() {
-		return fCfgCache;
-	}
+    @Override
+    public ICConfigurationDescription getConfiguration()
+    {
+        return fCfgCache;
+    }
 
-	@Override
-	public ICSettingContainer getParent() {
-		return fCfgCache;
-	}
+    @Override
+    public ICSettingContainer getParent()
+    {
+        return fCfgCache;
+    }
 
-	@Override
-	public boolean isReadOnly() {
-		return true;
-	}
+    @Override
+    public boolean isReadOnly()
+    {
+        return true;
+    }
 
-	@Override
-	public void setBinaryParserIds(String[] ids) {
-		if(!fCfgCache.isInitializing())
-			throw ExceptionFactory.createIsReadOnlyException();
+    @Override
+    public void setBinaryParserIds(String[] ids)
+    {
+        if (!fCfgCache.isInitializing()) {
+            throw ExceptionFactory.createIsReadOnlyException();
+        }
 
-		super.setBinaryParserIds(ids);
-	}
+        super.setBinaryParserIds(ids);
+    }
 
-	public void setName(String name) {
-		if(!fCfgCache.isInitializing())
-			throw ExceptionFactory.createIsReadOnlyException();
-	}
+    public void setName(String name)
+    {
+        if (!fCfgCache.isInitializing()) {
+            throw ExceptionFactory.createIsReadOnlyException();
+        }
+    }
 }

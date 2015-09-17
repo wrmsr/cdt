@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Thomas Corbat (IFS)
+ * IBM - Initial API and implementation
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -26,119 +26,147 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTInternalNameOwner;
 /**
  * @author jcamelon
  */
-public class CPPASTElaboratedTypeSpecifier extends CPPASTBaseDeclSpecifier
-        implements ICPPASTElaboratedTypeSpecifier, IASTInternalNameOwner {
+public class CPPASTElaboratedTypeSpecifier
+        extends CPPASTBaseDeclSpecifier
+        implements ICPPASTElaboratedTypeSpecifier, IASTInternalNameOwner
+{
     private int kind;
     private IASTName name;
-    
-    public CPPASTElaboratedTypeSpecifier() {
-	}
 
-	public CPPASTElaboratedTypeSpecifier(int kind, IASTName name) {
-		this.kind = kind;
-		setName(name);
-	}
+    public CPPASTElaboratedTypeSpecifier()
+    {
+    }
 
-	@Override
-	public CPPASTElaboratedTypeSpecifier copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CPPASTElaboratedTypeSpecifier copy(CopyStyle style) {
-		CPPASTElaboratedTypeSpecifier copy =
-				new CPPASTElaboratedTypeSpecifier(kind, name == null ? null : name.copy(style));
-		return super.copy(copy, style);
-	}
+    public CPPASTElaboratedTypeSpecifier(int kind, IASTName name)
+    {
+        this.kind = kind;
+        setName(name);
+    }
 
-	@Override
-	public int getKind() {
+    @Override
+    public CPPASTElaboratedTypeSpecifier copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
+
+    @Override
+    public CPPASTElaboratedTypeSpecifier copy(CopyStyle style)
+    {
+        CPPASTElaboratedTypeSpecifier copy =
+                new CPPASTElaboratedTypeSpecifier(kind, name == null ? null : name.copy(style));
+        return super.copy(copy, style);
+    }
+
+    @Override
+    public int getKind()
+    {
         return kind;
     }
 
     @Override
-	public void setKind(int value) {
+    public void setKind(int value)
+    {
         assertNotFrozen();
         this.kind = value;
     }
 
     @Override
-	public IASTName getName() {
+    public IASTName getName()
+    {
         return name;
     }
 
     @Override
-	public void setName(IASTName name) {
+    public void setName(IASTName name)
+    {
         assertNotFrozen();
         this.name = name;
         if (name != null) {
-			name.setParent(this);
-			name.setPropertyInParent(TYPE_NAME);
-		}
+            name.setParent(this);
+            name.setPropertyInParent(TYPE_NAME);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitDeclSpecifiers) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP:  return true;
-	            default: break;
-	        }
-		}
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-		if (!acceptByAttributeSpecifiers(action))
-			return false;
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
 
-		if (!visitAlignmentSpecifiers(action)) {
-			return false;
-		}
+        if (!visitAlignmentSpecifiers(action)) {
+            return false;
+        }
 
-        if (name != null) if (!name.accept(action)) return false;
+        if (name != null) {
+            if (!name.accept(action)) {
+                return false;
+            }
+        }
         if (action.shouldVisitDeclSpecifiers) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP:  return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
-	@Override
-	public int getRoleForName(IASTName n) {
-		return getRoleForName(n, true);
-	}
-	
-	@Override
-	public int getRoleForName(IASTName n, boolean allowResolution) {
-		if (n != name) return r_unclear;
-		
-		IASTNode parent = getParent();
-		if (parent instanceof IASTSimpleDeclaration) {
-			IASTDeclarator[] dtors = ((IASTSimpleDeclaration)parent).getDeclarators(); 
-			if (dtors.length == 0)
-				return r_declaration;
-		}
-		
-		// 7.1.5.3.2: check for simple form <class-key> <identifier>, then it may be a declaration
-		final int kind= getKind();
-		if (kind == k_class || kind == k_union || kind == k_struct) {
-			if (name instanceof ICPPASTQualifiedName == false 
-					&& name instanceof ICPPASTTemplateId == false) {
-				IBinding binding = allowResolution ? name.resolveBinding() : name.getBinding();
-				if (binding != null) {
-					if (binding instanceof ICPPInternalBinding) {
-						IASTNode[] decls = ((ICPPInternalBinding)binding).getDeclarations();
-						if (ArrayUtil.contains(decls, name)) 
-							return r_declaration;
-					}
-					return r_reference;
-				}
-				// resolution is not allowed.
-				return r_unclear;
-			}
-		}
-		return r_reference;
-	}
+    @Override
+    public int getRoleForName(IASTName n)
+    {
+        return getRoleForName(n, true);
+    }
+
+    @Override
+    public int getRoleForName(IASTName n, boolean allowResolution)
+    {
+        if (n != name) {
+            return r_unclear;
+        }
+
+        IASTNode parent = getParent();
+        if (parent instanceof IASTSimpleDeclaration) {
+            IASTDeclarator[] dtors = ((IASTSimpleDeclaration) parent).getDeclarators();
+            if (dtors.length == 0) {
+                return r_declaration;
+            }
+        }
+
+        // 7.1.5.3.2: check for simple form <class-key> <identifier>, then it may be a declaration
+        final int kind = getKind();
+        if (kind == k_class || kind == k_union || kind == k_struct) {
+            if (name instanceof ICPPASTQualifiedName == false
+                    && name instanceof ICPPASTTemplateId == false) {
+                IBinding binding = allowResolution ? name.resolveBinding() : name.getBinding();
+                if (binding != null) {
+                    if (binding instanceof ICPPInternalBinding) {
+                        IASTNode[] decls = ((ICPPInternalBinding) binding).getDeclarations();
+                        if (ArrayUtil.contains(decls, name)) {
+                            return r_declaration;
+                        }
+                    }
+                    return r_reference;
+                }
+                // resolution is not allowed.
+                return r_unclear;
+            }
+        }
+        return r_reference;
+    }
 }

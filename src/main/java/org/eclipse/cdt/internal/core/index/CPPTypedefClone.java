@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Bryan Wilkinson (QNX) - Initial API and implementation
+ * Bryan Wilkinson (QNX) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index;
 
@@ -19,92 +19,114 @@ import org.eclipse.cdt.core.dom.ast.ITypedef;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPBinding;
 import org.eclipse.cdt.internal.core.dom.parser.ITypeContainer;
 
-public class CPPTypedefClone implements ITypedef, ITypeContainer, IIndexType, ICPPBinding {
-	protected final ITypedef delegate;
-	private IType type;
+public class CPPTypedefClone
+        implements ITypedef, ITypeContainer, IIndexType, ICPPBinding
+{
+    protected final ITypedef delegate;
+    private IType type;
 
-	public CPPTypedefClone(ITypedef typedef) {
-		this.delegate = typedef;
-	}
+    public CPPTypedefClone(ITypedef typedef)
+    {
+        this.delegate = typedef;
+    }
 
-	@Override
-	public IType getType() {
-		if (type == null) {
-			return delegate.getType();
-		}
-		return type;
-	}
+    @Override
+    public IType getType()
+    {
+        if (type == null) {
+            return delegate.getType();
+        }
+        return type;
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return delegate.getLinkage();
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return delegate.getLinkage();
+    }
 
-	@Override
-	public String getName() {
-		return delegate.getName();
-	}
+    @Override
+    public String getName()
+    {
+        return delegate.getName();
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return delegate.getNameCharArray();
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        return delegate.getNameCharArray();
+    }
 
-	@Override
-	public IScope getScope() throws DOMException {
-		return delegate.getScope();
-	}
+    @Override
+    public IScope getScope()
+            throws DOMException
+    {
+        return delegate.getScope();
+    }
 
-	@Override
-	public IBinding getOwner() {
-		return delegate.getOwner();
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        return delegate.getOwner();
+    }
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		return delegate.getAdapter(adapter);
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(Class adapter)
+    {
+        return delegate.getAdapter(adapter);
+    }
 
-	@Override
-	public boolean isSameType(IType type) {
-		IType myrtype = getType();
-		if (myrtype == null)
-			return false;
+    @Override
+    public boolean isSameType(IType type)
+    {
+        IType myrtype = getType();
+        if (myrtype == null) {
+            return false;
+        }
 
-		if (type instanceof ITypedef) {
-			type= ((ITypedef) type).getType();
-		}
-		return myrtype.isSameType(type);
-	}
+        if (type instanceof ITypedef) {
+            type = ((ITypedef) type).getType();
+        }
+        return myrtype.isSameType(type);
+    }
 
-	@Override
-	public void setType(IType type) {
-		this.type = type;
-	}
+    @Override
+    public void setType(IType type)
+    {
+        this.type = type;
+    }
 
-	@Override
-	public String[] getQualifiedName() throws DOMException {
-		return ((ICPPBinding) delegate).getQualifiedName();
-	}
+    @Override
+    public String[] getQualifiedName()
+            throws DOMException
+    {
+        return ((ICPPBinding) delegate).getQualifiedName();
+    }
 
-	@Override
-	public char[][] getQualifiedNameCharArray() throws DOMException {
-		return ((ICPPBinding) delegate).getQualifiedNameCharArray();
-	}
+    @Override
+    public char[][] getQualifiedNameCharArray()
+            throws DOMException
+    {
+        return ((ICPPBinding) delegate).getQualifiedNameCharArray();
+    }
 
-	@Override
-	public boolean isGloballyQualified() throws DOMException {
-		return ((ICPPBinding) delegate).isGloballyQualified();
-	}
+    @Override
+    public boolean isGloballyQualified()
+            throws DOMException
+    {
+        return ((ICPPBinding) delegate).isGloballyQualified();
+    }
 
-	@Override
-	public Object clone() {
-		return new CPPTypedefClone(this);
-	}
+    @Override
+    public Object clone()
+    {
+        return new CPPTypedefClone(this);
+    }
 
-	@Override
-	public String toString() {
-		return delegate.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return delegate.toString();
+    }
 }

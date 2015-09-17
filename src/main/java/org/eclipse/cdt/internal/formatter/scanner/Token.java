@@ -4,60 +4,71 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial implementation
- *     Anton Leherbauer - adding tokens for preprocessing directives
- *     Markus Schorn - classification of preprocessing directives.
+ * IBM Corporation - initial implementation
+ * Anton Leherbauer - adding tokens for preprocessing directives
+ * Markus Schorn - classification of preprocessing directives.
  *******************************************************************************/
 package org.eclipse.cdt.internal.formatter.scanner;
 
-public class Token {
+public class Token
+{
     public int type;
     public String text;
     public int offset;
 
-    public Token(int t, String i) {
+    public Token(int t, String i)
+    {
         type = t;
         text = i;
     }
-    
-    public Token(int t, String i, ScannerContext context) {
+
+    public Token(int t, String i, ScannerContext context)
+    {
         set(t, i, context);
     }
 
-    public void set(int t, String i, ScannerContext context) {
+    public void set(int t, String i, ScannerContext context)
+    {
         type = t;
         text = i;
         offset = context.getOffset() - text.length() - context.undoStackSize();
     }
 
     @Override
-	public String toString() {
+    public String toString()
+    {
         return "Token type=" + type + "  image =" + text + " offset=" + offset; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    public int getType() {
+    public int getType()
+    {
         return type;
     }
 
-    public String getText() {
+    public String getText()
+    {
         return text;
     }
 
-    public int getOffset() {
+    public int getOffset()
+    {
         return offset;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return text.length();
     }
 
-    public int getDelta(Token other) {
+    public int getDelta(Token other)
+    {
         return other.getOffset() + other.getLength() - getOffset();
     }
 
-    public boolean looksLikeExpressionStart() {
+    public boolean looksLikeExpressionStart()
+    {
         switch (type) {
             case tINTEGER:
             case t_false:
@@ -76,7 +87,8 @@ public class Token {
         return false;
     }
 
-    public boolean looksLikeExpressionEnd() {
+    public boolean looksLikeExpressionEnd()
+    {
         switch (type) {
             case tINTEGER:
             case tSTRING:
@@ -92,11 +104,13 @@ public class Token {
         return false;
     }
 
-    public boolean isPointer() {
+    public boolean isPointer()
+    {
         return (type == tAMPER || type == tSTAR);
     }
 
-    public boolean isOperator() {
+    public boolean isOperator()
+    {
         switch (type) {
             case t_new:
             case t_delete:
@@ -144,7 +158,8 @@ public class Token {
         }
     }
 
-    public boolean isInfixOperator() {
+    public boolean isInfixOperator()
+    {
         switch (type) {
             case tPLUS:
             case tMINUS:
@@ -183,7 +198,8 @@ public class Token {
         }
     }
 
-    public boolean isPrefixOperator() {
+    public boolean isPrefixOperator()
+    {
         switch (type) {
             case tPLUS:
             case tMINUS:
@@ -199,7 +215,8 @@ public class Token {
         }
     }
 
-    public boolean isPostfixOperator() {
+    public boolean isPostfixOperator()
+    {
         switch (type) {
             case tINCR:
             case tDECR:
@@ -209,11 +226,13 @@ public class Token {
         }
     }
 
-    public boolean isAssignmentOperator() {
+    public boolean isAssignmentOperator()
+    {
         return isAssignmentOperator(type);
     }
 
-    public static boolean isAssignmentOperator(int type) {
+    public static boolean isAssignmentOperator(int type)
+    {
         switch (type) {
             case tASSIGN:
             case tPLUSASSIGN:
@@ -232,7 +251,8 @@ public class Token {
         }
     }
 
-    public boolean isControlStmt() {
+    public boolean isControlStmt()
+    {
         switch (type) {
             case t_if:
             case t_else:
@@ -249,110 +269,127 @@ public class Token {
         }
     }
 
-    public boolean isWhiteSpace() {
+    public boolean isWhiteSpace()
+    {
         return type == tWHITESPACE;
     }
 
-    public boolean isComment() {
+    public boolean isComment()
+    {
         return isLineComment() || isBlockComment();
     }
 
-    public boolean isLineComment() {
+    public boolean isLineComment()
+    {
         return type == tLINECOMMENT;
     }
 
-    public boolean isBlockComment() {
+    public boolean isBlockComment()
+    {
         return type == tBLOCKCOMMENT;
     }
 
-    public boolean isCaseLabel() {
+    public boolean isCaseLabel()
+    {
         return type == t_case || type == t_default;
     }
 
-    public boolean isStructType() {
+    public boolean isStructType()
+    {
         return isStructType(type);
     }
 
-    public static boolean isStructType(int type) {
+    public static boolean isStructType(int type)
+    {
         return type == t_struct || type == t_union || type == t_class;
     }
 
-    public boolean isVisibilityModifier() {
+    public boolean isVisibilityModifier()
+    {
         return isVisibilityModifier(type);
     }
 
-	public static boolean isVisibilityModifier(int type) {
+    public static boolean isVisibilityModifier(int type)
+    {
         return type == t_public || type == t_protected || type == t_private;
-	}
+    }
 
-	public boolean isEndOfStatement() {
+    public boolean isEndOfStatement()
+    {
         return type == tSEMI || type == tRBRACE;
     }
-    
-    public boolean isCPPToken() {
+
+    public boolean isCPPToken()
+    {
         switch (type) {
-        case tCOLONCOLON:
-        case t_class:
-        case t_namespace:
-        case t_using:
-        case t_template:
-        case t_public:
-        case t_protected:
-        case t_private:
-        case t_operator:
-        case t_virtual:
-        case t_inline:
-        case t_friend:
-        case t_mutable:
-        case t_new:
-        case t_delete:
-        case t_reinterpret_cast:
-        case t_dynamic_cast:
-        case t_static_cast:
-        case t_finally:
-            return true;
-        default:
-            return false;
+            case tCOLONCOLON:
+            case t_class:
+            case t_namespace:
+            case t_using:
+            case t_template:
+            case t_public:
+            case t_protected:
+            case t_private:
+            case t_operator:
+            case t_virtual:
+            case t_inline:
+            case t_friend:
+            case t_mutable:
+            case t_new:
+            case t_delete:
+            case t_reinterpret_cast:
+            case t_dynamic_cast:
+            case t_static_cast:
+            case t_finally:
+                return true;
+            default:
+                return false;
         }
     }
 
     // overrider
-    public boolean isStringLiteral() {
+    public boolean isStringLiteral()
+    {
         return type == tSTRING || type == tLSTRING;
     }
 
     // overrider
-    public boolean isCharacterLiteral() {
+    public boolean isCharacterLiteral()
+    {
         return type == tCHAR;
     }
 
     // overrider
-    public boolean isPreprocessor() {
+    public boolean isPreprocessor()
+    {
         switch (type) {
-        case tPREPROCESSOR:
-        case tPREPROCESSOR_DEFINE:
-        case tPREPROCESSOR_INCLUDE:
-            return true;
+            case tPREPROCESSOR:
+            case tPREPROCESSOR_DEFINE:
+            case tPREPROCESSOR_INCLUDE:
+                return true;
         }
         return false;
     }
-    
+
     // overrider
-    public boolean isIncludeDirective() {
+    public boolean isIncludeDirective()
+    {
         return type == tPREPROCESSOR_INCLUDE;
     }
+
     // overrider
-    public boolean isMacroDefinition() {
+    public boolean isMacroDefinition()
+    {
         return type == tPREPROCESSOR_DEFINE;
     }
-    
+
     // Special Token types (non-grammar tokens)
     public static final int tWHITESPACE = 1000;
     public static final int tLINECOMMENT = 1001;
     public static final int tBLOCKCOMMENT = 1002;
     public static final int tPREPROCESSOR = 1003;
     public static final int tPREPROCESSOR_INCLUDE = 1004;
-    public static final int tPREPROCESSOR_DEFINE  = 1005;
+    public static final int tPREPROCESSOR_DEFINE = 1005;
     public static final int tBADCHAR = 1006;
 
     // Token types

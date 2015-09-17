@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2012 Institute for Software, HSR Hochschule fuer Technik  
+ * Copyright (c) 2012 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Thomas Corbat (IFS) - Initial API and implementation
- *     Sergey Prigogin (Google)
+ * Thomas Corbat (IFS) - Initial API and implementation
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -29,117 +29,140 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPTemplates;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
 import org.eclipse.core.runtime.PlatformObject;
 
-public class CPPAliasTemplate extends PlatformObject
-		implements ICPPAliasTemplate, ICPPTemplateParameterOwner {
-	private final IASTName aliasName;
-	private final IType aliasedType;
-	private ICPPTemplateParameter[] templateParameters;
-	
-	public CPPAliasTemplate(IASTName aliasName, IType aliasedType) {
-		this.aliasName = aliasName;
-		this.aliasedType = aliasedType;
-		aliasName.setBinding(this);
-	}
-	
-	@Override
-	public IType getType() {
-		return aliasedType;
-	}
+public class CPPAliasTemplate
+        extends PlatformObject
+        implements ICPPAliasTemplate, ICPPTemplateParameterOwner
+{
+    private final IASTName aliasName;
+    private final IType aliasedType;
+    private ICPPTemplateParameter[] templateParameters;
 
-	@Override
-	public String getName() {
-		return new String(getNameCharArray());
-	}
+    public CPPAliasTemplate(IASTName aliasName, IType aliasedType)
+    {
+        this.aliasName = aliasName;
+        this.aliasedType = aliasedType;
+        aliasName.setBinding(this);
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return aliasName.getSimpleID();
-	}
-
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
-
-	@Override
-	public IBinding getOwner() {
-		return CPPVisitor.findDeclarationOwner(aliasName, true);
-	}
-
-	@Override
-	public IScope getScope() throws DOMException {
-		return CPPVisitor.getContainingScope(aliasName.getParent());
-	}
-
-	@Override
-	public boolean isSameType(IType type) {
-		if (type == null) {
-			return false;
-		}
-		IType aliasedType = getType();
-		return type.isSameType(aliasedType);
-	}
-	
     @Override
-	public Object clone() {
+    public IType getType()
+    {
+        return aliasedType;
+    }
+
+    @Override
+    public String getName()
+    {
+        return new String(getNameCharArray());
+    }
+
+    @Override
+    public char[] getNameCharArray()
+    {
+        return aliasName.getSimpleID();
+    }
+
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
+
+    @Override
+    public IBinding getOwner()
+    {
+        return CPPVisitor.findDeclarationOwner(aliasName, true);
+    }
+
+    @Override
+    public IScope getScope()
+            throws DOMException
+    {
+        return CPPVisitor.getContainingScope(aliasName.getParent());
+    }
+
+    @Override
+    public boolean isSameType(IType type)
+    {
+        if (type == null) {
+            return false;
+        }
+        IType aliasedType = getType();
+        return type.isSameType(aliasedType);
+    }
+
+    @Override
+    public Object clone()
+    {
         IType t = null;
-   		try {
+        try {
             t = (IType) super.clone();
-        } catch (CloneNotSupportedException e) {
+        }
+        catch (CloneNotSupportedException e) {
             // Not going to happen
         }
         return t;
     }
 
-	@Override
-	public String[] getQualifiedName() throws DOMException {
-		return CPPVisitor.getQualifiedName(this);
-	}
+    @Override
+    public String[] getQualifiedName()
+            throws DOMException
+    {
+        return CPPVisitor.getQualifiedName(this);
+    }
 
-	@Override
-	public char[][] getQualifiedNameCharArray() throws DOMException {
-		return CPPVisitor.getQualifiedNameCharArray(this);
-	}
+    @Override
+    public char[][] getQualifiedNameCharArray()
+            throws DOMException
+    {
+        return CPPVisitor.getQualifiedNameCharArray(this);
+    }
 
-	@Override
-	public boolean isGloballyQualified() throws DOMException {
-		return true;
-	}
+    @Override
+    public boolean isGloballyQualified()
+            throws DOMException
+    {
+        return true;
+    }
 
-	@Override
-	public ICPPTemplateParameter[] getTemplateParameters() {
-		if (templateParameters == null) {
-			ICPPASTTemplateDeclaration template = CPPTemplates.getTemplateDeclaration(aliasName);
-			if (template == null)
-				return ICPPTemplateParameter.EMPTY_TEMPLATE_PARAMETER_ARRAY;
-			ICPPASTTemplateParameter[] params = template.getTemplateParameters();
-			IBinding p = null;
-			ICPPTemplateParameter[] result = null;
-			for (ICPPASTTemplateParameter param : params) {
-				p= CPPTemplates.getTemplateParameterName(param).resolveBinding();
-				if (p instanceof ICPPTemplateParameter) {
-					result = ArrayUtil.append(ICPPTemplateParameter.class, result, (ICPPTemplateParameter) p);
-				}
-			}
-			templateParameters = ArrayUtil.trim(ICPPTemplateParameter.class, result);
-		}
-		return templateParameters;
-	}
-	
-	@Override
-	public String toString() {
-		return ASTTypeUtil.getQualifiedName(this) + " -> " + ASTTypeUtil.getType(aliasedType, true); //$NON-NLS-1$
-	}
+    @Override
+    public ICPPTemplateParameter[] getTemplateParameters()
+    {
+        if (templateParameters == null) {
+            ICPPASTTemplateDeclaration template = CPPTemplates.getTemplateDeclaration(aliasName);
+            if (template == null) {
+                return ICPPTemplateParameter.EMPTY_TEMPLATE_PARAMETER_ARRAY;
+            }
+            ICPPASTTemplateParameter[] params = template.getTemplateParameters();
+            IBinding p = null;
+            ICPPTemplateParameter[] result = null;
+            for (ICPPASTTemplateParameter param : params) {
+                p = CPPTemplates.getTemplateParameterName(param).resolveBinding();
+                if (p instanceof ICPPTemplateParameter) {
+                    result = ArrayUtil.append(ICPPTemplateParameter.class, result, (ICPPTemplateParameter) p);
+                }
+            }
+            templateParameters = ArrayUtil.trim(ICPPTemplateParameter.class, result);
+        }
+        return templateParameters;
+    }
 
-	@Override
-	public IBinding resolveTemplateParameter(ICPPTemplateParameter templateParameter) {
-		int pos= templateParameter.getParameterPosition();
-		
-		ICPPASTTemplateParameter[] params = CPPTemplates.getTemplateDeclaration(aliasName).getTemplateParameters();
-		if (pos < params.length) {
-			final IASTName oName = CPPTemplates.getTemplateParameterName(params[pos]);
-			return oName.resolvePreBinding();
-		}
-    	return templateParameter;
-	}
+    @Override
+    public String toString()
+    {
+        return ASTTypeUtil.getQualifiedName(this) + " -> " + ASTTypeUtil.getType(aliasedType, true); //$NON-NLS-1$
+    }
+
+    @Override
+    public IBinding resolveTemplateParameter(ICPPTemplateParameter templateParameter)
+    {
+        int pos = templateParameter.getParameterPosition();
+
+        ICPPASTTemplateParameter[] params = CPPTemplates.getTemplateDeclaration(aliasName).getTemplateParameters();
+        if (pos < params.length) {
+            final IASTName oName = CPPTemplates.getTemplateParameterName(params[pos]);
+            return oName.resolvePreBinding();
+        }
+        return templateParameter;
+    }
 }

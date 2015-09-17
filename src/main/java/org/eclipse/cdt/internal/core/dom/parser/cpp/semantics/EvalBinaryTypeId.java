@@ -4,14 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp.semantics;
-
-import static org.eclipse.cdt.core.dom.ast.IASTExpression.ValueCategory.PRVALUE;
 
 import org.eclipse.cdt.core.dom.ast.IASTBinaryTypeIdExpression.Operator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression.ValueCategory;
@@ -29,131 +27,158 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPEvaluation;
 import org.eclipse.core.runtime.CoreException;
 
+import static org.eclipse.cdt.core.dom.ast.IASTExpression.ValueCategory.PRVALUE;
+
 /**
  * Performs evaluation of an expression.
  */
-public class EvalBinaryTypeId extends CPPDependentEvaluation {
-	private final Operator fOperator;
-	private final IType fType1, fType2;
+public class EvalBinaryTypeId
+        extends CPPDependentEvaluation
+{
+    private final Operator fOperator;
+    private final IType fType1, fType2;
 
-	private boolean fCheckedValueDependent;
-	private boolean fIsValueDependent;
+    private boolean fCheckedValueDependent;
+    private boolean fIsValueDependent;
 
-	public EvalBinaryTypeId(Operator kind, IType type1, IType type2, IASTNode pointOfDefinition) {
-		this(kind, type1, type2, findEnclosingTemplate(pointOfDefinition));		
-	}
+    public EvalBinaryTypeId(Operator kind, IType type1, IType type2, IASTNode pointOfDefinition)
+    {
+        this(kind, type1, type2, findEnclosingTemplate(pointOfDefinition));
+    }
 
-	public EvalBinaryTypeId(Operator kind, IType type1, IType type2, IBinding templateDefinition) {
-		super(templateDefinition);
-		fOperator= kind;
-		fType1= type1;
-		fType2= type2;
-	}
+    public EvalBinaryTypeId(Operator kind, IType type1, IType type2, IBinding templateDefinition)
+    {
+        super(templateDefinition);
+        fOperator = kind;
+        fType1 = type1;
+        fType2 = type2;
+    }
 
-	public Operator getOperator() {
-		return fOperator;
-	}
+    public Operator getOperator()
+    {
+        return fOperator;
+    }
 
-	public IType getType1() {
-		return fType1;
-	}
+    public IType getType1()
+    {
+        return fType1;
+    }
 
-	public IType getType2() {
-		return fType2;
-	}
+    public IType getType2()
+    {
+        return fType2;
+    }
 
-	@Override
-	public boolean isInitializerList() {
-		return false;
-	}
+    @Override
+    public boolean isInitializerList()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isFunctionSet() {
-		return false;
-	}
+    @Override
+    public boolean isFunctionSet()
+    {
+        return false;
+    }
 
-	@Override
-	public IType getTypeOrFunctionSet(IASTNode point) {
-		switch (fOperator) {
-		case __is_base_of:
-			return CPPBasicType.BOOLEAN;
-		}
-		return ProblemType.UNKNOWN_FOR_EXPRESSION;
-	}
+    @Override
+    public IType getTypeOrFunctionSet(IASTNode point)
+    {
+        switch (fOperator) {
+            case __is_base_of:
+                return CPPBasicType.BOOLEAN;
+        }
+        return ProblemType.UNKNOWN_FOR_EXPRESSION;
+    }
 
-	@Override
-	public IValue getValue(IASTNode point) {
-		if (isValueDependent())
-			return Value.create(this);
+    @Override
+    public IValue getValue(IASTNode point)
+    {
+        if (isValueDependent()) {
+            return Value.create(this);
+        }
 
-		return Value.evaluateBinaryTypeIdExpression(fOperator, fType1, fType2, point);
-	}
+        return Value.evaluateBinaryTypeIdExpression(fOperator, fType1, fType2, point);
+    }
 
-	@Override
-	public boolean isTypeDependent() {
-		return false;
-	}
+    @Override
+    public boolean isTypeDependent()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isValueDependent() {
-		if (!fCheckedValueDependent) {
-			fIsValueDependent= CPPTemplates.isDependentType(fType1) || CPPTemplates.isDependentType(fType2);
-			fCheckedValueDependent= true;
-		}
-		return fIsValueDependent;
-	}
-	
-	@Override
-	public boolean isConstantExpression(IASTNode point) {
-		return true;
-	}
+    @Override
+    public boolean isValueDependent()
+    {
+        if (!fCheckedValueDependent) {
+            fIsValueDependent = CPPTemplates.isDependentType(fType1) || CPPTemplates.isDependentType(fType2);
+            fCheckedValueDependent = true;
+        }
+        return fIsValueDependent;
+    }
 
-	@Override
-	public ValueCategory getValueCategory(IASTNode point) {
-		return PRVALUE;
-	}
+    @Override
+    public boolean isConstantExpression(IASTNode point)
+    {
+        return true;
+    }
 
-	@Override
-	public void marshal(ITypeMarshalBuffer buffer, boolean includeValue) throws CoreException {
-		buffer.putShort(ITypeMarshalBuffer.EVAL_BINARY_TYPE_ID);
-		buffer.putByte((byte) fOperator.ordinal());
-		buffer.marshalType(fType1);
-		buffer.marshalType(fType2);
-		marshalTemplateDefinition(buffer);
-	}
+    @Override
+    public ValueCategory getValueCategory(IASTNode point)
+    {
+        return PRVALUE;
+    }
 
-	public static ISerializableEvaluation unmarshal(short firstBytes, ITypeMarshalBuffer buffer) throws CoreException {
-		int op= buffer.getByte();
-		IType arg1= buffer.unmarshalType();
-		IType arg2= buffer.unmarshalType();
-		IBinding templateDefinition= buffer.unmarshalBinding();
-		return new EvalBinaryTypeId(Operator.values()[op], arg1, arg2, templateDefinition);
-	}
+    @Override
+    public void marshal(ITypeMarshalBuffer buffer, boolean includeValue)
+            throws CoreException
+    {
+        buffer.putShort(ITypeMarshalBuffer.EVAL_BINARY_TYPE_ID);
+        buffer.putByte((byte) fOperator.ordinal());
+        buffer.marshalType(fType1);
+        buffer.marshalType(fType2);
+        marshalTemplateDefinition(buffer);
+    }
 
-	@Override
-	public ICPPEvaluation instantiate(ICPPTemplateParameterMap tpMap, int packOffset,
-			ICPPTypeSpecialization within, int maxdepth, IASTNode point) {
-		IType type1 = CPPTemplates.instantiateType(fType1, tpMap, packOffset, within, point);
-		IType type2 = CPPTemplates.instantiateType(fType2, tpMap, packOffset, within, point);
-		if (type1 == fType1 && type2 == fType2)
-			return this;
-		return new EvalBinaryTypeId(fOperator, type1, type2, getTemplateDefinition());
-	}
+    public static ISerializableEvaluation unmarshal(short firstBytes, ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        int op = buffer.getByte();
+        IType arg1 = buffer.unmarshalType();
+        IType arg2 = buffer.unmarshalType();
+        IBinding templateDefinition = buffer.unmarshalBinding();
+        return new EvalBinaryTypeId(Operator.values()[op], arg1, arg2, templateDefinition);
+    }
 
-	@Override
-	public ICPPEvaluation computeForFunctionCall(CPPFunctionParameterMap parameterMap,
-			ConstexprEvaluationContext context) {
-		return this;
-	}
+    @Override
+    public ICPPEvaluation instantiate(ICPPTemplateParameterMap tpMap, int packOffset,
+            ICPPTypeSpecialization within, int maxdepth, IASTNode point)
+    {
+        IType type1 = CPPTemplates.instantiateType(fType1, tpMap, packOffset, within, point);
+        IType type2 = CPPTemplates.instantiateType(fType2, tpMap, packOffset, within, point);
+        if (type1 == fType1 && type2 == fType2) {
+            return this;
+        }
+        return new EvalBinaryTypeId(fOperator, type1, type2, getTemplateDefinition());
+    }
 
-	@Override
-	public int determinePackSize(ICPPTemplateParameterMap tpMap) {
-		return CPPTemplates.combinePackSize(CPPTemplates.determinePackSize(fType1, tpMap),
-				CPPTemplates.determinePackSize(fType2, tpMap));
-	}
+    @Override
+    public ICPPEvaluation computeForFunctionCall(CPPFunctionParameterMap parameterMap,
+            ConstexprEvaluationContext context)
+    {
+        return this;
+    }
 
-	@Override
-	public boolean referencesTemplateParameter() {
-		return false;
-	}
+    @Override
+    public int determinePackSize(ICPPTemplateParameterMap tpMap)
+    {
+        return CPPTemplates.combinePackSize(CPPTemplates.determinePackSize(fType1, tpMap),
+                CPPTemplates.determinePackSize(fType2, tpMap));
+    }
+
+    @Override
+    public boolean referencesTemplateParameter()
+    {
+        return false;
+    }
 }

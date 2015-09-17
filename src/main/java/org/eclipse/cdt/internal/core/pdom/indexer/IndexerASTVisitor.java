@@ -4,15 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.indexer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTCompoundStatement;
@@ -38,197 +35,226 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTQualifiedName;
 import org.eclipse.cdt.internal.core.dom.parser.ASTQueries;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
 
-abstract public class IndexerASTVisitor extends ASTVisitor {
-	private static class Definition {
-		Definition(IASTName name, IASTNode node) {
-			fName= name;
-			fNode= node;
-		}
-		IASTName fName;
-		IASTNode fNode;
-	}
-	
-	private IASTName fDefinitionName;
-	private IASTNode fDefinitionNode;
-	private ArrayList<Definition> fStack= new ArrayList<Definition>();
-	private ArrayList<IASTProblem> fProblems= new ArrayList<IASTProblem>();
+import java.util.ArrayList;
+import java.util.List;
 
-	public IndexerASTVisitor(boolean visitImplicitNames) {
-		shouldVisitNames= true;
-		shouldVisitImplicitNames = visitImplicitNames;
-		shouldVisitDeclarations= true;
-		shouldVisitInitializers= true;
-		shouldVisitDeclSpecifiers= true;
-		shouldVisitProblems= true;
-		shouldVisitExpressions= true;
-	}
-	
-	public List<IASTProblem> getProblems() {
-		return fProblems;
-	}
+abstract public class IndexerASTVisitor
+        extends ASTVisitor
+{
+    private static class Definition
+    {
+        Definition(IASTName name, IASTNode node)
+        {
+            fName = name;
+            fNode = node;
+        }
 
-	abstract public void visit(IASTName name, IASTName definitionName);
+        IASTName fName;
+        IASTNode fNode;
+    }
 
-	@Override
-	final public int visit(IASTName name) {
-		if (!(name instanceof ICPPASTQualifiedName)) {
-			if (name != fDefinitionName) {
-				visit(name, fDefinitionName);
-			}
-		}
-		return PROCESS_CONTINUE;
-	}
+    private IASTName fDefinitionName;
+    private IASTNode fDefinitionNode;
+    private ArrayList<Definition> fStack = new ArrayList<Definition>();
+    private ArrayList<IASTProblem> fProblems = new ArrayList<IASTProblem>();
 
-	private void push(IASTName name, IASTNode node) {
-		if (fDefinitionName != null) {
-			fStack.add(new Definition(fDefinitionName, fDefinitionNode));
-		}
-		name = getLastInQualified(name);
-		fDefinitionName= name;
-		fDefinitionNode= node;
-	}
+    public IndexerASTVisitor(boolean visitImplicitNames)
+    {
+        shouldVisitNames = true;
+        shouldVisitImplicitNames = visitImplicitNames;
+        shouldVisitDeclarations = true;
+        shouldVisitInitializers = true;
+        shouldVisitDeclSpecifiers = true;
+        shouldVisitProblems = true;
+        shouldVisitExpressions = true;
+    }
 
-	private IASTName getLastInQualified(IASTName name) {
-		return name.getLastName();
-	}
+    public List<IASTProblem> getProblems()
+    {
+        return fProblems;
+    }
 
-	private void pop(IASTNode node) {
-		if (node == fDefinitionNode) {
-			if (fStack.isEmpty()) {
-				fDefinitionName= null;
-				fDefinitionNode= null;
-			}
-			else {
-				Definition old= fStack.remove(fStack.size()-1);
-				fDefinitionName= old.fName;
-				fDefinitionNode= old.fNode;
-			}
-		}
-	}
+    abstract public void visit(IASTName name, IASTName definitionName);
 
-	// functions and methods
-	@Override
-	public int visit(IASTDeclaration decl) {
-		if (decl instanceof IASTFunctionDefinition) {
-			IASTFunctionDefinition fdef= (IASTFunctionDefinition) decl;
-			final IASTFunctionDeclarator declarator= fdef.getDeclarator();
-			IASTDeclarator nestedDeclarator= declarator;
-			while (nestedDeclarator.getNestedDeclarator() != null) {
-				nestedDeclarator= nestedDeclarator.getNestedDeclarator();
-			}
-			IASTName name= getLastInQualified(nestedDeclarator.getName());
-			visit(name, fDefinitionName);
-			push(name, decl);
-		} else if (decl instanceof IASTSimpleDeclaration) {
-			IASTSimpleDeclaration sdecl= (IASTSimpleDeclaration) decl;
-			if (sdecl.getDeclSpecifier().getStorageClass() == IASTDeclSpecifier.sc_typedef) {
-				IASTDeclarator[] declarators= sdecl.getDeclarators();
-				for (IASTDeclarator declarator : declarators) {
-					if (declarator.getPointerOperators().length == 0 &&
-							declarator.getNestedDeclarator() == null) {
-						IASTName name= getLastInQualified(declarator.getName());
-						visit(name, fDefinitionName);
-						push(name, decl);
-					}
-				}
-			}
-		} 
-		return PROCESS_CONTINUE;
-	}
+    @Override
+    final public int visit(IASTName name)
+    {
+        if (!(name instanceof ICPPASTQualifiedName)) {
+            if (name != fDefinitionName) {
+                visit(name, fDefinitionName);
+            }
+        }
+        return PROCESS_CONTINUE;
+    }
 
-	@Override
-	public int leave(IASTDeclaration decl) {
-		pop(decl);
-		return PROCESS_CONTINUE;
-	}
+    private void push(IASTName name, IASTNode node)
+    {
+        if (fDefinitionName != null) {
+            fStack.add(new Definition(fDefinitionName, fDefinitionNode));
+        }
+        name = getLastInQualified(name);
+        fDefinitionName = name;
+        fDefinitionNode = node;
+    }
 
-	// class definitions, typedefs
-	@Override
-	public int visit(IASTDeclSpecifier declspec) {
-		if (declspec instanceof ICPPASTCompositeTypeSpecifier) {
-			ICPPASTCompositeTypeSpecifier cts= (ICPPASTCompositeTypeSpecifier) declspec;
-			IASTName name = getLastInQualified(cts.getName());
-			visit(name, fDefinitionName);
-			push(name, declspec);
-		}
-		if (declspec instanceof ICASTCompositeTypeSpecifier) {
-			ICASTCompositeTypeSpecifier cts= (ICASTCompositeTypeSpecifier) declspec;
-			IASTName name = cts.getName();
-			visit(name, fDefinitionName);
-			push(name, declspec);
-		}
-		return PROCESS_CONTINUE;
-	}
+    private IASTName getLastInQualified(IASTName name)
+    {
+        return name.getLastName();
+    }
 
-	@Override
-	public int leave(IASTDeclSpecifier declspec) {
-		pop(declspec);
-		return PROCESS_CONTINUE;
-	}
-	
-	@Override
-	public int visit(IASTProblem problem) {
-		fProblems.add(problem);
-		return PROCESS_SKIP;
-	}
+    private void pop(IASTNode node)
+    {
+        if (node == fDefinitionNode) {
+            if (fStack.isEmpty()) {
+                fDefinitionName = null;
+                fDefinitionNode = null;
+            }
+            else {
+                Definition old = fStack.remove(fStack.size() - 1);
+                fDefinitionName = old.fName;
+                fDefinitionNode = old.fNode;
+            }
+        }
+    }
 
-	// variable and field initializers
-	@Override
-	public int visit(IASTInitializer initializer) {
-		if (!(fDefinitionNode instanceof IASTFunctionDefinition)) {
-			IASTNode cand= initializer.getParent();
-			if (cand instanceof IASTDeclarator) {
-				cand= ASTQueries.findInnermostDeclarator((IASTDeclarator) cand);
-				push(((IASTDeclarator) cand).getName(), initializer);
-			}
-		}
-		return PROCESS_CONTINUE;
-	}
-	
-	@Override
-	public int leave(IASTInitializer initializer) {
-		pop(initializer);
-		return PROCESS_CONTINUE;
-	}
-	
-	// Lambda expressions
-	@Override
-	public int visit(IASTExpression expr) {
-		if (expr instanceof ICPPASTLambdaExpression) {
-			return visit((ICPPASTLambdaExpression) expr);
-		}
-		return PROCESS_CONTINUE;
-	}
+    // functions and methods
+    @Override
+    public int visit(IASTDeclaration decl)
+    {
+        if (decl instanceof IASTFunctionDefinition) {
+            IASTFunctionDefinition fdef = (IASTFunctionDefinition) decl;
+            final IASTFunctionDeclarator declarator = fdef.getDeclarator();
+            IASTDeclarator nestedDeclarator = declarator;
+            while (nestedDeclarator.getNestedDeclarator() != null) {
+                nestedDeclarator = nestedDeclarator.getNestedDeclarator();
+            }
+            IASTName name = getLastInQualified(nestedDeclarator.getName());
+            visit(name, fDefinitionName);
+            push(name, decl);
+        }
+        else if (decl instanceof IASTSimpleDeclaration) {
+            IASTSimpleDeclaration sdecl = (IASTSimpleDeclaration) decl;
+            if (sdecl.getDeclSpecifier().getStorageClass() == IASTDeclSpecifier.sc_typedef) {
+                IASTDeclarator[] declarators = sdecl.getDeclarators();
+                for (IASTDeclarator declarator : declarators) {
+                    if (declarator.getPointerOperators().length == 0 &&
+                            declarator.getNestedDeclarator() == null) {
+                        IASTName name = getLastInQualified(declarator.getName());
+                        visit(name, fDefinitionName);
+                        push(name, decl);
+                    }
+                }
+            }
+        }
+        return PROCESS_CONTINUE;
+    }
 
-	private int visit(final ICPPASTLambdaExpression lambdaExpr) {
-		// Captures 
-		for (ICPPASTCapture cap : lambdaExpr.getCaptures()) {
-			if (!cap.accept(this))
-				return PROCESS_ABORT;
-		}
-		// Definition of closure type
-		final IASTName closureName = lambdaExpr.getClosureTypeName();
-		visit(closureName, fDefinitionName);
+    @Override
+    public int leave(IASTDeclaration decl)
+    {
+        pop(decl);
+        return PROCESS_CONTINUE;
+    }
 
-		// Definition of call operator
-		IASTName callOp= lambdaExpr.getFunctionCallOperatorName();
-		visit(callOp, closureName);
+    // class definitions, typedefs
+    @Override
+    public int visit(IASTDeclSpecifier declspec)
+    {
+        if (declspec instanceof ICPPASTCompositeTypeSpecifier) {
+            ICPPASTCompositeTypeSpecifier cts = (ICPPASTCompositeTypeSpecifier) declspec;
+            IASTName name = getLastInQualified(cts.getName());
+            visit(name, fDefinitionName);
+            push(name, declspec);
+        }
+        if (declspec instanceof ICASTCompositeTypeSpecifier) {
+            ICASTCompositeTypeSpecifier cts = (ICASTCompositeTypeSpecifier) declspec;
+            IASTName name = cts.getName();
+            visit(name, fDefinitionName);
+            push(name, declspec);
+        }
+        return PROCESS_CONTINUE;
+    }
 
-		IBinding owner = CPPVisitor.findDeclarationOwner(lambdaExpr, true);
-		boolean localToFunction = owner instanceof IFunction;
-		if (!localToFunction)
-			push(callOp, lambdaExpr); // Local closures don't appear in the index, so don't refer to them.
+    @Override
+    public int leave(IASTDeclSpecifier declspec)
+    {
+        pop(declspec);
+        return PROCESS_CONTINUE;
+    }
 
-		ICPPASTFunctionDeclarator dtor = lambdaExpr.getDeclarator();
-		if (dtor != null && !dtor.accept(this))
-			return PROCESS_ABORT;
-		
-		IASTCompoundStatement body = lambdaExpr.getBody();
-		if (body != null && !body.accept(this))
-			return PROCESS_ABORT;
-		
-		if (!localToFunction)
-			pop(lambdaExpr);
-		return PROCESS_SKIP;
-	}
+    @Override
+    public int visit(IASTProblem problem)
+    {
+        fProblems.add(problem);
+        return PROCESS_SKIP;
+    }
+
+    // variable and field initializers
+    @Override
+    public int visit(IASTInitializer initializer)
+    {
+        if (!(fDefinitionNode instanceof IASTFunctionDefinition)) {
+            IASTNode cand = initializer.getParent();
+            if (cand instanceof IASTDeclarator) {
+                cand = ASTQueries.findInnermostDeclarator((IASTDeclarator) cand);
+                push(((IASTDeclarator) cand).getName(), initializer);
+            }
+        }
+        return PROCESS_CONTINUE;
+    }
+
+    @Override
+    public int leave(IASTInitializer initializer)
+    {
+        pop(initializer);
+        return PROCESS_CONTINUE;
+    }
+
+    // Lambda expressions
+    @Override
+    public int visit(IASTExpression expr)
+    {
+        if (expr instanceof ICPPASTLambdaExpression) {
+            return visit((ICPPASTLambdaExpression) expr);
+        }
+        return PROCESS_CONTINUE;
+    }
+
+    private int visit(final ICPPASTLambdaExpression lambdaExpr)
+    {
+        // Captures
+        for (ICPPASTCapture cap : lambdaExpr.getCaptures()) {
+            if (!cap.accept(this)) {
+                return PROCESS_ABORT;
+            }
+        }
+        // Definition of closure type
+        final IASTName closureName = lambdaExpr.getClosureTypeName();
+        visit(closureName, fDefinitionName);
+
+        // Definition of call operator
+        IASTName callOp = lambdaExpr.getFunctionCallOperatorName();
+        visit(callOp, closureName);
+
+        IBinding owner = CPPVisitor.findDeclarationOwner(lambdaExpr, true);
+        boolean localToFunction = owner instanceof IFunction;
+        if (!localToFunction) {
+            push(callOp, lambdaExpr); // Local closures don't appear in the index, so don't refer to them.
+        }
+
+        ICPPASTFunctionDeclarator dtor = lambdaExpr.getDeclarator();
+        if (dtor != null && !dtor.accept(this)) {
+            return PROCESS_ABORT;
+        }
+
+        IASTCompoundStatement body = lambdaExpr.getBody();
+        if (body != null && !body.accept(this)) {
+            return PROCESS_ABORT;
+        }
+
+        if (!localToFunction) {
+            pop(lambdaExpr);
+        }
+        return PROCESS_SKIP;
+    }
 }

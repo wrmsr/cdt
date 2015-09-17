@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
@@ -18,25 +18,32 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPField;
 import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-class CompositeCPPField extends CompositeCPPVariable implements ICPPField {
-	public CompositeCPPField(ICompositesFactory cf, ICPPField rbinding) {
-		super(cf, rbinding);
-	}
-	
-	@Override
-	public ICPPClassType getClassOwner() {
-		IIndexFragmentBinding rowner = (IIndexFragmentBinding) ((ICPPField)rbinding).getClassOwner();
-		return (ICPPClassType) cf.getCompositeBinding(rowner);
-	}
+class CompositeCPPField
+        extends CompositeCPPVariable
+        implements ICPPField
+{
+    public CompositeCPPField(ICompositesFactory cf, ICPPField rbinding)
+    {
+        super(cf, rbinding);
+    }
 
-	@Override
-	public int getVisibility() {
-		return ((ICPPField)rbinding).getVisibility();
-	}
-	
-	@Override
-	public ICompositeType getCompositeTypeOwner() {
-		IBinding preresult = ((IField)rbinding).getCompositeTypeOwner();
-		return (ICompositeType) cf.getCompositeBinding((IIndexFragmentBinding) preresult);
-	}
+    @Override
+    public ICPPClassType getClassOwner()
+    {
+        IIndexFragmentBinding rowner = (IIndexFragmentBinding) ((ICPPField) rbinding).getClassOwner();
+        return (ICPPClassType) cf.getCompositeBinding(rowner);
+    }
+
+    @Override
+    public int getVisibility()
+    {
+        return ((ICPPField) rbinding).getVisibility();
+    }
+
+    @Override
+    public ICompositeType getCompositeTypeOwner()
+    {
+        IBinding preresult = ((IField) rbinding).getCompositeTypeOwner();
+        return (ICompositeType) cf.getCompositeBinding((IIndexFragmentBinding) preresult);
+    }
 }

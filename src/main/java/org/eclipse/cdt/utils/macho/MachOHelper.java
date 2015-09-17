@@ -4,20 +4,20 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
- *     Craig Watson
- *     Apple Computer - work on performance optimizations
+ * QNX Software Systems - Initial API and implementation
+ * Craig Watson
+ * Apple Computer - work on performance optimizations
  *******************************************************************************/
 package org.eclipse.cdt.utils.macho;
-
-import java.io.IOException;
-import java.util.Vector;
 
 import org.eclipse.cdt.utils.macho.MachO.DyLib;
 import org.eclipse.cdt.utils.macho.MachO.Section;
 import org.eclipse.cdt.utils.macho.MachO.Symbol;
+
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * @deprecated. Deprecated as of CDT 6.1. Use 64 bit version {@link MachOHelper64}.
@@ -29,227 +29,263 @@ import org.eclipse.cdt.utils.macho.MachO.Symbol;
  *  @see MachO
  */
 @Deprecated
-public class MachOHelper {
+public class MachOHelper
+{
 
-	private MachO macho;
-	private MachO.Symbol[] dynsyms;
-	private MachO.Symbol[] symbols;
-	private MachO.Section[] sections;
-	private MachO.DyLib[] needed;
-	private MachO.DyLib[] sonames;
-	
-	public void dispose() {
-		if (macho != null) {
-			macho.dispose();
-			macho = null;
-		}
-	}
+    private MachO macho;
+    private MachO.Symbol[] dynsyms;
+    private MachO.Symbol[] symbols;
+    private MachO.Section[] sections;
+    private MachO.DyLib[] needed;
+    private MachO.DyLib[] sonames;
 
-	public class Sizes {
-		public long text;
-		public long data;
-		public long bss;
-		public long total;
-		public Sizes(long t, long d, long b) {
-			text = t;
-			data = d;
-			bss = b;
-			total = text + data + bss;
-		}
-	}
+    public void dispose()
+    {
+        if (macho != null) {
+            macho.dispose();
+            macho = null;
+        }
+    }
 
-	private void loadBinary() throws IOException {
-		if (symbols == null) {
-			macho.loadBinary();
-			symbols = macho.getSymtabSymbols();
-			dynsyms = macho.getDynamicSymbols();
-			sections = macho.getSections();
-			needed = macho.getDyLibs(MachO.LoadCommand.LC_LOAD_DYLIB);
-			sonames = macho.getDyLibs(MachO.LoadCommand.LC_ID_DYLIB);
-				
-			if (dynsyms == null)
-				dynsyms = symbols;
-		}
-	}
+    public class Sizes
+    {
+        public long text;
+        public long data;
+        public long bss;
+        public long total;
 
+        public Sizes(long t, long d, long b)
+        {
+            text = t;
+            data = d;
+            bss = b;
+            total = text + data + bss;
+        }
+    }
 
-	/**
-	 * Create a new <code>MachOHelper</code> using an existing <code>MachO</code>
-	 * object.
-	 * @param macho An existing MachO object to wrap.
-	 * @throws IOException Error processing the MachO file.
-	 */
-	public MachOHelper(MachO macho) throws IOException {
-		this.macho = macho;
-	}
+    private void loadBinary()
+            throws IOException
+    {
+        if (symbols == null) {
+            macho.loadBinary();
+            symbols = macho.getSymtabSymbols();
+            dynsyms = macho.getDynamicSymbols();
+            sections = macho.getSections();
+            needed = macho.getDyLibs(MachO.LoadCommand.LC_LOAD_DYLIB);
+            sonames = macho.getDyLibs(MachO.LoadCommand.LC_ID_DYLIB);
 
-	/**
-	 * Create a new <code>MachOHelper</code> based on the given filename.
-	 * 
-	 * @param filename The file to use for creating a new MachO object.
-	 * @throws IOException Error processing the MachO file.
-	 * @see MachO#MachO( String )
-	 */
-	public MachOHelper(String filename) throws IOException {
-		macho = new MachO(filename);
-	}
+            if (dynsyms == null) {
+                dynsyms = symbols;
+            }
+        }
+    }
 
-	/**
-	 * Create a new <code>MachOHelper</code> based on the given filename.
-	 * 
-	 * @param filename The file to use for creating a new MachO object.
-	 * @throws IOException Error processing the MachO file.
-	 * @see MachO#MachO( String )
-	 */
-	public MachOHelper(String filename, long offset) throws IOException {
-		macho = new MachO(filename, offset);
-	}
+    /**
+     * Create a new <code>MachOHelper</code> using an existing <code>MachO</code>
+     * object.
+     * @param macho An existing MachO object to wrap.
+     * @throws IOException Error processing the MachO file.
+     */
+    public MachOHelper(MachO macho)
+            throws IOException
+    {
+        this.macho = macho;
+    }
 
+    /**
+     * Create a new <code>MachOHelper</code> based on the given filename.
+     *
+     * @param filename The file to use for creating a new MachO object.
+     * @throws IOException Error processing the MachO file.
+     * @see MachO#MachO(String)
+     */
+    public MachOHelper(String filename)
+            throws IOException
+    {
+        macho = new MachO(filename);
+    }
 
-	public MachOHelper(String filename, boolean filton) throws IOException {
-		macho = new MachO(filename, filton);
-	}
+    /**
+     * Create a new <code>MachOHelper</code> based on the given filename.
+     *
+     * @param filename The file to use for creating a new MachO object.
+     * @throws IOException Error processing the MachO file.
+     * @see MachO#MachO(String)
+     */
+    public MachOHelper(String filename, long offset)
+            throws IOException
+    {
+        macho = new MachO(filename, offset);
+    }
 
-	/** Give back the MachO object that this helper is wrapping */
-	public MachO getMachO() {
-		return macho;
-	}
+    public MachOHelper(String filename, boolean filton)
+            throws IOException
+    {
+        macho = new MachO(filename, filton);
+    }
 
-	public MachO.Symbol[] getExternalFunctions() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+    /** Give back the MachO object that this helper is wrapping */
+    public MachO getMachO()
+    {
+        return macho;
+    }
 
-		loadBinary();
+    public MachO.Symbol[] getExternalFunctions()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (Symbol sym : dynsyms) {
-			if ((sym.n_type_mask(MachO.Symbol.N_PEXT) 
-					|| sym.n_type_mask(MachO.Symbol.N_EXT))
-					&& sym.n_desc(MachO.Symbol.REFERENCE_FLAG_UNDEFINED_LAZY)) {
-				String name = sym.toString();
-				if (name != null && name.trim().length() > 0)
-					v.add(sym);
-			}
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (Symbol sym : dynsyms) {
+            if ((sym.n_type_mask(MachO.Symbol.N_PEXT)
+                    || sym.n_type_mask(MachO.Symbol.N_EXT))
+                    && sym.n_desc(MachO.Symbol.REFERENCE_FLAG_UNDEFINED_LAZY)) {
+                String name = sym.toString();
+                if (name != null && name.trim().length() > 0) {
+                    v.add(sym);
+                }
+            }
+        }
 
-	public MachO.Symbol[] getExternalObjects() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    public MachO.Symbol[] getExternalObjects()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (Symbol sym : dynsyms) {
-			if ((sym.n_type_mask(MachO.Symbol.N_PEXT) 
-					|| sym.n_type_mask(MachO.Symbol.N_EXT))
-					&& sym.n_desc(MachO.Symbol.REFERENCE_FLAG_UNDEFINED_NON_LAZY)) {
-				String name = sym.toString();
-				if (name != null && name.trim().length() > 0)
-					v.add(sym);
-			}
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (Symbol sym : dynsyms) {
+            if ((sym.n_type_mask(MachO.Symbol.N_PEXT)
+                    || sym.n_type_mask(MachO.Symbol.N_EXT))
+                    && sym.n_desc(MachO.Symbol.REFERENCE_FLAG_UNDEFINED_NON_LAZY)) {
+                String name = sym.toString();
+                if (name != null && name.trim().length() > 0) {
+                    v.add(sym);
+                }
+            }
+        }
 
-	public MachO.Symbol[] getUndefined() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    public MachO.Symbol[] getUndefined()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (Symbol dynsym : dynsyms) {
-			if (dynsym.n_type(MachO.Symbol.N_UNDF))
-				v.add(dynsym);
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (Symbol dynsym : dynsyms) {
+            if (dynsym.n_type(MachO.Symbol.N_UNDF)) {
+                v.add(dynsym);
+            }
+        }
 
-	/*
-	 * TODO: I'm not sure if this are correct. Need to check
-	 */
-	public MachO.Symbol[] getLocalFunctions() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    /*
+     * TODO: I'm not sure if this are correct. Need to check
+     */
+    public MachO.Symbol[] getLocalFunctions()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (Symbol sym : dynsyms) {
-			if ((!sym.n_type_mask(MachO.Symbol.N_PEXT) 
-					&& !sym.n_type_mask(MachO.Symbol.N_EXT))
-					&& sym.n_desc(MachO.Symbol.REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY)) {
-				String name = sym.toString();
-				if (name != null && name.trim().length() > 0)
-					v.add(sym);
-			}
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (Symbol sym : dynsyms) {
+            if ((!sym.n_type_mask(MachO.Symbol.N_PEXT)
+                    && !sym.n_type_mask(MachO.Symbol.N_EXT))
+                    && sym.n_desc(MachO.Symbol.REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY)) {
+                String name = sym.toString();
+                if (name != null && name.trim().length() > 0) {
+                    v.add(sym);
+                }
+            }
+        }
 
-	/*
-	 * TODO: I'm not sure if this are correct. Need to check
-	 */
-	public MachO.Symbol[] getLocalObjects() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    /*
+     * TODO: I'm not sure if this are correct. Need to check
+     */
+    public MachO.Symbol[] getLocalObjects()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (Symbol sym : dynsyms) {
-			if ((!sym.n_type_mask(MachO.Symbol.N_PEXT) 
-					&& !sym.n_type_mask(MachO.Symbol.N_EXT))
-					&& sym.n_desc(MachO.Symbol.REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY)) {
-				String name = sym.toString();
-				if (name != null && name.trim().length() > 0)
-					v.add(sym);
-			}
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (Symbol sym : dynsyms) {
+            if ((!sym.n_type_mask(MachO.Symbol.N_PEXT)
+                    && !sym.n_type_mask(MachO.Symbol.N_EXT))
+                    && sym.n_desc(MachO.Symbol.REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY)) {
+                String name = sym.toString();
+                if (name != null && name.trim().length() > 0) {
+                    v.add(sym);
+                }
+            }
+        }
 
-	public MachO.Symbol[] getCommonObjects() throws IOException {
-		Vector<Symbol> v = new Vector<Symbol>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    public MachO.Symbol[] getCommonObjects()
+            throws IOException
+    {
+        Vector<Symbol> v = new Vector<Symbol>();
 
-		for (int i = 0; i < dynsyms.length; i++) {
-			MachO.Symbol sym = dynsyms[i];
-			if (sym.n_type_mask(MachO.Symbol.N_EXT) 
-					&& sym.n_type(MachO.Symbol.N_UNDF)
-					&& sym.n_value != 0) {
-				v.add(symbols[i]);
-			}
-		}
+        loadBinary();
 
-		MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
-		return ret;
-	}
+        for (int i = 0; i < dynsyms.length; i++) {
+            MachO.Symbol sym = dynsyms[i];
+            if (sym.n_type_mask(MachO.Symbol.N_EXT)
+                    && sym.n_type(MachO.Symbol.N_UNDF)
+                    && sym.n_value != 0) {
+                v.add(symbols[i]);
+            }
+        }
 
-	public String[] getNeeded() throws IOException {
-		Vector<String> v = new Vector<String>();
+        MachO.Symbol[] ret = v.toArray(new MachO.Symbol[0]);
+        return ret;
+    }
 
-		loadBinary();
+    public String[] getNeeded()
+            throws IOException
+    {
+        Vector<String> v = new Vector<String>();
 
-		for (DyLib element : needed) {
-			v.add(element.toString());
-		}
-		return v.toArray(new String[0]);
-	}
+        loadBinary();
 
-	public String getSoname() throws IOException {
-		String soname = ""; //$NON-NLS-1$
+        for (DyLib element : needed) {
+            v.add(element.toString());
+        }
+        return v.toArray(new String[0]);
+    }
 
-		loadBinary();
+    public String getSoname()
+            throws IOException
+    {
+        String soname = ""; //$NON-NLS-1$
 
-		for (DyLib soname2 : sonames) {
-			soname = soname2.toString();
-		}
-		return soname;
-	}
+        loadBinary();
+
+        for (DyLib soname2 : sonames) {
+            soname = soname2.toString();
+        }
+        return soname;
+    }
 
 //	private String getSubUsage(String full, String name) {
 //		int start, end;
@@ -287,37 +323,42 @@ public class MachOHelper {
 //		return full.substring(start, end);
 //	}
 
-	public String getQnxUsage() throws IOException {
-		return new String(""); //$NON-NLS-1$
-	}
+    public String getQnxUsage()
+            throws IOException
+    {
+        return new String(""); //$NON-NLS-1$
+    }
 
-	public Sizes getSizes() throws IOException {
-		long text, data, bss;
+    public Sizes getSizes()
+            throws IOException
+    {
+        long text, data, bss;
 
-		text = 0;
-		data = 0;
-		bss = 0;
+        text = 0;
+        data = 0;
+        bss = 0;
 
-		// TODO further optimization
-		// TODO we only need to load the sections, not the whole shebang
-		loadBinary();
+        // TODO further optimization
+        // TODO we only need to load the sections, not the whole shebang
+        loadBinary();
 
-		for (Section section : sections) {
-			MachO.SegmentCommand seg = section.segment;
-			if (section.flags(MachO.Section.SECTION_TYP) != MachO.Section.S_ZEROFILL) {
-				if (seg.prot(MachO.SegmentCommand.VM_PROT_EXECUTE)) {
-					text += section.size;
-				} else if (!seg.prot(MachO.SegmentCommand.VM_PROT_WRITE)) {
-					data += section.size;
-				}
-			} else {
-				if (seg.prot(MachO.SegmentCommand.VM_PROT_WRITE)) {
-					bss += section.size;
-				}
-			}
-		}
+        for (Section section : sections) {
+            MachO.SegmentCommand seg = section.segment;
+            if (section.flags(MachO.Section.SECTION_TYP) != MachO.Section.S_ZEROFILL) {
+                if (seg.prot(MachO.SegmentCommand.VM_PROT_EXECUTE)) {
+                    text += section.size;
+                }
+                else if (!seg.prot(MachO.SegmentCommand.VM_PROT_WRITE)) {
+                    data += section.size;
+                }
+            }
+            else {
+                if (seg.prot(MachO.SegmentCommand.VM_PROT_WRITE)) {
+                    bss += section.size;
+                }
+            }
+        }
 
-		return new Sizes(text, data, bss);
-	}
-
+        return new Sizes(text, data, bss);
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.gnu.cpp;
 
@@ -20,18 +20,20 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPBasicType;
  * @deprecated use {@link ICPPBasicType}, instead.
  */
 @Deprecated
-public interface IGPPBasicType extends ICPPBasicType {
+public interface IGPPBasicType
+        extends ICPPBasicType
+{
 
-	
-	/**
-	 * @deprecated don't use this constant.
-	 */
-	@Deprecated
-	public static final int t_typeof = IGPPASTSimpleDeclSpecifier.t_typeof;
+    /**
+     * @deprecated don't use this constant.
+     */
+    @Deprecated
+    public static final int t_typeof = IGPPASTSimpleDeclSpecifier.t_typeof;
 
-	/**
-	 * @deprecated don't use this method.
-	 */
-	@Deprecated
-	public IType getTypeofType() throws DOMException;
+    /**
+     * @deprecated don't use this method.
+     */
+    @Deprecated
+    public IType getTypeofType()
+            throws DOMException;
 }

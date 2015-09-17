@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Gvozdev (Quoin Inc.) - Initial API and implementation
+ * Andrew Gvozdev (Quoin Inc.) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
@@ -15,26 +15,28 @@ package org.eclipse.cdt.core;
  * Clients must implement {@link Object#clone} and {@link Object#equals} methods to avoid slicing.
  * @since 5.2
  */
-public interface IErrorParserNamed extends IErrorParser, Cloneable {
-	/**
-	 * Set error parser ID.
-	 * @param id of error parser
-	 */
-	public void setId(String id);
+public interface IErrorParserNamed
+        extends IErrorParser, Cloneable
+{
+    /**
+     * Set error parser ID.
+     * @param id of error parser
+     */
+    public void setId(String id);
 
-	/**
-	 * Set error parser name.
-	 * @param name of error parser
-	 */
-	public void setName(String name);
+    /**
+     * Set error parser name.
+     * @param name of error parser
+     */
+    public void setName(String name);
 
-	/**
-	 * @return id of error parser
-	 */
-	public String getId();
+    /**
+     * @return id of error parser
+     */
+    public String getId();
 
-	/**
-	 * @return name of error parser
-	 */
-	public String getName();
+    /**
+     * @return name of error parser
+     */
+    public String getName();
 }

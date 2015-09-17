@@ -4,15 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
- *     Anton Leherbauer (Wind River Systems)
+ * QNX Software Systems - Initial API and implementation
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
-
-
-import java.util.Map;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryArchive;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
@@ -28,119 +25,143 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public class Archive extends Openable implements IArchive {
+import java.util.Map;
 
-	IBinaryArchive binaryArchive;
+public class Archive
+        extends Openable
+        implements IArchive
+{
 
-	public Archive(ICElement parent, IFile file, IBinaryArchive ar) {
-		super(parent, file, ICElement.C_ARCHIVE);
-		binaryArchive = ar;
-	}
+    IBinaryArchive binaryArchive;
 
-	public Archive(ICElement parent, IPath path, IBinaryArchive ar) {
-		super (parent, path, ICElement.C_ARCHIVE);
-		binaryArchive = ar;
-	}
+    public Archive(ICElement parent, IFile file, IBinaryArchive ar)
+    {
+        super(parent, file, ICElement.C_ARCHIVE);
+        binaryArchive = ar;
+    }
 
-	@Override
-	public IBinary[] getBinaries() throws CModelException {
-		ICElement[] e = getChildren();
-		IBinary[] b = new IBinary[e.length];
-		System.arraycopy(e, 0, b, 0, e.length);
-		return b;
-	}
+    public Archive(ICElement parent, IPath path, IBinaryArchive ar)
+    {
+        super(parent, path, ICElement.C_ARCHIVE);
+        binaryArchive = ar;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.core.model.ICElement#isReadOnly()
-	 */
-	@Override
-	public boolean isReadOnly() {
-		return true;
-	}
+    @Override
+    public IBinary[] getBinaries()
+            throws CModelException
+    {
+        ICElement[] e = getChildren();
+        IBinary[] b = new IBinary[e.length];
+        System.arraycopy(e, 0, b, 0, e.length);
+        return b;
+    }
 
-	@Override
-	public CElementInfo createElementInfo() {
-		return new ArchiveInfo(this);
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.core.model.ICElement#isReadOnly()
+     */
+    @Override
+    public boolean isReadOnly()
+    {
+        return true;
+    }
 
-	protected ArchiveInfo getArchiveInfo() throws CModelException {
-		return (ArchiveInfo)getElementInfo();
-	}
+    @Override
+    public CElementInfo createElementInfo()
+    {
+        return new ArchiveInfo(this);
+    }
 
-	@Override
-	protected boolean buildStructure(OpenableInfo info, IProgressMonitor pm, Map<ICElement, CElementInfo> newElements, IResource underlyingResource)
-		throws CModelException {
-		return computeChildren(info, underlyingResource);
-	}
+    protected ArchiveInfo getArchiveInfo()
+            throws CModelException
+    {
+        return (ArchiveInfo) getElementInfo();
+    }
 
-	public boolean computeChildren(OpenableInfo info, IResource res) {
-		IBinaryArchive ar = getBinaryArchive();
-		if (ar != null) {
-			IBinaryObject[] objects = ar.getObjects();
-			for (final IBinaryObject obj : objects) {
-				Binary binary = new Binary(this, ar.getPath().append(obj.getName()), obj);
-				info.addChild(binary);
-			}
-		} else {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    protected boolean buildStructure(OpenableInfo info, IProgressMonitor pm, Map<ICElement, CElementInfo> newElements, IResource underlyingResource)
+            throws CModelException
+    {
+        return computeChildren(info, underlyingResource);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (IBinaryArchive.class.equals(adapter)) {
-			return getBinaryArchive();
-		}
-		return super.getAdapter(adapter);
-	}
+    public boolean computeChildren(OpenableInfo info, IResource res)
+    {
+        IBinaryArchive ar = getBinaryArchive();
+        if (ar != null) {
+            IBinaryObject[] objects = ar.getObjects();
+            for (final IBinaryObject obj : objects) {
+                Binary binary = new Binary(this, ar.getPath().append(obj.getName()), obj);
+                info.addChild(binary);
+            }
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
 
-	IBinaryArchive getBinaryArchive() {
-		return binaryArchive;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Object getAdapter(Class adapter)
+    {
+        if (IBinaryArchive.class.equals(adapter)) {
+            return getBinaryArchive();
+        }
+        return super.getAdapter(adapter);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.core.model.ICElement#exists()
-	 */
-	@Override
-	public boolean exists() {
-		IResource res = getResource();
-		if (res != null)
-			return res.exists();
-		return super.exists();
-	}
+    IBinaryArchive getBinaryArchive()
+    {
+        return binaryArchive;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.internal.core.model.CElement#closing(java.lang.Object)
-	 */
-	@Override
-	protected void closing(Object info) throws CModelException {
-		ICProject cproject = getCProject();
-		CProjectInfo pinfo = (CProjectInfo)CModelManager.getDefault().peekAtInfo(cproject);
-		if (pinfo != null && pinfo.vLib != null) {
-			pinfo.vLib.removeChild(this);
-		}
-		super.closing(info);
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.core.model.ICElement#exists()
+     */
+    @Override
+    public boolean exists()
+    {
+        IResource res = getResource();
+        if (res != null) {
+            return res.exists();
+        }
+        return super.exists();
+    }
 
-	@Override
-	public ICElement getHandleFromMemento(String token, MementoTokenizer memento) {
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.internal.core.model.CElement#closing(java.lang.Object)
+     */
+    @Override
+    protected void closing(Object info)
+            throws CModelException
+    {
+        ICProject cproject = getCProject();
+        CProjectInfo pinfo = (CProjectInfo) CModelManager.getDefault().peekAtInfo(cproject);
+        if (pinfo != null && pinfo.vLib != null) {
+            pinfo.vLib.removeChild(this);
+        }
+        super.closing(info);
+    }
 
-	@Override
-	public String getHandleMemento() {
-		return null;
-	}
+    @Override
+    public ICElement getHandleFromMemento(String token, MementoTokenizer memento)
+    {
+        return null;
+    }
 
-	@Override
-	protected char getHandleMementoDelimiter() {
-		Assert.isTrue(false, "Should not be called"); //$NON-NLS-1$
-		return 0;
-	}
+    @Override
+    public String getHandleMemento()
+    {
+        return null;
+    }
 
+    @Override
+    protected char getHandleMementoDelimiter()
+    {
+        Assert.isTrue(false, "Should not be called"); //$NON-NLS-1$
+        return 0;
+    }
 }

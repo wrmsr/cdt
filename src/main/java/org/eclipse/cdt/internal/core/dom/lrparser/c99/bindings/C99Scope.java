@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.lrparser.c99.bindings;
 
@@ -24,107 +24,129 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTInternalScope;
  * @author Mike Kucera
  *
  */
-@SuppressWarnings({"restriction","unused"})
-public class C99Scope implements IC99Scope, IASTInternalScope {
-	private IScope parent;
-	private IASTNode physicalNode;
-	private IName scopeName;
-	private final EScopeKind kind;
-	
-	public C99Scope(EScopeKind eKind) {
-		kind= eKind;
-	}
-	
-	@Override
-	public IScope getParent() {
-		return parent;
-	}
+@SuppressWarnings({"restriction", "unused"})
+public class C99Scope
+        implements IC99Scope, IASTInternalScope
+{
+    private IScope parent;
+    private IASTNode physicalNode;
+    private IName scopeName;
+    private final EScopeKind kind;
 
-	@Override
-	public void setParent(IScope parent) {
-		this.parent = parent;
-	}
-	
-	@Override
-	public IASTNode getPhysicalNode() {
-		return physicalNode;
-	}
+    public C99Scope(EScopeKind eKind)
+    {
+        kind = eKind;
+    }
 
-	@Override
-	public void setPhysicalNode(IASTNode physicalNode) {
-		this.physicalNode = physicalNode;
-	}
-	
-	@Override
-	public final EScopeKind getKind() {
-		return kind;
-	}
+    @Override
+    public IScope getParent()
+    {
+        return parent;
+    }
 
-	@Override
-	public IName getScopeName() {
-		return scopeName;
-	}
+    @Override
+    public void setParent(IScope parent)
+    {
+        this.parent = parent;
+    }
 
-	@Override
-	public void setScopeName(IName scopeName) {
-		this.scopeName = scopeName;
-	}
-	
-	@Override
-	public IBinding[] find(String name, IASTTranslationUnit tu) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public IASTNode getPhysicalNode()
+    {
+        return physicalNode;
+    }
 
-	@Override @Deprecated
-	public IBinding[] find(String name) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void setPhysicalNode(IASTNode physicalNode)
+    {
+        this.physicalNode = physicalNode;
+    }
 
-	@Override
-	public IBinding getBinding(IASTName name, boolean resolve) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public final EScopeKind getKind()
+    {
+        return kind;
+    }
 
-	@Override
-	public IBinding[] getBindings(IASTName name, boolean resolve, boolean prefixLookup) {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public void addBinding(IBinding binding) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public IName getScopeName()
+    {
+        return scopeName;
+    }
 
-	@Override
-	public void addName(IASTName name) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void setScopeName(IName scopeName)
+    {
+        this.scopeName = scopeName;
+    }
 
-	@Override
-	public void populateCache() {
-	}
+    @Override
+    public IBinding[] find(String name, IASTTranslationUnit tu)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void removeNestedFromCache(IASTNode container) {
-	}
+    @Override
+    @Deprecated
+    public IBinding[] find(String name)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public IBinding getBinding(IASTName name, boolean resolve, IIndexFileSet acceptLocalBindings) {
-		return null;
-	}
+    @Override
+    public IBinding getBinding(IASTName name, boolean resolve)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * @deprecated Use {@link #getBindings(ScopeLookupData)} instead
-	 */
-	@Override
-	@Deprecated
-	public IBinding[] getBindings(IASTName name, boolean resolve,
-			boolean prefixLookup, IIndexFileSet acceptLocalBindings) {
-		return getBindings(new ScopeLookupData(name, resolve, prefixLookup));
-	}
+    @Override
+    public IBinding[] getBindings(IASTName name, boolean resolve, boolean prefixLookup)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public IBinding[] getBindings(ScopeLookupData lookup) {
-		return IBinding.EMPTY_BINDING_ARRAY;
-	}
+    @Override
+    public void addBinding(IBinding binding)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addName(IASTName name)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void populateCache()
+    {
+    }
+
+    @Override
+    public void removeNestedFromCache(IASTNode container)
+    {
+    }
+
+    @Override
+    public IBinding getBinding(IASTName name, boolean resolve, IIndexFileSet acceptLocalBindings)
+    {
+        return null;
+    }
+
+    /**
+     * @deprecated Use {@link #getBindings(ScopeLookupData)} instead
+     */
+    @Override
+    @Deprecated
+    public IBinding[] getBindings(IASTName name, boolean resolve,
+            boolean prefixLookup, IIndexFileSet acceptLocalBindings)
+    {
+        return getBindings(new ScopeLookupData(name, resolve, prefixLookup));
+    }
+
+    @Override
+    public IBinding[] getBindings(ScopeLookupData lookup)
+    {
+        return IBinding.EMPTY_BINDING_ARRAY;
+    }
 }

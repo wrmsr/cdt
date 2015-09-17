@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Doug Schaefer (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.c;
 
@@ -15,14 +15,16 @@ import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 
 /**
  * C extension to IASTDeclSpecifier. (restrict keyword)
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICASTDeclSpecifier extends IASTDeclSpecifier {
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public ICASTDeclSpecifier copy();
+public interface ICASTDeclSpecifier
+        extends IASTDeclSpecifier
+{
+    /**
+     * @since 5.1
+     */
+    @Override
+    public ICASTDeclSpecifier copy();
 }

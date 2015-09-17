@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Thomas Corbat (IFS)
+ * IBM - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -22,65 +22,82 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 /**
  * @author jcamelon
  */
-public class CPPASTArrayModifier extends ASTAttributeOwner implements IASTArrayModifier, IASTAmbiguityParent {
+public class CPPASTArrayModifier
+        extends ASTAttributeOwner
+        implements IASTArrayModifier, IASTAmbiguityParent
+{
     private IASTExpression exp;
 
-    public CPPASTArrayModifier() {
-	}
+    public CPPASTArrayModifier()
+    {
+    }
 
-	public CPPASTArrayModifier(IASTExpression exp) {
-		setConstantExpression(exp);
-	}
+    public CPPASTArrayModifier(IASTExpression exp)
+    {
+        setConstantExpression(exp);
+    }
 
-	@Override
-	public IASTExpression getConstantExpression() {
+    @Override
+    public IASTExpression getConstantExpression()
+    {
         return exp;
     }
 
-	@Override
-	public CPPASTArrayModifier copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CPPASTArrayModifier copy(CopyStyle style) {
-		CPPASTArrayModifier copy = new CPPASTArrayModifier(exp == null ? null : exp.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTArrayModifier copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
     @Override
-	public void setConstantExpression(IASTExpression expression) {
+    public CPPASTArrayModifier copy(CopyStyle style)
+    {
+        CPPASTArrayModifier copy = new CPPASTArrayModifier(exp == null ? null : exp.copy(style));
+        return copy(copy, style);
+    }
+
+    @Override
+    public void setConstantExpression(IASTExpression expression)
+    {
         assertNotFrozen();
         exp = expression;
         if (expression != null) {
-			expression.setParent(this);
-			expression.setPropertyInParent(CONSTANT_EXPRESSION);
-		}
+            expression.setParent(this);
+            expression.setPropertyInParent(CONSTANT_EXPRESSION);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
-		if (action.shouldVisitArrayModifiers) {
-			switch (action.visit(this)) {
-    		case ASTVisitor.PROCESS_ABORT: return false;
-    		case ASTVisitor.PROCESS_SKIP: return true;
-    		default: break;
-    		}
-    	}
-        if (exp != null && !exp.accept(action))
-        	return false;
+    public boolean accept(ASTVisitor action)
+    {
+        if (action.shouldVisitArrayModifiers) {
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
+        if (exp != null && !exp.accept(action)) {
+            return false;
+        }
 
-		if (!acceptByAttributeSpecifiers(action))
-			return false;
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
 
-		if (action.shouldVisitArrayModifiers && action.leave(this) == ASTVisitor.PROCESS_ABORT)
-			return false;
+        if (action.shouldVisitArrayModifiers && action.leave(this) == ASTVisitor.PROCESS_ABORT) {
+            return false;
+        }
 
-		return true;
+        return true;
     }
 
     @Override
-	public void replace(IASTNode child, IASTNode other) {
+    public void replace(IASTNode child, IASTNode other)
+    {
         if (child == exp) {
             other.setPropertyInParent(child.getPropertyInParent());
             other.setParent(child.getParent());

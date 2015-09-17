@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Gvozdev - initial API and implementation
+ * Andrew Gvozdev - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.core;
@@ -18,68 +18,76 @@ package org.eclipse.cdt.core;
  * @since 5.4
  *
  */
-public abstract class AbstractExecutableExtensionBase {
-	private String fId;
-	private String fName;
+public abstract class AbstractExecutableExtensionBase
+{
+    private String fId;
+    private String fName;
 
-	/**
-	 * Default constructor will initialize with the name of the class
-	 * using reflection mechanism.
-	 */
-	public AbstractExecutableExtensionBase() {
-		fName = this.getClass().getSimpleName();
-		fId = this.getClass().getCanonicalName();
-	}
+    /**
+     * Default constructor will initialize with the name of the class
+     * using reflection mechanism.
+     */
+    public AbstractExecutableExtensionBase()
+    {
+        fName = this.getClass().getSimpleName();
+        fId = this.getClass().getCanonicalName();
+    }
 
-	/**
-	 * Constructor to initialize with ID and name of the extension.
-	 *
-	 * @param id - ID of the extension.
-	 * @param name - name of the extension.
-	 */
-	public AbstractExecutableExtensionBase(String id, String name) {
-		fName = name;
-		fId = id;
-	}
+    /**
+     * Constructor to initialize with ID and name of the extension.
+     *
+     * @param id - ID of the extension.
+     * @param name - name of the extension.
+     */
+    public AbstractExecutableExtensionBase(String id, String name)
+    {
+        fName = name;
+        fId = id;
+    }
 
-	/**
-	 * Set extension ID.
-	 *
-	 * @param id of extension
-	 */
-	public void setId(String id) {
-		fId = id;
-	}
+    /**
+     * Set extension ID.
+     *
+     * @param id of extension
+     */
+    public void setId(String id)
+    {
+        fId = id;
+    }
 
-	/**
-	 * Set extension name.
-	 *
-	 * @param name of extension
-	 */
-	public void setName(String name) {
-		fName = name;
-	}
+    /**
+     * Set extension name.
+     *
+     * @param name of extension
+     */
+    public void setName(String name)
+    {
+        fName = name;
+    }
 
-	/**
-	 * @return id of extension
-	 */
-	public String getId() {
-		return fId;
-	}
+    /**
+     * @return id of extension
+     */
+    public String getId()
+    {
+        return fId;
+    }
 
-	/**
-	 * @return name of extension
-	 */
-	public String getName() {
-		return fName;
-	}
+    /**
+     * @return name of extension
+     */
+    public String getName()
+    {
+        return fName;
+    }
 
-	/**
-	 * Method toString() for debugging purposes.
-	 */
-	@SuppressWarnings("nls")
-	@Override
-	public String toString() {
-		return "id="+fId+", name="+fName;
-	}
+    /**
+     * Method toString() for debugging purposes.
+     */
+    @SuppressWarnings("nls")
+    @Override
+    public String toString()
+    {
+        return "id=" + fId + ", name=" + fName;
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX - Initial API and implementation
+ * QNX - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -16,11 +16,14 @@ import org.eclipse.cdt.core.dom.ast.IBinding;
 /**
  * @author Bryan Wilkinson
  */
-public interface ICPPInternalBase extends Cloneable {
-	public Object clone();
-	
-	/**
-	 * Sets the base class.
-	 */
-	public void setBaseClass(IBinding binding) throws DOMException;
+public interface ICPPInternalBase
+        extends Cloneable
+{
+    public Object clone();
+
+    /**
+     * Sets the base class.
+     */
+    public void setBaseClass(IBinding binding)
+            throws DOMException;
 }

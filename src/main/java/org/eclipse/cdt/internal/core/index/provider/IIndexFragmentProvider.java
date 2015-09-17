@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.provider;
 
@@ -25,14 +25,17 @@ import org.eclipse.core.runtime.CoreException;
  * <code>org.eclipse.cdt.core.CIndex</code>
  * <p>
  */
-public interface IIndexFragmentProvider extends IIndexProvider {
-	/**
-	 * Returns an array of IIndexFragment objects to add to the specified
-	 * {@link ICConfigurationDescription}.
-	 *
-	 * @param project
-	 * @return an array of IIndexFragment objects to add to the specified
-	 * {@link ICConfigurationDescription}
-	 */
-	IIndexFragment[] getIndexFragments(ICConfigurationDescription config) throws CoreException;
+public interface IIndexFragmentProvider
+        extends IIndexProvider
+{
+    /**
+     * Returns an array of IIndexFragment objects to add to the specified
+     * {@link ICConfigurationDescription}.
+     *
+     * @param project
+     * @return an array of IIndexFragment objects to add to the specified
+     * {@link ICConfigurationDescription}
+     */
+    IIndexFragment[] getIndexFragments(ICConfigurationDescription config)
+            throws CoreException;
 }

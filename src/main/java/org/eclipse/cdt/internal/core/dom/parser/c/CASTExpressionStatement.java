@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Rational Software - Initial API and implementation
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Sergey Prigogin (Google)
+ * IBM Rational Software - Initial API and implementation
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -22,69 +22,89 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 /**
  * @author jcamelon
  */
-public class CASTExpressionStatement extends ASTAttributeOwner
-		implements IASTExpressionStatement, IASTAmbiguityParent {
+public class CASTExpressionStatement
+        extends ASTAttributeOwner
+        implements IASTExpressionStatement, IASTAmbiguityParent
+{
     private IASTExpression expression;
 
-    public CASTExpressionStatement() {
-	}
+    public CASTExpressionStatement()
+    {
+    }
 
-	public CASTExpressionStatement(IASTExpression expression) {
-		setExpression(expression);
-	}
+    public CASTExpressionStatement(IASTExpression expression)
+    {
+        setExpression(expression);
+    }
 
-	@Override
-	public CASTExpressionStatement copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public CASTExpressionStatement copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public CASTExpressionStatement copy(CopyStyle style) {
-		CASTExpressionStatement copy = new CASTExpressionStatement();
-		copy.setExpression(expression == null ? null : expression.copy(style));
-		return copy(copy, style);
-	}
-	
-	@Override
-	public IASTExpression getExpression() {
+    @Override
+    public CASTExpressionStatement copy(CopyStyle style)
+    {
+        CASTExpressionStatement copy = new CASTExpressionStatement();
+        copy.setExpression(expression == null ? null : expression.copy(style));
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTExpression getExpression()
+    {
         return expression;
     }
 
     @Override
-	public void setExpression(IASTExpression expression) {
+    public void setExpression(IASTExpression expression)
+    {
         assertNotFrozen();
         this.expression = expression;
         if (expression != null) {
-			expression.setParent(this);
-			expression.setPropertyInParent(EXPRESSION);
-		}
+            expression.setParent(this);
+            expression.setPropertyInParent(EXPRESSION);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitStatements) {
             switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
             }
         }
 
-        if (!acceptByAttributeSpecifiers(action)) return false;
-        if (expression != null && !expression.accept(action)) return false;
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
+        if (expression != null && !expression.accept(action)) {
+            return false;
+        }
 
         if (action.shouldVisitStatements) {
             switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
             }
         }
         return true;
     }
 
     @Override
-	public void replace(IASTNode child, IASTNode other) {
+    public void replace(IASTNode child, IASTNode other)
+    {
         if (child == expression) {
             other.setPropertyInParent(child.getPropertyInParent());
             other.setParent(child.getParent());

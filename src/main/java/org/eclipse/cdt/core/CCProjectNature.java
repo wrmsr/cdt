@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
@@ -21,30 +21,38 @@ import org.eclipse.core.runtime.Status;
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class CCProjectNature extends CProjectNature {
-	public static final String CC_NATURE_ID= CCorePlugin.PLUGIN_ID + ".ccnature"; //$NON-NLS-1$
+public class CCProjectNature
+        extends CProjectNature
+{
+    public static final String CC_NATURE_ID = CCorePlugin.PLUGIN_ID + ".ccnature"; //$NON-NLS-1$
 
-	public static void addCCNature(IProject project, IProgressMonitor mon) throws CoreException {
-		addNature(project, CC_NATURE_ID, mon);
-	}
+    public static void addCCNature(IProject project, IProgressMonitor mon)
+            throws CoreException
+    {
+        addNature(project, CC_NATURE_ID, mon);
+    }
 
-	public static void removeCCNature(IProject project, IProgressMonitor mon) throws CoreException {
-		removeNature(project, CC_NATURE_ID, mon);
-	}
+    public static void removeCCNature(IProject project, IProgressMonitor mon)
+            throws CoreException
+    {
+        removeNature(project, CC_NATURE_ID, mon);
+    }
 
-	/**
-	 * Checks to ensure that a cnature already exists,
-	 * if not throw a CoreException. Does NOT add a default builder
+    /**
+     * Checks to ensure that a cnature already exists,
+     * if not throw a CoreException. Does NOT add a default builder
      * @see IProjectNature#configure()
      */
     @Override
-	public void configure() throws CoreException {
-    	if (!getProject().hasNature(CProjectNature.C_NATURE_ID)){
-    		IStatus status = new Status(IStatus.ERROR,
-    									CCorePlugin.PLUGIN_ID,
-    									CCorePlugin.CDT_PROJECT_NATURE_ID_MISMATCH,
-    									CCorePlugin.getResourceString("CCProjectNature.exception.noNature"), null); // $NON_NLS //$NON-NLS-1$
-    		throw new CoreException(status);
-    	}
+    public void configure()
+            throws CoreException
+    {
+        if (!getProject().hasNature(CProjectNature.C_NATURE_ID)) {
+            IStatus status = new Status(IStatus.ERROR,
+                    CCorePlugin.PLUGIN_ID,
+                    CCorePlugin.CDT_PROJECT_NATURE_ID_MISMATCH,
+                    CCorePlugin.getResourceString("CCProjectNature.exception.noNature"), null); // $NON_NLS //$NON-NLS-1$
+            throw new CoreException(status);
+        }
     }
 }

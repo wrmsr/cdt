@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * <p/>
  * Contributors:
- *     Markus Schorn (Wind River Systems)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -18,17 +18,22 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPUsingDeclaration;
 /**
  * Specialization of a typedef in the context of a class-specialization.
  */
-public class CPPUsingDeclarationSpecialization extends CPPSpecialization implements ICPPUsingDeclaration {
-	private final IBinding[] fDelegates;
+public class CPPUsingDeclarationSpecialization
+        extends CPPSpecialization
+        implements ICPPUsingDeclaration
+{
+    private final IBinding[] fDelegates;
 
-    public CPPUsingDeclarationSpecialization(ICPPUsingDeclaration specialized, ICPPClassSpecialization owner, 
-    		ICPPTemplateParameterMap tpmap, IBinding[] delegates) {
+    public CPPUsingDeclarationSpecialization(ICPPUsingDeclaration specialized, ICPPClassSpecialization owner,
+            ICPPTemplateParameterMap tpmap, IBinding[] delegates)
+    {
         super(specialized, owner, tpmap);
-        fDelegates= delegates;
+        fDelegates = delegates;
     }
 
-	@Override
-	public IBinding[] getDelegates() {
-		return fDelegates;
-	}
+    @Override
+    public IBinding[] getDelegates()
+    {
+        return fDelegates;
+    }
 }

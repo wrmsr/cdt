@@ -4,13 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser;
-
-import java.io.IOException;
 
 import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.parser.IncludeFileContentProvider;
@@ -18,60 +16,75 @@ import org.eclipse.cdt.internal.core.dom.AbstractCodeReaderFactory;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContentProvider;
 import org.eclipse.core.runtime.CoreException;
 
+import java.io.IOException;
+
 @Deprecated
-public class CodeReaderFactoryAdapter extends AbstractCodeReaderFactory {
+public class CodeReaderFactoryAdapter
+        extends AbstractCodeReaderFactory
+{
 
-	/**
-	 * @deprecated avoid using the adapter, its for backwards compatibility, only.
-	 */
-	@Deprecated
-	public static org.eclipse.cdt.core.dom.ICodeReaderFactory adapt(IncludeFileContentProvider fileCreator) {
-		if (fileCreator == null)
-			return null;
-		
-		if (!(fileCreator instanceof InternalFileContentProvider))
-			throw new IllegalArgumentException("Invalid file content provider"); //$NON-NLS-1$
-		
-		if (fileCreator instanceof FileContentProviderAdapter) {
-			return ((FileContentProviderAdapter) fileCreator).getCodeReaderFactory();
-		}
-		return new CodeReaderFactoryAdapter((InternalFileContentProvider) fileCreator);
-	}
+    /**
+     * @deprecated avoid using the adapter, its for backwards compatibility, only.
+     */
+    @Deprecated
+    public static org.eclipse.cdt.core.dom.ICodeReaderFactory adapt(IncludeFileContentProvider fileCreator)
+    {
+        if (fileCreator == null) {
+            return null;
+        }
 
-	private InternalFileContentProvider fDelegate;
-	private CodeReaderFactoryAdapter(InternalFileContentProvider fcp) {
-		super(fcp.getIncludeHeuristics());
-		fDelegate= fcp;
-	}
+        if (!(fileCreator instanceof InternalFileContentProvider)) {
+            throw new IllegalArgumentException("Invalid file content provider"); //$NON-NLS-1$
+        }
 
-	@Override
-	public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForInclusion(String path) {
-		return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(path, null));
-	}
+        if (fileCreator instanceof FileContentProviderAdapter) {
+            return ((FileContentProviderAdapter) fileCreator).getCodeReaderFactory();
+        }
+        return new CodeReaderFactoryAdapter((InternalFileContentProvider) fileCreator);
+    }
 
-	@Override
-	public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForInclusion(IIndexFileLocation ifl, String astPath)
-			throws CoreException, IOException {
-		return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(ifl, astPath));
-	}
+    private InternalFileContentProvider fDelegate;
 
-	@Override
-	public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForTranslationUnit(String path) {
-		return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(path, null));
-	}
+    private CodeReaderFactoryAdapter(InternalFileContentProvider fcp)
+    {
+        super(fcp.getIncludeHeuristics());
+        fDelegate = fcp;
+    }
 
-	@Override
-	@Deprecated
-	public org.eclipse.cdt.core.parser.ICodeReaderCache getCodeReaderCache() {
-		return null;
-	}
+    @Override
+    public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForInclusion(String path)
+    {
+        return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(path, null));
+    }
 
-	@Override
-	public int getUniqueIdentifier() {
-		return 0;
-	}
+    @Override
+    public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForInclusion(IIndexFileLocation ifl, String astPath)
+            throws CoreException, IOException
+    {
+        return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(ifl, astPath));
+    }
 
-	public InternalFileContentProvider getFileContentProvider() {
-		return fDelegate;
-	}
+    @Override
+    public org.eclipse.cdt.core.parser.CodeReader createCodeReaderForTranslationUnit(String path)
+    {
+        return CodeReaderAdapter.adapt(fDelegate.getContentForInclusion(path, null));
+    }
+
+    @Override
+    @Deprecated
+    public org.eclipse.cdt.core.parser.ICodeReaderCache getCodeReaderCache()
+    {
+        return null;
+    }
+
+    @Override
+    public int getUniqueIdentifier()
+    {
+        return 0;
+    }
+
+    public InternalFileContentProvider getFileContentProvider()
+    {
+        return fDelegate;
+    }
 }

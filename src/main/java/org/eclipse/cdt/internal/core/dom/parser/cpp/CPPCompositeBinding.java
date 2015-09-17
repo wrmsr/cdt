@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -20,43 +20,55 @@ import org.eclipse.cdt.core.parser.util.ArrayUtil;
 import org.eclipse.cdt.internal.core.dom.Linkage;
 import org.eclipse.core.runtime.PlatformObject;
 
-public class CPPCompositeBinding extends PlatformObject implements IBinding {
-	IBinding[] bindings;
+public class CPPCompositeBinding
+        extends PlatformObject
+        implements IBinding
+{
+    IBinding[] bindings;
 
-	public CPPCompositeBinding(IBinding[] bindingList) {
-		bindings = ArrayUtil.trim(bindingList, true);
-	}
-	
-	@Override
-	public String getName() {
-		return bindings[0].getName();
-	}
+    public CPPCompositeBinding(IBinding[] bindingList)
+    {
+        bindings = ArrayUtil.trim(bindingList, true);
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return bindings[0].getNameCharArray();
-	}
+    @Override
+    public String getName()
+    {
+        return bindings[0].getName();
+    }
 
-	@Override
-	public IScope getScope() throws DOMException {
-		return bindings[0].getScope();
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        return bindings[0].getNameCharArray();
+    }
 
-	@Override
-	public IBinding getOwner() {
-		return bindings[0].getOwner();
-	}
-	
-	public IASTNode getPhysicalNode() {
-		return null;
-	}
+    @Override
+    public IScope getScope()
+            throws DOMException
+    {
+        return bindings[0].getScope();
+    }
 
-	public IBinding[] getBindings() {
-		return bindings;
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        return bindings[0].getOwner();
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
+    public IASTNode getPhysicalNode()
+    {
+        return null;
+    }
+
+    public IBinding[] getBindings()
+    {
+        return bindings;
+    }
+
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
 }

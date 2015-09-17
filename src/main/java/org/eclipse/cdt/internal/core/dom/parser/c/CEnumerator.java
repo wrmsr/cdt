@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -30,25 +30,36 @@ import org.eclipse.core.runtime.PlatformObject;
 /**
  * C-specific binding for enumerators.
  */
-public class CEnumerator extends PlatformObject implements IEnumerator {
-    public static class CEnumeratorProblem extends ProblemBinding implements IEnumerator {
-        public CEnumeratorProblem(IASTNode node, int id, char[] arg) {
+public class CEnumerator
+        extends PlatformObject
+        implements IEnumerator
+{
+    public static class CEnumeratorProblem
+            extends ProblemBinding
+            implements IEnumerator
+    {
+        public CEnumeratorProblem(IASTNode node, int id, char[] arg)
+        {
             super(node, id, arg);
         }
-		@Override
-		public IValue getValue() {
-			return Value.UNKNOWN;
-		}
+
+        @Override
+        public IValue getValue()
+        {
+            return Value.UNKNOWN;
+        }
     }
 
     private final IASTName enumeratorName;
 
-    public CEnumerator(IASTEnumerator enumtor) {
-		this.enumeratorName = enumtor.getName();
-		enumeratorName.setBinding(this);
-	}
-    
-    public IASTNode getPhysicalNode() {
+    public CEnumerator(IASTEnumerator enumtor)
+    {
+        this.enumeratorName = enumtor.getName();
+        enumeratorName.setBinding(this);
+    }
+
+    public IASTNode getPhysicalNode()
+    {
         return enumeratorName;
     }
 
@@ -56,12 +67,14 @@ public class CEnumerator extends PlatformObject implements IEnumerator {
      * @see org.eclipse.cdt.core.dom.ast.IBinding#getName()
      */
     @Override
-	public String getName() {
+    public String getName()
+    {
         return enumeratorName.toString();
     }
 
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return enumeratorName.toCharArray();
     }
 
@@ -69,41 +82,48 @@ public class CEnumerator extends PlatformObject implements IEnumerator {
      * @see org.eclipse.cdt.core.dom.ast.IBinding#getScope()
      */
     @Override
-	public IScope getScope() {
+    public IScope getScope()
+    {
         return CVisitor.getContainingScope(enumeratorName.getParent());
     }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.core.dom.ast.IEnumerator#getType()
-	 */
-	@Override
-	public IType getType() {
-		return (IType) getOwner();
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.core.dom.ast.IEnumerator#getType()
+     */
+    @Override
+    public IType getType()
+    {
+        return (IType) getOwner();
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.C_LINKAGE;
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.C_LINKAGE;
+    }
 
-	@Override
-	public IBinding getOwner() {
-	    IASTEnumerator etor = (IASTEnumerator) enumeratorName.getParent();
-		IASTEnumerationSpecifier enumSpec = (IASTEnumerationSpecifier) etor.getParent();
-		return enumSpec.getName().resolveBinding();
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        IASTEnumerator etor = (IASTEnumerator) enumeratorName.getParent();
+        IASTEnumerationSpecifier enumSpec = (IASTEnumerationSpecifier) etor.getParent();
+        return enumSpec.getName().resolveBinding();
+    }
 
-	@Override
-	public IValue getValue() {
-		IASTNode parent= enumeratorName.getParent();
-		if (parent instanceof ASTEnumerator) 
-			return ((ASTEnumerator) parent).getIntegralValue();
-		
-		return Value.UNKNOWN;
-	}
+    @Override
+    public IValue getValue()
+    {
+        IASTNode parent = enumeratorName.getParent();
+        if (parent instanceof ASTEnumerator) {
+            return ((ASTEnumerator) parent).getIntegralValue();
+        }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+        return Value.UNKNOWN;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

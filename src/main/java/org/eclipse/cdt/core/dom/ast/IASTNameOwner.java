@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * John Camelon (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -18,30 +18,31 @@ package org.eclipse.cdt.core.dom.ast;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IASTNameOwner {
-	/**
-	 * Role of name in this context is a declaration.
-	 */
-	public static final int r_declaration = 0;
-	/**
-	 * Role of name in this construct is a reference.
-	 */
-	public static final int r_reference = 1;
+public interface IASTNameOwner
+{
+    /**
+     * Role of name in this context is a declaration.
+     */
+    public static final int r_declaration = 0;
+    /**
+     * Role of name in this construct is a reference.
+     */
+    public static final int r_reference = 1;
 
     /**
      * Role of name in this construct is a definition.
      */
     public static final int r_definition = 2;
-	/**
-	 * Role is unclear.
-	 */
-	public static final int r_unclear = 3;
+    /**
+     * Role is unclear.
+     */
+    public static final int r_unclear = 3;
 
-	/**
-	 * Get the role for the name.
-	 *
-	 * @param name the name to determine the role for.
-	 * @return r_definition, r_declaration, r_reference or r_unclear.
-	 */
-	public int getRoleForName(IASTName name);
+    /**
+     * Get the role for the name.
+     *
+     * @param name the name to determine the role for.
+     * @return r_definition, r_declaration, r_reference or r_unclear.
+     */
+    public int getRoleForName(IASTName name);
 }

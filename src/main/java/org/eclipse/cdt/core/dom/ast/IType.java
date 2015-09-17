@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (IBM) - Initial API and implementation
- *     Sergey Prigogin (Google)
- *     Markus Schorn (Wind River Systems)
+ * Doug Schaefer (IBM) - Initial API and implementation
+ * Sergey Prigogin (Google)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -17,13 +17,15 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateTypeParameter;
 
 /**
  * Interface for all c- and c++ types.
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IType extends Cloneable {
-	public static final IType[] EMPTY_TYPE_ARRAY = {};
-	public static final ASTTypeMatcher TYPE_MATCHER = new ASTTypeMatcher();
+public interface IType
+        extends Cloneable
+{
+    public static final IType[] EMPTY_TYPE_ARRAY = {};
+    public static final ASTTypeMatcher TYPE_MATCHER = new ASTTypeMatcher();
 
     public Object clone();
 

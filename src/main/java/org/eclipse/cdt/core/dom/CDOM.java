@@ -4,11 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    IBM - Initial API and implementation
+ * IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom;
+
 import org.eclipse.cdt.core.dom.ast.IASTCompletionNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.model.IWorkingCopyProvider;
@@ -32,7 +33,9 @@ import org.eclipse.core.resources.IStorage;
  * org.eclipse.cdt.core.model.ILanguage instead.
  */
 @Deprecated
-public class CDOM implements IASTServiceProvider {
+public class CDOM
+        implements IASTServiceProvider
+{
 
     /**
      * Singleton - Constructor is private.
@@ -60,11 +63,11 @@ public class CDOM implements IASTServiceProvider {
      */
     private IASTServiceProvider defaultService = new InternalASTServiceProvider();
 
-
     /**
      * @return IASTServiceProvider, the mechanism for obtaining an AST
      */
-    public IASTServiceProvider getASTService() {
+    public IASTServiceProvider getASTService()
+    {
         //CDOM itself is not so much "the" AST service as it acts as a proxy
         //to different AST services
         //Should we see the need to provide an extension point for this
@@ -73,7 +76,6 @@ public class CDOM implements IASTServiceProvider {
         //client
         return this;
     }
-
 
     /**
      * Constant <code>PARSE_SAVED_RESOURCES</code> - Parse saved resources in the workspace
@@ -90,7 +92,6 @@ public class CDOM implements IASTServiceProvider {
      */
     public static final int PARSE_WORKING_COPY_WHENEVER_POSSIBLE = 2;
 
-
     /**
      * <code>provider</code> is registered by the UI as a IWorkingCopyProvider.
      */
@@ -100,20 +101,19 @@ public class CDOM implements IASTServiceProvider {
      * This is the factory function that returns an ICodeReaderFactory instance based upon the key provided.
      *
      * @param key  one of PARSE_SAVED_RESOURCES, PARSE_WORKING_COPY_WITH_SAVED_INCLUSIONS, PARSE_WORKING_COPY_WHENEVER_POSSIBLE
-     * @return     an implementation that works according to the key specified or null for an invalid key
+     * @return an implementation that works according to the key specified or null for an invalid key
      */
-    public ICodeReaderFactory getCodeReaderFactory( int key )
+    public ICodeReaderFactory getCodeReaderFactory(int key)
     {
         //TODO - eventually these factories will need to hook into the
         //CodeReader caches
-        switch( key )
-        {
-        	case PARSE_SAVED_RESOURCES:
-        	    return SavedCodeReaderFactory.getInstance();
-        	case PARSE_WORKING_COPY_WITH_SAVED_INCLUSIONS:
-        	    return new PartialWorkingCopyCodeReaderFactory(provider, null);
-        	case PARSE_WORKING_COPY_WHENEVER_POSSIBLE:
-        	    return new WorkingCopyCodeReaderFactory( provider, null );
+        switch (key) {
+            case PARSE_SAVED_RESOURCES:
+                return SavedCodeReaderFactory.getInstance();
+            case PARSE_WORKING_COPY_WITH_SAVED_INCLUSIONS:
+                return new PartialWorkingCopyCodeReaderFactory(provider, null);
+            case PARSE_WORKING_COPY_WHENEVER_POSSIBLE:
+                return new WorkingCopyCodeReaderFactory(provider, null);
         }
         return null;
     }
@@ -122,9 +122,11 @@ public class CDOM implements IASTServiceProvider {
      * @see org.eclipse.cdt.core.dom.IASTServiceProvider#getTranslationUnit(org.eclipse.core.resources.IFile)
      */
     @Override
-	public IASTTranslationUnit getTranslationUnit(IFile fileToParse) throws UnsupportedDialectException {
-    	//TODO - At this time, we purely delegate blindly
-    	//In the future, we may need to delegate based upon context provided
+    public IASTTranslationUnit getTranslationUnit(IFile fileToParse)
+            throws UnsupportedDialectException
+    {
+        //TODO - At this time, we purely delegate blindly
+        //In the future, we may need to delegate based upon context provided
         return defaultService.getTranslationUnit(fileToParse);
     }
 
@@ -132,33 +134,41 @@ public class CDOM implements IASTServiceProvider {
      * @see org.eclipse.cdt.core.dom.IASTServiceProvider#getTranslationUnit(org.eclipse.core.resources.IFile, org.eclipse.cdt.core.dom.ICodeReaderFactory)
      */
     @Override
-	public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator) throws UnsupportedDialectException {
-    	//TODO - At this time, we purely delegate blindly
-    	//In the future, we may need to delegate based upon context provided
-    	return defaultService.getTranslationUnit(fileToParse, fileCreator );
+    public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator)
+            throws UnsupportedDialectException
+    {
+        //TODO - At this time, we purely delegate blindly
+        //In the future, we may need to delegate based upon context provided
+        return defaultService.getTranslationUnit(fileToParse, fileCreator);
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.IASTServiceProvider#getTranslationUnit(org.eclipse.core.resources.IFile, org.eclipse.cdt.core.dom.ICodeReaderFactory, org.eclipse.cdt.core.dom.IParserConfiguration)
      */
     @Override
-	public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator, IParserConfiguration configuration) throws UnsupportedDialectException {
-    	//TODO - At this time, we purely delegate blindly
-    	//In the future, we may need to delegate based upon context provided
-        return defaultService.getTranslationUnit(fileToParse, fileCreator, configuration );
+    public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator, IParserConfiguration configuration)
+            throws UnsupportedDialectException
+    {
+        //TODO - At this time, we purely delegate blindly
+        //In the future, we may need to delegate based upon context provided
+        return defaultService.getTranslationUnit(fileToParse, fileCreator, configuration);
     }
 
     @Override
-	public IASTCompletionNode getCompletionNode(IFile fileToParse, int offset,
-            ICodeReaderFactory fileCreator) throws UnsupportedDialectException {
+    public IASTCompletionNode getCompletionNode(IFile fileToParse, int offset,
+            ICodeReaderFactory fileCreator)
+            throws UnsupportedDialectException
+    {
         //TODO - At this time, we purely delegate blindly
         //In the future, we may need to delegate based upon context provided
         return defaultService.getCompletionNode(fileToParse, offset, fileCreator);
     }
 
     @Override
-	public IASTCompletionNode getCompletionNode(IStorage fileToParse, IProject project, int offset,
-            ICodeReaderFactory fileCreator) throws UnsupportedDialectException {
+    public IASTCompletionNode getCompletionNode(IStorage fileToParse, IProject project, int offset,
+            ICodeReaderFactory fileCreator)
+            throws UnsupportedDialectException
+    {
         //TODO - At this time, we purely delegate blindly
         //In the future, we may need to delegate based upon context provided
         return defaultService.getCompletionNode(fileToParse, project, offset, fileCreator);
@@ -169,28 +179,36 @@ public class CDOM implements IASTServiceProvider {
      *
      * @param workingCopyProvider - UI components buffer manager
      */
-    public void setWorkingCopyProvider(IWorkingCopyProvider workingCopyProvider) {
+    public void setWorkingCopyProvider(IWorkingCopyProvider workingCopyProvider)
+    {
         this.provider = workingCopyProvider;
     }
 
     @Override
-	public IASTTranslationUnit getTranslationUnit(IStorage fileToParse, IProject project, ICodeReaderFactory fileCreator) throws UnsupportedDialectException {
-        return defaultService.getTranslationUnit( fileToParse, project, fileCreator );
+    public IASTTranslationUnit getTranslationUnit(IStorage fileToParse, IProject project, ICodeReaderFactory fileCreator)
+            throws UnsupportedDialectException
+    {
+        return defaultService.getTranslationUnit(fileToParse, project, fileCreator);
     }
 
     @Override
-	public IASTTranslationUnit getTranslationUnit(IStorage fileToParse, IProject project) throws UnsupportedDialectException {
-        return defaultService.getTranslationUnit( fileToParse, project );
+    public IASTTranslationUnit getTranslationUnit(IStorage fileToParse, IProject project)
+            throws UnsupportedDialectException
+    {
+        return defaultService.getTranslationUnit(fileToParse, project);
     }
 
-	@Override
-	public IASTTranslationUnit getTranslationUnit(IFile fileToParse, boolean parseComments) throws UnsupportedDialectException {
-		return defaultService.getTranslationUnit(fileToParse, parseComments);
-	}
+    @Override
+    public IASTTranslationUnit getTranslationUnit(IFile fileToParse, boolean parseComments)
+            throws UnsupportedDialectException
+    {
+        return defaultService.getTranslationUnit(fileToParse, parseComments);
+    }
 
-	@Override
-	public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator, boolean parseComments) throws UnsupportedDialectException {
-    	return defaultService.getTranslationUnit(fileToParse, fileCreator, parseComments);
-	}
-
+    @Override
+    public IASTTranslationUnit getTranslationUnit(IFile fileToParse, ICodeReaderFactory fileCreator, boolean parseComments)
+            throws UnsupportedDialectException
+    {
+        return defaultService.getTranslationUnit(fileToParse, fileCreator, parseComments);
+    }
 }

@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Rational Software - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Sergey Prigogin (Google)
+ * IBM Rational Software - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -33,100 +33,120 @@ import org.eclipse.cdt.internal.core.index.IIndexScope;
 /**
  * C-specific implementation of a translation unit.
  */
-public class CASTTranslationUnit extends ASTTranslationUnit implements IASTAmbiguityParent {
-	private CScope compilationUnit;
-	private final CStructMapper fStructMapper;
+public class CASTTranslationUnit
+        extends ASTTranslationUnit
+        implements IASTAmbiguityParent
+{
+    private CScope compilationUnit;
+    private final CStructMapper fStructMapper;
 
-	public CASTTranslationUnit() {
-		fStructMapper= new CStructMapper(this);
-	}
-	
-	@Override
-	public CASTTranslationUnit copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CASTTranslationUnit copy(CopyStyle style) {
-		CASTTranslationUnit copy = new CASTTranslationUnit();
-		return copy(copy, style);
-	}
-
-	@Override
-	public IScope getScope() {
-		if (compilationUnit == null)
-			compilationUnit = new CScope(this, EScopeKind.eGlobal);
-		return compilationUnit;
-	}
-
-	@Override
-	public IASTName[] getDeclarationsInAST(IBinding binding) {
-		if (binding instanceof IMacroBinding) {
-			return getMacroDefinitionsInAST((IMacroBinding) binding);
-        }
-		return CVisitor.getDeclarations(this, binding);
-	}
+    public CASTTranslationUnit()
+    {
+        fStructMapper = new CStructMapper(this);
+    }
 
     @Override
-	public IASTName[] getDefinitionsInAST(IBinding binding) {   
-		if (binding instanceof IMacroBinding) {
-			return getMacroDefinitionsInAST((IMacroBinding) binding);
+    public CASTTranslationUnit copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
+
+    @Override
+    public CASTTranslationUnit copy(CopyStyle style)
+    {
+        CASTTranslationUnit copy = new CASTTranslationUnit();
+        return copy(copy, style);
+    }
+
+    @Override
+    public IScope getScope()
+    {
+        if (compilationUnit == null) {
+            compilationUnit = new CScope(this, EScopeKind.eGlobal);
         }
-    	IASTName[] names = CVisitor.getDeclarations(this, binding);
-    	for (int i = 0; i < names.length; i++) {
-    		if (!names[i].isDefinition())
-    			names[i] = null;
-    	}
-    	// nulls can be anywhere, don't use trim()
-    	return ArrayUtil.removeNulls(IASTName.class, names);
-    }
-    
-	@Override
-	public IASTName[] getReferences(IBinding binding) {
-        if (binding instanceof IMacroBinding)
-        	return getMacroReferencesInAST((IMacroBinding) binding);
-		return CVisitor.getReferences(this, binding);
-	}
-
-	@Override
-	@Deprecated
-    public ParserLanguage getParserLanguage() {
-    	return ParserLanguage.C;
+        return compilationUnit;
     }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.C_LINKAGE;
-	}
+    @Override
+    public IASTName[] getDeclarationsInAST(IBinding binding)
+    {
+        if (binding instanceof IMacroBinding) {
+            return getMacroDefinitionsInAST((IMacroBinding) binding);
+        }
+        return CVisitor.getDeclarations(this, binding);
+    }
 
-	@Override
-	public void resolveAmbiguities() {
-		accept(new CASTAmbiguityResolver()); 
-	}
+    @Override
+    public IASTName[] getDefinitionsInAST(IBinding binding)
+    {
+        if (binding instanceof IMacroBinding) {
+            return getMacroDefinitionsInAST((IMacroBinding) binding);
+        }
+        IASTName[] names = CVisitor.getDeclarations(this, binding);
+        for (int i = 0; i < names.length; i++) {
+            if (!names[i].isDefinition()) {
+                names[i] = null;
+            }
+        }
+        // nulls can be anywhere, don't use trim()
+        return ArrayUtil.removeNulls(IASTName.class, names);
+    }
 
-	@Override
-	public IScope mapToASTScope(IScope scope) {
-		if (scope instanceof IIndexScope) {
-			if (scope.getKind() == EScopeKind.eGlobal)
-				return getScope();
-			if (scope instanceof ICCompositeTypeScope) {
-				ICompositeType type = ((ICCompositeTypeScope) scope).getCompositeType();
-				type = mapToASTType(type);
-				return type.getCompositeScope();
-			}
-		}
-		return scope;
-	}
+    @Override
+    public IASTName[] getReferences(IBinding binding)
+    {
+        if (binding instanceof IMacroBinding) {
+            return getMacroReferencesInAST((IMacroBinding) binding);
+        }
+        return CVisitor.getReferences(this, binding);
+    }
 
-	/**
-	 * Maps structs from the index into this AST.
-	 */
-	public ICompositeType mapToASTType(ICompositeType type) {
-		return fStructMapper.mapToAST(type);
-	}
+    @Override
+    @Deprecated
+    public ParserLanguage getParserLanguage()
+    {
+        return ParserLanguage.C;
+    }
 
-	@Override
-	protected IType createType(IASTTypeId typeid) {
-		return CVisitor.createType(typeid.getAbstractDeclarator());
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.C_LINKAGE;
+    }
+
+    @Override
+    public void resolveAmbiguities()
+    {
+        accept(new CASTAmbiguityResolver());
+    }
+
+    @Override
+    public IScope mapToASTScope(IScope scope)
+    {
+        if (scope instanceof IIndexScope) {
+            if (scope.getKind() == EScopeKind.eGlobal) {
+                return getScope();
+            }
+            if (scope instanceof ICCompositeTypeScope) {
+                ICompositeType type = ((ICCompositeTypeScope) scope).getCompositeType();
+                type = mapToASTType(type);
+                return type.getCompositeScope();
+            }
+        }
+        return scope;
+    }
+
+    /**
+     * Maps structs from the index into this AST.
+     */
+    public ICompositeType mapToASTType(ICompositeType type)
+    {
+        return fStructMapper.mapToAST(type);
+    }
+
+    @Override
+    protected IType createType(IASTTypeId typeid)
+    {
+        return CVisitor.createType(typeid.getAbstractDeclarator());
+    }
 }

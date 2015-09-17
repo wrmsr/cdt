@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
+ * John Camelon (IBM) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -15,9 +15,11 @@ package org.eclipse.cdt.core.dom.ast;
  * <pre>
  * #define ONE_TWO_THREE 123
  * </pre>
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IASTPreprocessorObjectStyleMacroDefinition extends IASTPreprocessorMacroDefinition {
+public interface IASTPreprocessorObjectStyleMacroDefinition
+        extends IASTPreprocessorMacroDefinition
+{
 }

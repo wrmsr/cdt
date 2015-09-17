@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.composite.c;
 
@@ -22,58 +22,74 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.composite.CompositeScope;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-class CompositeCCompositeScope extends CompositeScope implements ICCompositeTypeScope {
+class CompositeCCompositeScope
+        extends CompositeScope
+        implements ICCompositeTypeScope
+{
 
-	public CompositeCCompositeScope(ICompositesFactory cf, IIndexFragmentBinding rbinding) {
-		super(cf, rbinding);
-	}
+    public CompositeCCompositeScope(ICompositesFactory cf, IIndexFragmentBinding rbinding)
+    {
+        super(cf, rbinding);
+    }
 
-	@Override
-	public IBinding getBinding(char[] name) {
-		fail(); return null;
-	}
+    @Override
+    public IBinding getBinding(char[] name)
+    {
+        fail();
+        return null;
+    }
 
-	@Override
-	public ICompositeType getCompositeType() {
-		return (ICompositeType) cf.getCompositeBinding(rbinding);
-	}
+    @Override
+    public ICompositeType getCompositeType()
+    {
+        return (ICompositeType) cf.getCompositeBinding(rbinding);
+    }
 
-	@Override
-	public IBinding getBinding(IASTName name, boolean resolve, IIndexFileSet fileSet) {
-		IBinding binding = ((ICompositeType) rbinding).getCompositeScope().getBinding(name, resolve, fileSet);
-		return processUncertainBinding(binding);
-	}
-	
-	@Override @Deprecated
-	public IBinding[] getBindings(IASTName name, boolean resolve, boolean prefixLookup, IIndexFileSet fileSet) {
-		return getBindings(new ScopeLookupData(name, resolve, prefixLookup));
-	}
+    @Override
+    public IBinding getBinding(IASTName name, boolean resolve, IIndexFileSet fileSet)
+    {
+        IBinding binding = ((ICompositeType) rbinding).getCompositeScope().getBinding(name, resolve, fileSet);
+        return processUncertainBinding(binding);
+    }
 
-	@Override
-	public IBinding[] getBindings(ScopeLookupData lookup) {
-		IBinding[] bindings = ((ICompositeType) rbinding).getCompositeScope().getBindings(lookup);
-		return processUncertainBindings(bindings);
-	}
-	
-	@Override
-	public IBinding[] find(String name, IASTTranslationUnit tu) {
-		IBinding[] preresult = ((ICompositeType) rbinding).getCompositeScope().find(name, tu);
-		return processUncertainBindings(preresult);	
-	}
-	
-	@Override @Deprecated
-	public IBinding[] find(String name) {
-		IBinding[] preresult = ((ICompositeType) rbinding).getCompositeScope().find(name);
-		return processUncertainBindings(preresult);	
-	}
-	
-	@Override
-	public IIndexBinding getScopeBinding() {
-		return (IIndexBinding) getCompositeType();
-	}
+    @Override
+    @Deprecated
+    public IBinding[] getBindings(IASTName name, boolean resolve, boolean prefixLookup, IIndexFileSet fileSet)
+    {
+        return getBindings(new ScopeLookupData(name, resolve, prefixLookup));
+    }
 
-	@Override
-	public EScopeKind getKind() {
-		return EScopeKind.eClassType;
-	}
+    @Override
+    public IBinding[] getBindings(ScopeLookupData lookup)
+    {
+        IBinding[] bindings = ((ICompositeType) rbinding).getCompositeScope().getBindings(lookup);
+        return processUncertainBindings(bindings);
+    }
+
+    @Override
+    public IBinding[] find(String name, IASTTranslationUnit tu)
+    {
+        IBinding[] preresult = ((ICompositeType) rbinding).getCompositeScope().find(name, tu);
+        return processUncertainBindings(preresult);
+    }
+
+    @Override
+    @Deprecated
+    public IBinding[] find(String name)
+    {
+        IBinding[] preresult = ((ICompositeType) rbinding).getCompositeScope().find(name);
+        return processUncertainBindings(preresult);
+    }
+
+    @Override
+    public IIndexBinding getScopeBinding()
+    {
+        return (IIndexBinding) getCompositeType();
+    }
+
+    @Override
+    public EScopeKind getKind()
+    {
+        return EScopeKind.eClassType;
+    }
 }

@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * IBM - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -24,108 +24,132 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 /**
  * @author jcamelon
  */
-public class CPPASTSimpleDeclaration extends ASTAttributeOwner
-		implements IASTSimpleDeclaration, IASTAmbiguityParent {
+public class CPPASTSimpleDeclaration
+        extends ASTAttributeOwner
+        implements IASTSimpleDeclaration, IASTAmbiguityParent
+{
     private IASTDeclarator[] declarators;
     private int declaratorsPos = -1;
     private IASTDeclSpecifier declSpecifier;
 
-    public CPPASTSimpleDeclaration() {
-	}
+    public CPPASTSimpleDeclaration()
+    {
+    }
 
-	public CPPASTSimpleDeclaration(IASTDeclSpecifier declSpecifier) {
-		setDeclSpecifier(declSpecifier);
-	}
+    public CPPASTSimpleDeclaration(IASTDeclSpecifier declSpecifier)
+    {
+        setDeclSpecifier(declSpecifier);
+    }
 
-	@Override
-	public CPPASTSimpleDeclaration copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CPPASTSimpleDeclaration copy(CopyStyle style) {
-		CPPASTSimpleDeclaration copy = new CPPASTSimpleDeclaration();
-		copy.setDeclSpecifier(declSpecifier == null ? null : declSpecifier.copy(style));
-		for (IASTDeclarator declarator : getDeclarators()) {
-			copy.addDeclarator(declarator == null ? null : declarator.copy(style));
-		}
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTSimpleDeclaration copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public IASTDeclSpecifier getDeclSpecifier() {
+    @Override
+    public CPPASTSimpleDeclaration copy(CopyStyle style)
+    {
+        CPPASTSimpleDeclaration copy = new CPPASTSimpleDeclaration();
+        copy.setDeclSpecifier(declSpecifier == null ? null : declSpecifier.copy(style));
+        for (IASTDeclarator declarator : getDeclarators()) {
+            copy.addDeclarator(declarator == null ? null : declarator.copy(style));
+        }
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTDeclSpecifier getDeclSpecifier()
+    {
         return declSpecifier;
     }
 
     @Override
-	public IASTDeclarator[] getDeclarators() {
-        if (declarators == null)
-        	return IASTDeclarator.EMPTY_DECLARATOR_ARRAY;
+    public IASTDeclarator[] getDeclarators()
+    {
+        if (declarators == null) {
+            return IASTDeclarator.EMPTY_DECLARATOR_ARRAY;
+        }
         declarators = ArrayUtil.trimAt(IASTDeclarator.class, declarators, declaratorsPos);
         return declarators;
     }
-    
+
     @Override
-	public void addDeclarator(IASTDeclarator d) {
+    public void addDeclarator(IASTDeclarator d)
+    {
         assertNotFrozen();
-    	if (d != null) {
-    		declarators = ArrayUtil.appendAt(IASTDeclarator.class, declarators, ++declaratorsPos, d);
-    		d.setParent(this);
-			d.setPropertyInParent(DECLARATOR);
-    	}
+        if (d != null) {
+            declarators = ArrayUtil.appendAt(IASTDeclarator.class, declarators, ++declaratorsPos, d);
+            d.setParent(this);
+            d.setPropertyInParent(DECLARATOR);
+        }
     }
 
     /**
      * @param declSpecifier The declSpecifier to set.
      */
     @Override
-	public void setDeclSpecifier(IASTDeclSpecifier declSpecifier) {
+    public void setDeclSpecifier(IASTDeclSpecifier declSpecifier)
+    {
         assertNotFrozen();
         this.declSpecifier = declSpecifier;
         if (declSpecifier != null) {
-			declSpecifier.setParent(this);
-			declSpecifier.setPropertyInParent(DECL_SPECIFIER);
-		}
+            declSpecifier.setParent(this);
+            declSpecifier.setPropertyInParent(DECL_SPECIFIER);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitDeclarations) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
-        
-        if (!acceptByAttributeSpecifiers(action)) return false;
-        if (declSpecifier != null && !declSpecifier.accept(action)) return false;
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
+
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
+        if (declSpecifier != null && !declSpecifier.accept(action)) {
+            return false;
+        }
         IASTDeclarator[] dtors = getDeclarators();
         for (int i = 0; i < dtors.length; i++) {
-            if (!dtors[i].accept(action))
-            	return false;
+            if (!dtors[i].accept(action)) {
+                return false;
+            }
         }
-        
+
         if (action.shouldVisitDeclarations) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
-    
+
     @Override
-	public void replace(IASTNode child, IASTNode other) {
-		IASTDeclarator[] declarators = getDeclarators();
-		for (int i = 0; i < declarators.length; i++) {
-			if (declarators[i] == child) {
-				declarators[i] = (IASTDeclarator) other;
-				other.setParent(child.getParent());
-	            other.setPropertyInParent(child.getPropertyInParent());
-				break;
-			}
-		}
-	}
+    public void replace(IASTNode child, IASTNode other)
+    {
+        IASTDeclarator[] declarators = getDeclarators();
+        for (int i = 0; i < declarators.length; i++) {
+            if (declarators[i] == child) {
+                declarators[i] = (IASTDeclarator) other;
+                other.setParent(child.getParent());
+                other.setPropertyInParent(child.getPropertyInParent());
+                break;
+            }
+        }
+    }
 }

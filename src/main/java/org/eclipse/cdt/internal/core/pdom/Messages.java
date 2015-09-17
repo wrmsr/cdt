@@ -4,40 +4,43 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
+ * Markus Schorn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom;
 
 import org.eclipse.osgi.util.NLS;
 
-public class Messages extends NLS {
-	public static String Checksums_taskComputeChecksums;
-	public static String PDOMImportTask_errorInvalidArchive;
-	public static String PDOMImportTask_errorInvalidPDOMVersion;
-	public static String PDOMManager_ClosePDOMJob;
-	public static String PDOMManager_creationOfIndexInterrupted;
-	public static String PDOMManager_ExistingFileCollides;
-	public static String PDOMManager_indexMonitorDetail;
-	public static String PDOMManager_notifyJob_label;
-	public static String PDOMManager_notifyTask_message;
-	public static String PDOMManager_StartJob_name;
-	public static String PDOMWriter_errorResolvingName;
-	public static String PDOMWriter_errorWhileParsing;
-	public static String TeamPDOMExportOperation_errorCreateArchive;
-	public static String TeamPDOMExportOperation_errorCreatingTempFile;
-	public static String TeamPDOMExportOperation_errorWriteTempFile;
-	public static String TeamPDOMExportOperation_taskExportIndex;
-	public static String AbstractIndexerTask_parsingFileTask;
-	public static String AbstractIndexerTask_errorWhileParsing;
-	public static String AbstractIndexerTask_tooManyIndexProblems;
+public class Messages
+        extends NLS
+{
+    public static String Checksums_taskComputeChecksums;
+    public static String PDOMImportTask_errorInvalidArchive;
+    public static String PDOMImportTask_errorInvalidPDOMVersion;
+    public static String PDOMManager_ClosePDOMJob;
+    public static String PDOMManager_creationOfIndexInterrupted;
+    public static String PDOMManager_ExistingFileCollides;
+    public static String PDOMManager_indexMonitorDetail;
+    public static String PDOMManager_notifyJob_label;
+    public static String PDOMManager_notifyTask_message;
+    public static String PDOMManager_StartJob_name;
+    public static String PDOMWriter_errorResolvingName;
+    public static String PDOMWriter_errorWhileParsing;
+    public static String TeamPDOMExportOperation_errorCreateArchive;
+    public static String TeamPDOMExportOperation_errorCreatingTempFile;
+    public static String TeamPDOMExportOperation_errorWriteTempFile;
+    public static String TeamPDOMExportOperation_taskExportIndex;
+    public static String AbstractIndexerTask_parsingFileTask;
+    public static String AbstractIndexerTask_errorWhileParsing;
+    public static String AbstractIndexerTask_tooManyIndexProblems;
 
-	static {
-		// Initialize resource bundle.
-		NLS.initializeMessages(Messages.class.getName(), Messages.class);
-	}
+    static {
+        // Initialize resource bundle.
+        NLS.initializeMessages(Messages.class.getName(), Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages()
+    {
+    }
 }

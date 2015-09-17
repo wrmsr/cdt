@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Rational Software - Initial API and implementation
  *******************************************************************************/
@@ -24,51 +24,61 @@ import java.util.Enumeration;
  *
  *  This class is similar to the JDT LRUCacheEnumerator class.
  */
-public class LRUCacheEnumerator<T> implements Enumeration<T> {
-	/**
-	 *	Current element;
-	 */
-	protected LRUEnumeratorElement<T> fElementQueue;
+public class LRUCacheEnumerator<T>
+        implements Enumeration<T>
+{
+    /**
+     *	Current element;
+     */
+    protected LRUEnumeratorElement<T> fElementQueue;
 
-	public static class LRUEnumeratorElement<T> {
-		/**
-		 *	Value returned by <code>nextElement()</code>;
-		 */
-		public T fValue;
+    public static class LRUEnumeratorElement<T>
+    {
+        /**
+         *	Value returned by <code>nextElement()</code>;
+         */
+        public T fValue;
 
-		/**
-		 *	Next element
-		 */
-		public LRUEnumeratorElement<T> fNext;
+        /**
+         *	Next element
+         */
+        public LRUEnumeratorElement<T> fNext;
 
-		/**
-		 * Constructor
-		 */
-		public LRUEnumeratorElement(T value) {
-			fValue = value;
-		}
-	}
-	/**
-	 *	Creates a CacheEnumerator on the list of <code>LRUEnumeratorElements</code>.
-	 */
-	public LRUCacheEnumerator(LRUEnumeratorElement<T> firstElement) {
-		fElementQueue = firstElement;
-	}
-	/**
-	 * Returns true if more elements exist.
-	 */
-	@Override
-	public boolean hasMoreElements() {
-		return fElementQueue != null;
-	}
-	/**
-	 * Returns the next element.
-	 */
-	@Override
-	public T nextElement() {
-		T temp = fElementQueue.fValue;
-		fElementQueue = fElementQueue.fNext;
-		return temp;
-	}
+        /**
+         * Constructor
+         */
+        public LRUEnumeratorElement(T value)
+        {
+            fValue = value;
+        }
+    }
+
+    /**
+     *	Creates a CacheEnumerator on the list of <code>LRUEnumeratorElements</code>.
+     */
+    public LRUCacheEnumerator(LRUEnumeratorElement<T> firstElement)
+    {
+        fElementQueue = firstElement;
+    }
+
+    /**
+     * Returns true if more elements exist.
+     */
+    @Override
+    public boolean hasMoreElements()
+    {
+        return fElementQueue != null;
+    }
+
+    /**
+     * Returns the next element.
+     */
+    @Override
+    public T nextElement()
+    {
+        T temp = fElementQueue.fValue;
+        fElementQueue = fElementQueue.fNext;
+        return temp;
+    }
 }
 

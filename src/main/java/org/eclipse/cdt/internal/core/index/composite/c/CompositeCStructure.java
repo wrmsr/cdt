@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.composite.c;
 
@@ -18,48 +18,61 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.IIndexType;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-class CompositeCStructure extends CompositeCBinding implements ICompositeType, IIndexType {
+class CompositeCStructure
+        extends CompositeCBinding
+        implements ICompositeType, IIndexType
+{
 
-	public CompositeCStructure(ICompositesFactory cf, IIndexFragmentBinding rbinding) {
-		super(cf, rbinding);
-	}
+    public CompositeCStructure(ICompositesFactory cf, IIndexFragmentBinding rbinding)
+    {
+        super(cf, rbinding);
+    }
 
-	@Override
-	public IField findField(String name) {
-		IField preresult = ((ICompositeType) rbinding).findField(name);
-		return (IField) cf.getCompositeBinding((IIndexFragmentBinding) preresult);
-	}
+    @Override
+    public IField findField(String name)
+    {
+        IField preresult = ((ICompositeType) rbinding).findField(name);
+        return (IField) cf.getCompositeBinding((IIndexFragmentBinding) preresult);
+    }
 
-	@Override
-	public IScope getCompositeScope() {
-		return new CompositeCCompositeScope(cf, rbinding); 
-	}
+    @Override
+    public IScope getCompositeScope()
+    {
+        return new CompositeCCompositeScope(cf, rbinding);
+    }
 
-	@Override
-	public IField[] getFields() {
-		IField[] result = ((ICompositeType) rbinding).getFields();
-		for (int i= 0; i < result.length; i++)
-			result[i] = (IField) cf.getCompositeBinding((IIndexFragmentBinding)result[i]);
-		return result;
-	}
+    @Override
+    public IField[] getFields()
+    {
+        IField[] result = ((ICompositeType) rbinding).getFields();
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (IField) cf.getCompositeBinding((IIndexFragmentBinding) result[i]);
+        }
+        return result;
+    }
 
-	@Override
-	public int getKey() {
-		return ((ICompositeType) rbinding).getKey();
-	}
+    @Override
+    public int getKey()
+    {
+        return ((ICompositeType) rbinding).getKey();
+    }
 
-	@Override
-	public boolean isSameType(IType type) {
-		return ((ICompositeType) rbinding).isSameType(type);
-	}
+    @Override
+    public boolean isSameType(IType type)
+    {
+        return ((ICompositeType) rbinding).isSameType(type);
+    }
 
-	@Override
-	public Object clone() {
-		fail(); return null;
-	}
+    @Override
+    public Object clone()
+    {
+        fail();
+        return null;
+    }
 
-	@Override
-	public boolean isAnonymous() {
-		return ((ICompositeType) rbinding).isAnonymous();
-	}
+    @Override
+    public boolean isAnonymous()
+    {
+        return ((ICompositeType) rbinding).isAnonymous();
+    }
 }

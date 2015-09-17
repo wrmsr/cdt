@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.utils.debug;
@@ -15,31 +15,35 @@ package org.eclipse.cdt.utils.debug;
  * DebugVisibility
  *
  */
-public final class DebugVisibility {
-	
-	/* What is it ?? .  */
-	public final static DebugVisibility UNKNOWN = new DebugVisibility(0);
-	/* public field  */
-	public final static DebugVisibility PUBLIC = new DebugVisibility(1);
-	/* protected field.  */
-	public final static DebugVisibility PROTECTED = new DebugVisibility(2);
-	/* private field.  */
-	public final static DebugVisibility PRIVATE = new DebugVisibility(3);
- 
-	private int id;
-	/**
-	 * 
-	 */
-	private DebugVisibility(int id) {
-		this.id = id;
-	}
+public final class DebugVisibility
+{
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof DebugVisibility) {
-			DebugVisibility kind = (DebugVisibility)obj;
-			return kind.id == id;
-		}
-		return super.equals(obj);
-	}
+    /* What is it ?? .  */
+    public final static DebugVisibility UNKNOWN = new DebugVisibility(0);
+    /* public field  */
+    public final static DebugVisibility PUBLIC = new DebugVisibility(1);
+    /* protected field.  */
+    public final static DebugVisibility PROTECTED = new DebugVisibility(2);
+    /* private field.  */
+    public final static DebugVisibility PRIVATE = new DebugVisibility(3);
+
+    private int id;
+
+    /**
+     *
+     */
+    private DebugVisibility(int id)
+    {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof DebugVisibility) {
+            DebugVisibility kind = (DebugVisibility) obj;
+            return kind.id == id;
+        }
+        return super.equals(obj);
+    }
 }

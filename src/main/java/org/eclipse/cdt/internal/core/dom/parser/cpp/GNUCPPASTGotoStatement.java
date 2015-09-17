@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Anders Dahlberg (Ericsson) - initial API and implementation
+ * Anders Dahlberg (Ericsson) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -18,86 +18,99 @@ import org.eclipse.cdt.internal.core.dom.parser.ASTAttributeOwner;
 
 /**
  * GNU C++ goto statement.
- * 
+ *
  * <code>
  * foo:
  *   void *labelPtr = &&foo;
  *   goto *labelPtr; // this is the statement
  * </code>
- * 
+ *
  * @since 5.8
  */
-public class GNUCPPASTGotoStatement extends ASTAttributeOwner implements IGNUASTGotoStatement {
-	private IASTExpression expression;
+public class GNUCPPASTGotoStatement
+        extends ASTAttributeOwner
+        implements IGNUASTGotoStatement
+{
+    private IASTExpression expression;
 
-	public GNUCPPASTGotoStatement() {
-	}
+    public GNUCPPASTGotoStatement()
+    {
+    }
 
-	public GNUCPPASTGotoStatement(IASTExpression expression) {
-		setLabelNameExpression(expression);
-	}
+    public GNUCPPASTGotoStatement(IASTExpression expression)
+    {
+        setLabelNameExpression(expression);
+    }
 
-	@Override
-	public GNUCPPASTGotoStatement copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public GNUCPPASTGotoStatement copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public GNUCPPASTGotoStatement copy(CopyStyle style) {
-		GNUCPPASTGotoStatement copy = new GNUCPPASTGotoStatement(expression == null ? null
-				: expression.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public GNUCPPASTGotoStatement copy(CopyStyle style)
+    {
+        GNUCPPASTGotoStatement copy = new GNUCPPASTGotoStatement(expression == null ? null
+                : expression.copy(style));
+        return copy(copy, style);
+    }
 
-	@Override
-	public boolean accept(ASTVisitor action) {
-		if (action.shouldVisitStatements) {
-			switch (action.visit(this)) {
-			case ASTVisitor.PROCESS_ABORT:
-				return false;
-			case ASTVisitor.PROCESS_SKIP:
-				return true;
-			default:
-				break;
-			}
-		}
+    @Override
+    public boolean accept(ASTVisitor action)
+    {
+        if (action.shouldVisitStatements) {
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-		if (!acceptByAttributeSpecifiers(action))
-			return false;
-		if (expression != null && !expression.accept(action))
-			return false;
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
+        if (expression != null && !expression.accept(action)) {
+            return false;
+        }
 
-		if (action.shouldVisitStatements) {
-			switch (action.leave(this)) {
-			case ASTVisitor.PROCESS_ABORT:
-				return false;
-			case ASTVisitor.PROCESS_SKIP:
-				return true;
-			default:
-				break;
-			}
-		}
-		return true;
-	}
+        if (action.shouldVisitStatements) {
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public IASTExpression getLabelNameExpression() {
-		return expression;
-	}
+    @Override
+    public IASTExpression getLabelNameExpression()
+    {
+        return expression;
+    }
 
-	@Override
-	public void setLabelNameExpression(IASTExpression expression) {
-		assertNotFrozen();
-		this.expression = expression;
+    @Override
+    public void setLabelNameExpression(IASTExpression expression)
+    {
+        assertNotFrozen();
+        this.expression = expression;
 
-		if (expression != null) {
-			expression.setParent(this);
-			expression.setPropertyInParent(LABEL_NAME);
-		}
-	}
+        if (expression != null) {
+            expression.setParent(this);
+            expression.setPropertyInParent(LABEL_NAME);
+        }
+    }
 
-	@Override
-	public int getRoleForName(IASTName n) {
-		return r_unclear;
-	}
+    @Override
+    public int getRoleForName(IASTName n)
+    {
+        return r_unclear;
+    }
 }

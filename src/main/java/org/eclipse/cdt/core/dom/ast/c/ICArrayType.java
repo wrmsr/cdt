@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.c;
 
@@ -16,14 +16,16 @@ import org.eclipse.cdt.core.dom.ast.IArrayType;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICArrayType extends IArrayType {
-	public boolean isConst();
+public interface ICArrayType
+        extends IArrayType
+{
+    public boolean isConst();
 
-	public boolean isRestrict();
+    public boolean isRestrict();
 
-	public boolean isVolatile();
+    public boolean isVolatile();
 
-	public boolean isStatic();
+    public boolean isStatic();
 
-	public boolean isVariableLength();
+    public boolean isVariableLength();
 }

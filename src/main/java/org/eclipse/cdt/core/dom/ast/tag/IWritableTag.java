@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Eidsness - Initial implementation
+ * Andrew Eidsness - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.tag;
 
@@ -20,16 +20,18 @@ package org.eclipse.cdt.core.dom.ast.tag;
  * @see ITagWriter
  * @since 5.5
  */
-public interface IWritableTag extends ITag {
-	/**
-	 * Writes the given byte to the given offset in the tag. Returns {@code true} if successful.
-	 */
-	public boolean putByte(int offset, byte data);
+public interface IWritableTag
+        extends ITag
+{
+    /**
+     * Writes the given byte to the given offset in the tag. Returns {@code true} if successful.
+     */
+    public boolean putByte(int offset, byte data);
 
-	/**
-	 * Writes the argument buffer into the receiver's payload starting at the specified offset.
-	 * Writes the specified number of bytes or the full buffer when {@code len} is -1. Returns
-	 * {@code true} if successful.
-	 */
-	public boolean putBytes(int offset, byte data[], int len);
+    /**
+     * Writes the argument buffer into the receiver's payload starting at the specified offset.
+     * Writes the specified number of bytes or the full buffer when {@code len} is -1. Returns
+     * {@code true} if successful.
+     */
+    public boolean putBytes(int offset, byte data[], int len);
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Andrew Niefer (IBM Rational Software) - Initial API and implementation 
+ * Andrew Niefer (IBM Rational Software) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -23,60 +23,71 @@ import org.eclipse.cdt.core.dom.ast.IScope;
 import org.eclipse.cdt.core.dom.ast.c.ICFunctionScope;
 import org.eclipse.cdt.core.parser.util.ArrayUtil;
 
-public class CFunctionScope extends CScope implements ICFunctionScope {
-	public CFunctionScope(IASTFunctionDefinition function) {
-	    super(function, EScopeKind.eLocal);
-	}
-	
+public class CFunctionScope
+        extends CScope
+        implements ICFunctionScope
+{
+    public CFunctionScope(IASTFunctionDefinition function)
+    {
+        super(function, EScopeKind.eLocal);
+    }
+
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ast.c.ICFunctionScope#getBinding(char[])
      */
     @Override
-	public IBinding getBinding(char[] name) {
+    public IBinding getBinding(char[] name)
+    {
         return super.getBinding(NAMESPACE_TYPE_OTHER, name);
     }
 
-    
-	@Override
-	public IScope getBodyScope() {
-	    IASTNode node = getPhysicalNode();
-	    IASTStatement statement = ((IASTFunctionDefinition)node).getBody();
-	    if (statement instanceof IASTCompoundStatement) {
-	        return ((IASTCompoundStatement) statement).getScope();
-	    }
-	    return null;
-	}
+    @Override
+    public IScope getBodyScope()
+    {
+        IASTNode node = getPhysicalNode();
+        IASTStatement statement = ((IASTFunctionDefinition) node).getBody();
+        if (statement instanceof IASTCompoundStatement) {
+            return ((IASTCompoundStatement) statement).getScope();
+        }
+        return null;
+    }
 
-	public ILabel[] getLabels() {
-	    FindLabelsAction action = new FindLabelsAction();
-	    
+    public ILabel[] getLabels()
+    {
+        FindLabelsAction action = new FindLabelsAction();
+
         getPhysicalNode().accept(action);
-	    
-	    ILabel[] result = null;
-	    if (action.labels != null) {
-		    for (int i = 0; i < action.labels.length && action.labels[i] != null; i++) {
-		        IASTLabelStatement labelStatement = action.labels[i];
-		        IBinding binding = labelStatement.getName().resolveBinding();
-		        if (binding != null)
-		            result = ArrayUtil.append(ILabel.class, result, (ILabel) binding);
-		    }
-	    }
-	    return ArrayUtil.trim(ILabel.class, result);
-	}
-	
-	static private class FindLabelsAction extends ASTVisitor {
+
+        ILabel[] result = null;
+        if (action.labels != null) {
+            for (int i = 0; i < action.labels.length && action.labels[i] != null; i++) {
+                IASTLabelStatement labelStatement = action.labels[i];
+                IBinding binding = labelStatement.getName().resolveBinding();
+                if (binding != null) {
+                    result = ArrayUtil.append(ILabel.class, result, (ILabel) binding);
+                }
+            }
+        }
+        return ArrayUtil.trim(ILabel.class, result);
+    }
+
+    static private class FindLabelsAction
+            extends ASTVisitor
+    {
         public IASTLabelStatement[] labels = null;
-        
-        public FindLabelsAction() {
+
+        public FindLabelsAction()
+        {
             shouldVisitStatements = true;
         }
-        
+
         @Override
-		public int visit(IASTStatement statement) {
+        public int visit(IASTStatement statement)
+        {
             if (statement instanceof IASTLabelStatement) {
-               labels = ArrayUtil.append(IASTLabelStatement.class, labels, (IASTLabelStatement) statement);
+                labels = ArrayUtil.append(IASTLabelStatement.class, labels, (IASTLabelStatement) statement);
             }
             return PROCESS_CONTINUE;
         }
-	}
+    }
 }

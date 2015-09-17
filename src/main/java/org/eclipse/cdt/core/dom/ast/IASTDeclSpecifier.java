@@ -4,106 +4,109 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Doug Schaefer (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
 /**
  * This is the base interface that represents a declaration specifier sequence.
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IASTDeclSpecifier extends IASTNode {
-	/**
-	 * No storage class specified.
-	 */
-	public static final int sc_unspecified = 0;
-	public static final int sc_typedef = 1;
-	public static final int sc_extern = 2;
-	public static final int sc_static = 3;
-	public static final int sc_auto = 4;
-	public static final int sc_register = 5;
-	/** @since 5.2 */
-	public static final int sc_mutable = 6;
+public interface IASTDeclSpecifier
+        extends IASTNode
+{
+    /**
+     * No storage class specified.
+     */
+    public static final int sc_unspecified = 0;
+    public static final int sc_typedef = 1;
+    public static final int sc_extern = 2;
+    public static final int sc_static = 3;
+    public static final int sc_auto = 4;
+    public static final int sc_register = 5;
+    /** @since 5.2 */
+    public static final int sc_mutable = 6;
 
-	/** @since 5.10 */
-	public static final ASTNodeProperty ALIGNMENT_SPECIFIER = new ASTNodeProperty(
-			"IASTDeclSpecifier.ALIGNMENT_SPECIFIER - Alignment specifier");  //$NON-NLS-1$
-	
-	/**
-	 * Returns the storage class, which is one of the constants sc_...
-	 */
-	public int getStorageClass();
+    /** @since 5.10 */
+    public static final ASTNodeProperty ALIGNMENT_SPECIFIER = new ASTNodeProperty(
+            "IASTDeclSpecifier.ALIGNMENT_SPECIFIER - Alignment specifier");  //$NON-NLS-1$
 
-	// Type qualifier
-	public boolean isConst();
-	public boolean isVolatile();
+    /**
+     * Returns the storage class, which is one of the constants sc_...
+     */
+    public int getStorageClass();
 
-	/**
-	 * @since 5.2
-	 */
-	public boolean isRestrict();
+    // Type qualifier
+    public boolean isConst();
 
-	// Function specifier
-	public boolean isInline();
-	
-	/**
-	 * Get any alignment-specifiers in this decl-specifier sequence.
-	 * @since 5.10
-	 */
-	public IASTAlignmentSpecifier[] getAlignmentSpecifiers();
-	
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public IASTDeclSpecifier copy();
+    public boolean isVolatile();
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	public IASTDeclSpecifier copy(CopyStyle style);
+    /**
+     * @since 5.2
+     */
+    public boolean isRestrict();
 
-	/**
-	 * Not allowed on frozen ast.
-	 */
-	public void setStorageClass(int storageClass);
+    // Function specifier
+    public boolean isInline();
 
-	/**
-	 * Not allowed on frozen ast.
-	 */
-	public void setConst(boolean value);
+    /**
+     * Get any alignment-specifiers in this decl-specifier sequence.
+     * @since 5.10
+     */
+    public IASTAlignmentSpecifier[] getAlignmentSpecifiers();
 
-	/**
-	 * Not allowed on frozen ast.
-	 */
-	public void setVolatile(boolean value);
+    /**
+     * @since 5.1
+     */
+    @Override
+    public IASTDeclSpecifier copy();
 
-	/**
-	 * Not allowed on frozen ast.
-	 * @since 5.2
-	 */
-	public void setRestrict(boolean value);
+    /**
+     * @since 5.3
+     */
+    @Override
+    public IASTDeclSpecifier copy(CopyStyle style);
 
-	/**
-	 * Not allowed on frozen ast.
-	 */
-	public void setInline(boolean value);
-	
-	/**
-	 * Not allowed on frozen ast.
-	 * @since 5.10
-	 */
-	public void setAlignmentSpecifiers(IASTAlignmentSpecifier[] alignmentSpecifiers);
-	
-	/**
-	 * @deprecated All constants must be defined in this interface.
-	 */
-	@Deprecated
-	public static final int sc_last = sc_register;
+    /**
+     * Not allowed on frozen ast.
+     */
+    public void setStorageClass(int storageClass);
+
+    /**
+     * Not allowed on frozen ast.
+     */
+    public void setConst(boolean value);
+
+    /**
+     * Not allowed on frozen ast.
+     */
+    public void setVolatile(boolean value);
+
+    /**
+     * Not allowed on frozen ast.
+     * @since 5.2
+     */
+    public void setRestrict(boolean value);
+
+    /**
+     * Not allowed on frozen ast.
+     */
+    public void setInline(boolean value);
+
+    /**
+     * Not allowed on frozen ast.
+     * @since 5.10
+     */
+    public void setAlignmentSpecifiers(IASTAlignmentSpecifier[] alignmentSpecifiers);
+
+    /**
+     * @deprecated All constants must be defined in this interface.
+     */
+    @Deprecated
+    public static final int sc_last = sc_register;
 }

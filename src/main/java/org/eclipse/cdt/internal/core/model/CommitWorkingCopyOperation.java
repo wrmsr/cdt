@@ -4,14 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Rational Software - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Anton Leherbauer (Wind River Systems)
+ * Rational Software - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
-
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBuffer;
@@ -48,69 +47,74 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  *
  * A CModelOperation exception is thrown either if the commit could not be
  * performed.
- * 
+ *
  * This class is similar to the JDT CommitWorkingCopyOperation class.
  */
 
-public class CommitWorkingCopyOperation extends CModelOperation {
-	/**
-	 * Constructs an operation to commit the contents of a working copy
-	 * to its original translation unit.
-	 */
+public class CommitWorkingCopyOperation
+        extends CModelOperation
+{
+    /**
+     * Constructs an operation to commit the contents of a working copy
+     * to its original translation unit.
+     */
 
-	public CommitWorkingCopyOperation(ITranslationUnit element, boolean force) {
-		super(new ICElement[] {element}, force);
-	}
-	
-	@Override
-	public ISchedulingRule getSchedulingRule() {
-		IResource resource = getElementToProcess().getResource();
-		IWorkspace workspace = resource.getWorkspace();
-		if (resource.exists()) {
-			return workspace.getRuleFactory().modifyRule(resource);
-		}
-		return workspace.getRuleFactory().createRule(resource);
-	}
-	
-	/**
-	 * @see org.eclipse.cdt.internal.core.model.CModelOperation#executeOperation()
-	 */
-	@Override
-	protected void executeOperation() throws CModelException {
-		try {
-			beginTask(CoreModelMessages.getString("workingCopy.commit"), 2); //$NON-NLS-1$
-			WorkingCopy wc = (WorkingCopy)getElementToProcess();
-			ITranslationUnit tu = wc.getOriginalElement();
-		
-			
-			// creates the delta builder (this remembers the content of the cu)	
-			if (!tu.isOpen()) {
-				// force opening so that the delta builder can get the old info
-				tu.open(null);
-			}
-			CElementDeltaBuilder deltaBuilder = new CElementDeltaBuilder(tu);
-		
-			// save the translation unit
+    public CommitWorkingCopyOperation(ITranslationUnit element, boolean force)
+    {
+        super(new ICElement[] {element}, force);
+    }
+
+    @Override
+    public ISchedulingRule getSchedulingRule()
+    {
+        IResource resource = getElementToProcess().getResource();
+        IWorkspace workspace = resource.getWorkspace();
+        if (resource.exists()) {
+            return workspace.getRuleFactory().modifyRule(resource);
+        }
+        return workspace.getRuleFactory().createRule(resource);
+    }
+
+    /**
+     * @see org.eclipse.cdt.internal.core.model.CModelOperation#executeOperation()
+     */
+    @Override
+    protected void executeOperation()
+            throws CModelException
+    {
+        try {
+            beginTask(CoreModelMessages.getString("workingCopy.commit"), 2); //$NON-NLS-1$
+            WorkingCopy wc = (WorkingCopy) getElementToProcess();
+            ITranslationUnit tu = wc.getOriginalElement();
+
+            // creates the delta builder (this remembers the content of the cu)
+            if (!tu.isOpen()) {
+                // force opening so that the delta builder can get the old info
+                tu.open(null);
+            }
+            CElementDeltaBuilder deltaBuilder = new CElementDeltaBuilder(tu);
+
+            // save the translation unit
             boolean hasSaved = false;
             IBuffer tuBuffer = tu.getBuffer();
             IBuffer wcBuffer = wc.getBuffer();
             if (wcBuffer == null || tuBuffer == null) {
                 return;
             }
-            ITextFileBuffer tuFileBuffer= null;
-            ITextFileBuffer wcFileBuffer= null;
+            ITextFileBuffer tuFileBuffer = null;
+            ITextFileBuffer wcFileBuffer = null;
             if (tuBuffer instanceof IAdaptable) {
-                tuFileBuffer= ((IAdaptable) tuBuffer).getAdapter(ITextFileBuffer.class);
+                tuFileBuffer = ((IAdaptable) tuBuffer).getAdapter(ITextFileBuffer.class);
             }
             if (wcBuffer instanceof IAdaptable) {
-                wcFileBuffer= ((IAdaptable) wcBuffer).getAdapter(ITextFileBuffer.class);
+                wcFileBuffer = ((IAdaptable) wcBuffer).getAdapter(ITextFileBuffer.class);
             }
-            
+
             if (wcFileBuffer != null) {
                 if (wcFileBuffer.equals(tuFileBuffer)) {
                     // working on the same buffer, saving the translation unit does the trick.
                     tu.save(fMonitor, fForce);
-                    hasSaved= true;
+                    hasSaved = true;
                 }
                 else {
                     if (wcFileBuffer.getLocation().equals(tu.getPath())) {
@@ -121,28 +125,30 @@ public class CommitWorkingCopyOperation extends CModelOperation {
                             // change the buffer of the translation unit.
                             tuBuffer.setContents(wcBuffer.getCharacters());
                             tu.makeConsistent(null);
-                            hasSaved= true;
-                        } catch (CoreException e) {
+                            hasSaved = true;
+                        }
+                        catch (CoreException e) {
                             tuBuffer.setContents(originalContents);
                             throw new CModelException(e);
                         }
                     }
                 }
             }
-                
+
             if (!hasSaved) {
                 char[] originalContents = tuBuffer.getCharacters();
                 try {
                     tuBuffer.setContents(wcBuffer.getCharacters());
                     tu.save(fMonitor, fForce);
-                } catch (CModelException e) {
+                }
+                catch (CModelException e) {
                     tuBuffer.setContents(originalContents);
                     throw e;
                 }
             }
-            this.hasModifiedResource = true; 
+            this.hasModifiedResource = true;
             // make sure working copy is in sync
-            wc.updateTimeStamp((TranslationUnit)tu);
+            wc.updateTimeStamp((TranslationUnit) tu);
             wc.makeConsistent(this);
 
             worked(1);
@@ -152,42 +158,43 @@ public class CommitWorkingCopyOperation extends CModelOperation {
 
             // add the deltas to the list of deltas created during this operation
             if (deltaBuilder.delta != null) {
-            	addDelta(deltaBuilder.delta);
+                addDelta(deltaBuilder.delta);
             }
             worked(1);
-		} finally {	
-		    done();
-		}		
-	}
-	/**
-	 * Possible failures: <ul>
-	 *	<li>INVALID_ELEMENT_TYPES - the Translation unit supplied to this
-	 *		operation is not a working copy
-	 *  <li>ELEMENT_NOT_PRESENT - the Translation unit the working copy is
-	 *		based on no longer exists.
-	 *  <li>UPDATE_CONFLICT - the original Translation unit has changed since
-	 *		the working copy was created and the operation specifies no force
-	 *  </ul>
-	 */
+        }
+        finally {
+            done();
+        }
+    }
 
-	@Override
-	public ICModelStatus verify() {
-		
-		IWorkingCopy wc = (IWorkingCopy) getElementToProcess();
-		if (!wc.isWorkingCopy()) {
-			return new CModelStatus(ICModelStatusConstants.INVALID_ELEMENT_TYPES, wc);
-		}
-	
-		ITranslationUnit original= wc.getOriginalElement();
-		IResource resource = original.getResource();
-		if (!wc.isBasedOn(resource) && !fForce) {
-			return new CModelStatus(ICModelStatusConstants.UPDATE_CONFLICT);
-		}
+    /**
+     * Possible failures: <ul>
+     *	<li>INVALID_ELEMENT_TYPES - the Translation unit supplied to this
+     *		operation is not a working copy
+     *  <li>ELEMENT_NOT_PRESENT - the Translation unit the working copy is
+     *		based on no longer exists.
+     *  <li>UPDATE_CONFLICT - the original Translation unit has changed since
+     *		the working copy was created and the operation specifies no force
+     *  </ul>
+     */
 
-		// no read-only check, since some repository adapters can change the flag on save
-		// operation.	
-		return CModelStatus.VERIFIED_OK;
-		
-	}
+    @Override
+    public ICModelStatus verify()
+    {
 
+        IWorkingCopy wc = (IWorkingCopy) getElementToProcess();
+        if (!wc.isWorkingCopy()) {
+            return new CModelStatus(ICModelStatusConstants.INVALID_ELEMENT_TYPES, wc);
+        }
+
+        ITranslationUnit original = wc.getOriginalElement();
+        IResource resource = original.getResource();
+        if (!wc.isBasedOn(resource) && !fForce) {
+            return new CModelStatus(ICModelStatusConstants.UPDATE_CONFLICT);
+        }
+
+        // no read-only check, since some repository adapters can change the flag on save
+        // operation.
+        return CModelStatus.VERIFIED_OK;
+    }
 }

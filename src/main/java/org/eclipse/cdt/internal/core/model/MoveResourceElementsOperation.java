@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
- *     Anton Leherbauer (Wind River Systems)
+ * QNX Software Systems - Initial API and implementation
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 
 package org.eclipse.cdt.internal.core.model;
@@ -24,27 +24,32 @@ import org.eclipse.cdt.core.model.ICElement;
  *
  * @see CopyResourceElementsOperation
  */
-public class MoveResourceElementsOperation extends CopyResourceElementsOperation {
-	/**
-	 * When executed, this operation will move the given elements to the given containers.
-	 */
-	public MoveResourceElementsOperation(ICElement[] elementsToMove, ICElement[] destContainers, boolean force) {
-		super(elementsToMove, destContainers, force);
-	}
+public class MoveResourceElementsOperation
+        extends CopyResourceElementsOperation
+{
+    /**
+     * When executed, this operation will move the given elements to the given containers.
+     */
+    public MoveResourceElementsOperation(ICElement[] elementsToMove, ICElement[] destContainers, boolean force)
+    {
+        super(elementsToMove, destContainers, force);
+    }
 
-	/**
-	 * @see MultiOperation
-	 */
-	@Override
-	protected String getMainTaskName() {
-		return CoreModelMessages.getString("operation.moveResourceProgress"); //$NON-NLS-1$
-	}
+    /**
+     * @see MultiOperation
+     */
+    @Override
+    protected String getMainTaskName()
+    {
+        return CoreModelMessages.getString("operation.moveResourceProgress"); //$NON-NLS-1$
+    }
 
-	/**
-	 * @see CopyResourceElementsOperation#isMove()
-	 */
-	@Override
-	protected boolean isMove() {
-		return true;
-	}
+    /**
+     * @see CopyResourceElementsOperation#isMove()
+     */
+    @Override
+    protected boolean isMove()
+    {
+        return true;
+    }
 }

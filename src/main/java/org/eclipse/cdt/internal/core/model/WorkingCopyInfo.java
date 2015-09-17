@@ -4,20 +4,23 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Rational Software - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
 
 /**
-  * The Element Info of a Working Copy.
-  * @deprecated Use the extended class directly
-  */
+ * The Element Info of a Working Copy.
+ * @deprecated Use the extended class directly
+ */
 @Deprecated
-public class WorkingCopyInfo extends TranslationUnitInfo {
+public class WorkingCopyInfo
+        extends TranslationUnitInfo
+{
 
-	public WorkingCopyInfo(CElement element) {
-		super(element);
-	}
+    public WorkingCopyInfo(CElement element)
+    {
+        super(element);
+    }
 }

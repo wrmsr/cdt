@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	  Nathan Ridge - initial API
+ * Nathan Ridge - initial API
  *******************************************************************************/
 package org.eclipse.cdt.core.parser.util;
 
@@ -15,6 +15,7 @@ package org.eclipse.cdt.core.parser.util;
  * Useful for operations that use unary predicates, like filtering an array.
  * @since 5.6
  */
-public interface IUnaryPredicate<T> {
-	boolean apply(T argument);
+public interface IUnaryPredicate<T>
+{
+    boolean apply(T argument);
 }

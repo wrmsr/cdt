@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -12,17 +12,20 @@ package org.eclipse.cdt.core.settings.model.extension;
 
 import org.eclipse.cdt.core.settings.model.ICSettingBase;
 
-public abstract class CFileData extends CResourceData {
+public abstract class CFileData
+        extends CResourceData
+{
 
-	public CFileData() {
-		
-	}
+    public CFileData()
+    {
 
-	@Override
-	public final int getType(){
-		return ICSettingBase.SETTING_FILE;
-	}
+    }
 
-	public abstract CLanguageData getLanguageData(); 
+    @Override
+    public final int getType()
+    {
+        return ICSettingBase.SETTING_FILE;
+    }
 
+    public abstract CLanguageData getLanguageData();
 }

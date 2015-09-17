@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * John Camelon (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -20,81 +20,104 @@ import org.eclipse.cdt.core.dom.ast.IASTReturnStatement;
 import org.eclipse.cdt.internal.core.dom.parser.ASTAttributeOwner;
 import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 
-public class CPPASTReturnStatement extends ASTAttributeOwner implements IASTReturnStatement, IASTAmbiguityParent {
-	private IASTInitializerClause retValue;
+public class CPPASTReturnStatement
+        extends ASTAttributeOwner
+        implements IASTReturnStatement, IASTAmbiguityParent
+{
+    private IASTInitializerClause retValue;
 
-    public CPPASTReturnStatement() {
-	}
+    public CPPASTReturnStatement()
+    {
+    }
 
-	public CPPASTReturnStatement(IASTInitializerClause retValue) {
-		setReturnArgument(retValue);
-	}
+    public CPPASTReturnStatement(IASTInitializerClause retValue)
+    {
+        setReturnArgument(retValue);
+    }
 
-	@Override
-	public CPPASTReturnStatement copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public CPPASTReturnStatement copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public CPPASTReturnStatement copy(CopyStyle style) {
-		CPPASTReturnStatement copy =
-				new CPPASTReturnStatement(retValue == null ? null : retValue.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTReturnStatement copy(CopyStyle style)
+    {
+        CPPASTReturnStatement copy =
+                new CPPASTReturnStatement(retValue == null ? null : retValue.copy(style));
+        return copy(copy, style);
+    }
 
-	@Override
-	public IASTInitializerClause getReturnArgument() {
-		return retValue;
-	}
+    @Override
+    public IASTInitializerClause getReturnArgument()
+    {
+        return retValue;
+    }
 
-	@Override
-	public IASTExpression getReturnValue() {
+    @Override
+    public IASTExpression getReturnValue()
+    {
         if (retValue instanceof IASTExpression) {
-        	return (IASTExpression) retValue;
+            return (IASTExpression) retValue;
         }
         return null;
     }
 
     @Override
-	public void setReturnValue(IASTExpression returnValue) {
-    	setReturnArgument(returnValue);
+    public void setReturnValue(IASTExpression returnValue)
+    {
+        setReturnArgument(returnValue);
     }
 
     @Override
-	public void setReturnArgument(IASTInitializerClause arg) {
+    public void setReturnArgument(IASTInitializerClause arg)
+    {
         assertNotFrozen();
         retValue = arg;
         if (arg != null) {
-			arg.setParent(this);
-			arg.setPropertyInParent(RETURNVALUE);
-		}
+            arg.setParent(this);
+            arg.setPropertyInParent(RETURNVALUE);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitStatements) {
             switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
             }
         }
 
-        if (!acceptByAttributeSpecifiers(action)) return false;
-		if (retValue != null && !retValue.accept(action)) return false;
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
+        if (retValue != null && !retValue.accept(action)) {
+            return false;
+        }
 
         if (action.shouldVisitStatements) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
     @Override
-	public void replace(IASTNode child, IASTNode other) {
+    public void replace(IASTNode child, IASTNode other)
+    {
         if (child == retValue) {
             other.setPropertyInParent(child.getPropertyInParent());
             other.setParent(child.getParent());

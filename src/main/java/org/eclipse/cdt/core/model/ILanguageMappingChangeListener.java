@@ -4,24 +4,24 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
 /**
  * Listens to changes in language mappings.
- *  
+ *
  * @author crecoskie
  * @since 4.0
  */
-public interface ILanguageMappingChangeListener {
-	
-	/**
-	 * Indicates that language mappings have been changed.
-	 * @param event
-	 */
-	public void handleLanguageMappingChangeEvent(ILanguageMappingChangeEvent event);
+public interface ILanguageMappingChangeListener
+{
 
+    /**
+     * Indicates that language mappings have been changed.
+     * @param event
+     */
+    public void handleLanguageMappingChangeEvent(ILanguageMappingChangeEvent event);
 }

@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IASTInitializerList;
@@ -19,13 +19,15 @@ import org.eclipse.cdt.core.dom.ast.IASTInitializerList;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICPPASTInitializerList extends IASTInitializerList, ICPPASTInitializerClause, ICPPASTPackExpandable {
-	@Override
-	ICPPASTInitializerList copy();
+public interface ICPPASTInitializerList
+        extends IASTInitializerList, ICPPASTInitializerClause, ICPPASTPackExpandable
+{
+    @Override
+    ICPPASTInitializerList copy();
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	ICPPASTInitializerList copy(CopyStyle style);
+    /**
+     * @since 5.3
+     */
+    @Override
+    ICPPASTInitializerList copy(CopyStyle style);
 }

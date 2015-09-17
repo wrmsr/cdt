@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.composite;
 
@@ -17,38 +17,39 @@ import org.eclipse.cdt.core.index.IIndexBinding;
 import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.IIndexScope;
 
-public interface ICompositesFactory {
+public interface ICompositesFactory
+{
 
-	public IIndexScope getCompositeScope(IIndexScope rscope);
+    public IIndexScope getCompositeScope(IIndexScope rscope);
 
-	/**
-	 * Returns a composite (in the sense of potentially spanning multiple index fragments -
-	 * i.e. not to be confused with ICompositeType) type for the specified type.
-	 */
-	public IType getCompositeType(IType rtype);
+    /**
+     * Returns a composite (in the sense of potentially spanning multiple index fragments -
+     * i.e. not to be confused with ICompositeType) type for the specified type.
+     */
+    public IType getCompositeType(IType rtype);
 
-	/**
-	 * Returns a composite (index context carrying) binding for the specified binding. It does not
-	 * matter which fragment the specified binding comes from.
-	 *
-	 * @param binding a binding that will be used when searching for information to return from
- 	 *     the composite binding methods
-	 * @return a composite (index context carrying) binding for the specified binding
-	 */
-	public IIndexBinding getCompositeBinding(IIndexFragmentBinding binding);
+    /**
+     * Returns a composite (index context carrying) binding for the specified binding. It does not
+     * matter which fragment the specified binding comes from.
+     *
+     * @param binding a binding that will be used when searching for information to return from
+     *     the composite binding methods
+     * @return a composite (index context carrying) binding for the specified binding
+     */
+    public IIndexBinding getCompositeBinding(IIndexFragmentBinding binding);
 
-	/**
-	 * Identifies common bindings, calls getCompositeBindings
-	 */
-	public IIndexBinding[] getCompositeBindings(IIndexFragmentBinding[][] bindings);
+    /**
+     * Identifies common bindings, calls getCompositeBindings
+     */
+    public IIndexBinding[] getCompositeBindings(IIndexFragmentBinding[][] bindings);
 
-	/**
-	 * Selects all equivalent bindings from the available fragments
-	 */
-	public IIndexFragmentBinding[] findEquivalentBindings(IBinding binding);
+    /**
+     * Selects all equivalent bindings from the available fragments
+     */
+    public IIndexFragmentBinding[] findEquivalentBindings(IBinding binding);
 
-	/**
-	 * Converts values.
-	 */
-	public IValue getCompositeValue(IValue v);
+    /**
+     * Converts values.
+     */
+    public IValue getCompositeValue(IValue v);
 }

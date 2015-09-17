@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     James Blackburn (Broadcom Corp.)
+ * James Blackburn (Broadcom Corp.)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.settings.model.xml;
 
@@ -19,15 +19,19 @@ import org.osgi.framework.Version;
  * Concrete implementation of ICProjectDescriptionStorageType
  * for instantiating XmlProjectDescriptionStorage
  */
-public class XmlProjectDescriptionStorageFactory implements ICProjectDescriptionStorageType {
+public class XmlProjectDescriptionStorageFactory
+        implements ICProjectDescriptionStorageType
+{
 
-	@Override
-	public AbstractCProjectDescriptionStorage getProjectDescriptionStorage(CProjectDescriptionStorageTypeProxy type, IProject project, Version version) {
-		return new XmlProjectDescriptionStorage(type, project, version);
-	}
+    @Override
+    public AbstractCProjectDescriptionStorage getProjectDescriptionStorage(CProjectDescriptionStorageTypeProxy type, IProject project, Version version)
+    {
+        return new XmlProjectDescriptionStorage(type, project, version);
+    }
 
-	@Override
-	public boolean createsCProjectXMLFile() {
-		return true;
-	}
+    @Override
+    public boolean createsCProjectXMLFile()
+    {
+        return true;
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.index.provider;
 
@@ -21,16 +21,18 @@ import org.eclipse.core.runtime.CoreException;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 4.0
  */
-public interface IIndexProvider {
-	/**
-	 * This method is called to attach the index provider to the project specified. If the provider
-	 * determines that it doesn't and will never provide indexes for the specified project, then it
-	 * should return false to opt-out of being queried for that project.
-	 * <p>
-	 * The method will only be called once per project per eclipse session. This method will be
-	 * called when a project is deleted and a new project of the same name added. It also may be
-	 * called lazily (at the point of first logical index use).
-	 * @param project
-	 */
-	public boolean providesFor(ICProject project) throws CoreException;
+public interface IIndexProvider
+{
+    /**
+     * This method is called to attach the index provider to the project specified. If the provider
+     * determines that it doesn't and will never provide indexes for the specified project, then it
+     * should return false to opt-out of being queried for that project.
+     * <p>
+     * The method will only be called once per project per eclipse session. This method will be
+     * called when a project is deleted and a new project of the same name added. It also may be
+     * called lazily (at the point of first logical index use).
+     * @param project
+     */
+    public boolean providesFor(ICProject project)
+            throws CoreException;
 }

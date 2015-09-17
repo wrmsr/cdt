@@ -4,13 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX - Initial API and implementation
- *     IBM Corporation
- *     Andrew Ferguson (Symbian)
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * QNX - Initial API and implementation
+ * IBM Corporation
+ * Andrew Ferguson (Symbian)
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.c;
 
@@ -33,172 +33,201 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * @author Doug Schaefer
  */
-class PDOMCFunction extends PDOMBinding implements IFunction {
-	/**
-	 * Offset of total number of function parameters (relative to the beginning of the record).
-	 */
-	public static final int NUM_PARAMS = PDOMBinding.RECORD_SIZE;
-	
-	/**
-	 * Offset of total number of function parameters (relative to the beginning of the record).
-	 */
-	public static final int FIRST_PARAM = NUM_PARAMS + 4;
-	
-	/**
-	 * Offset for the type of this function (relative to the beginning of the record).
-	 */
-	private static final int FUNCTION_TYPE = FIRST_PARAM + Database.PTR_SIZE;
-	
-	/**
-	 * Offset of annotation information (relative to the beginning of the record).
-	 */
-	private static final int ANNOTATIONS = FUNCTION_TYPE + Database.TYPE_SIZE; // byte
-	
-	/**
-	 * The size in bytes of a PDOMCPPFunction record in the database.
-	 */
-	@SuppressWarnings("hiding")
-	public static final int RECORD_SIZE = ANNOTATIONS + 1;
+class PDOMCFunction
+        extends PDOMBinding
+        implements IFunction
+{
+    /**
+     * Offset of total number of function parameters (relative to the beginning of the record).
+     */
+    public static final int NUM_PARAMS = PDOMBinding.RECORD_SIZE;
 
-	public PDOMCFunction(PDOMLinkage linkage, long record) {
-		super(linkage, record);
-	}
+    /**
+     * Offset of total number of function parameters (relative to the beginning of the record).
+     */
+    public static final int FIRST_PARAM = NUM_PARAMS + 4;
 
-	public PDOMCFunction(PDOMLinkage linkage, PDOMNode parent, IFunction function) throws CoreException {
-		super(linkage, parent, function.getNameCharArray());
-		
-		IFunctionType type = function.getType();
-		setType(getLinkage(), type);
-		IParameter[] parameters = function.getParameters();
-		setParameters(parameters);
-		byte annotations = PDOMCAnnotation.encodeAnnotation(function);
-		getDB().putByte(record + ANNOTATIONS, annotations);
-	}
+    /**
+     * Offset for the type of this function (relative to the beginning of the record).
+     */
+    private static final int FUNCTION_TYPE = FIRST_PARAM + Database.PTR_SIZE;
 
-	@Override
-	public void update(final PDOMLinkage linkage, IBinding newBinding) throws CoreException {
-		if (!(newBinding instanceof IFunction))
-			return;
+    /**
+     * Offset of annotation information (relative to the beginning of the record).
+     */
+    private static final int ANNOTATIONS = FUNCTION_TYPE + Database.TYPE_SIZE; // byte
 
-		IFunction func= (IFunction) newBinding;
-		IFunctionType newType = func.getType();
-		setType(linkage, newType);
+    /**
+     * The size in bytes of a PDOMCPPFunction record in the database.
+     */
+    @SuppressWarnings("hiding")
+    public static final int RECORD_SIZE = ANNOTATIONS + 1;
 
-		PDOMCParameter oldParams= getFirstParameter(null);
-		IParameter[] newParams = func.getParameters();
-		setParameters(newParams);
-		if (oldParams != null) {
-			oldParams.delete(linkage);
-		}
-		byte newAnnotation = PDOMCAnnotation.encodeAnnotation(func);
-		getDB().putByte(record + ANNOTATIONS, newAnnotation);
-	}
+    public PDOMCFunction(PDOMLinkage linkage, long record)
+    {
+        super(linkage, record);
+    }
 
-	private void setType(PDOMLinkage linkage, IFunctionType ft) throws CoreException {
-		linkage.storeType(record + FUNCTION_TYPE, ft);
-	}
+    public PDOMCFunction(PDOMLinkage linkage, PDOMNode parent, IFunction function)
+            throws CoreException
+    {
+        super(linkage, parent, function.getNameCharArray());
 
-	private void setParameters(IParameter[] params) throws CoreException {
-		final PDOMLinkage linkage = getLinkage();
-		final Database db= getDB();
-		db.putInt(record + NUM_PARAMS, params.length);
-		db.putRecPtr(record + FIRST_PARAM, 0);
-		PDOMCParameter next= null;
-		for (int i= params.length; --i >= 0;) {
-			next= new PDOMCParameter(linkage, this, params[i], next);
-		}
-		db.putRecPtr(record + FIRST_PARAM, next == null ? 0 : next.getRecord());
-	}
-	
-	public PDOMCParameter getFirstParameter(IType t) throws CoreException {
-		long rec = getDB().getRecPtr(record + FIRST_PARAM);
-		return rec != 0 ? new PDOMCParameter(getLinkage(), rec, t) : null;
-	}
-	
-	@Override
-	protected int getRecordSize() {
-		return RECORD_SIZE;
-	}
+        IFunctionType type = function.getType();
+        setType(getLinkage(), type);
+        IParameter[] parameters = function.getParameters();
+        setParameters(parameters);
+        byte annotations = PDOMCAnnotation.encodeAnnotation(function);
+        getDB().putByte(record + ANNOTATIONS, annotations);
+    }
 
-	@Override
-	public int getNodeType() {
-		return IIndexCBindingConstants.CFUNCTION;
-	}
+    @Override
+    public void update(final PDOMLinkage linkage, IBinding newBinding)
+            throws CoreException
+    {
+        if (!(newBinding instanceof IFunction)) {
+            return;
+        }
 
-	@Override
-	public IFunctionType getType() {
-		try {
-			return (IFunctionType) getLinkage().loadType(record + FUNCTION_TYPE);
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-			return new ProblemFunctionType(ISemanticProblem.TYPE_NOT_PERSISTED);
-		}
-	}
+        IFunction func = (IFunction) newBinding;
+        IFunctionType newType = func.getType();
+        setType(linkage, newType);
 
-	@Override
-	public boolean isStatic() {
-		return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.STATIC_OFFSET);
-	}
+        PDOMCParameter oldParams = getFirstParameter(null);
+        IParameter[] newParams = func.getParameters();
+        setParameters(newParams);
+        if (oldParams != null) {
+            oldParams.delete(linkage);
+        }
+        byte newAnnotation = PDOMCAnnotation.encodeAnnotation(func);
+        getDB().putByte(record + ANNOTATIONS, newAnnotation);
+    }
 
-	@Override
-	public boolean isExtern() {
-		return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.EXTERN_OFFSET);
-	}
+    private void setType(PDOMLinkage linkage, IFunctionType ft)
+            throws CoreException
+    {
+        linkage.storeType(record + FUNCTION_TYPE, ft);
+    }
 
-	@Override
-	public IParameter[] getParameters() {
-		try {
-			PDOMLinkage linkage= getLinkage();
-			Database db= getDB();
-			IFunctionType ft = getType();
-			IType[] ptypes= ft == null ? IType.EMPTY_TYPE_ARRAY : ft.getParameterTypes();
-			
-			int n = db.getInt(record + NUM_PARAMS);
-			IParameter[] result = new IParameter[n];
-			
-			long next = db.getRecPtr(record + FIRST_PARAM);
- 			for (int i = 0; i < n && next != 0; i++) {
- 				IType type= i < ptypes.length ? ptypes[i] : null;
-				final PDOMCParameter par = new PDOMCParameter(linkage, next, type);
-				next= par.getNextPtr();
-				result[i]= par;
-			}
-			return result;
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-			return IParameter.EMPTY_PARAMETER_ARRAY;
-		}
-	}
-	
-	@Override
-	public boolean isAuto() {
-		// ISO/IEC 9899:TC1 6.9.1.4
-		return false;
-	}
+    private void setParameters(IParameter[] params)
+            throws CoreException
+    {
+        final PDOMLinkage linkage = getLinkage();
+        final Database db = getDB();
+        db.putInt(record + NUM_PARAMS, params.length);
+        db.putRecPtr(record + FIRST_PARAM, 0);
+        PDOMCParameter next = null;
+        for (int i = params.length; --i >= 0; ) {
+            next = new PDOMCParameter(linkage, this, params[i], next);
+        }
+        db.putRecPtr(record + FIRST_PARAM, next == null ? 0 : next.getRecord());
+    }
 
-	@Override
-	public boolean isRegister() {
-		// ISO/IEC 9899:TC1 6.9.1.4
-		return false;
-	}
+    public PDOMCParameter getFirstParameter(IType t)
+            throws CoreException
+    {
+        long rec = getDB().getRecPtr(record + FIRST_PARAM);
+        return rec != 0 ? new PDOMCParameter(getLinkage(), rec, t) : null;
+    }
 
-	@Override
-	public boolean isInline() {
-		return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.INLINE_OFFSET);
-	}
+    @Override
+    protected int getRecordSize()
+    {
+        return RECORD_SIZE;
+    }
 
-	@Override
-	public boolean takesVarArgs() {
-		return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.VARARGS_OFFSET);
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCBindingConstants.CFUNCTION;
+    }
 
-	@Override
-	public boolean isNoReturn() {
-		return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.NO_RETURN);
-	}
+    @Override
+    public IFunctionType getType()
+    {
+        try {
+            return (IFunctionType) getLinkage().loadType(record + FUNCTION_TYPE);
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+            return new ProblemFunctionType(ISemanticProblem.TYPE_NOT_PERSISTED);
+        }
+    }
 
-	@Override
-	public IScope getFunctionScope() {
-		return null;
-	}
+    @Override
+    public boolean isStatic()
+    {
+        return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.STATIC_OFFSET);
+    }
+
+    @Override
+    public boolean isExtern()
+    {
+        return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.EXTERN_OFFSET);
+    }
+
+    @Override
+    public IParameter[] getParameters()
+    {
+        try {
+            PDOMLinkage linkage = getLinkage();
+            Database db = getDB();
+            IFunctionType ft = getType();
+            IType[] ptypes = ft == null ? IType.EMPTY_TYPE_ARRAY : ft.getParameterTypes();
+
+            int n = db.getInt(record + NUM_PARAMS);
+            IParameter[] result = new IParameter[n];
+
+            long next = db.getRecPtr(record + FIRST_PARAM);
+            for (int i = 0; i < n && next != 0; i++) {
+                IType type = i < ptypes.length ? ptypes[i] : null;
+                final PDOMCParameter par = new PDOMCParameter(linkage, next, type);
+                next = par.getNextPtr();
+                result[i] = par;
+            }
+            return result;
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+            return IParameter.EMPTY_PARAMETER_ARRAY;
+        }
+    }
+
+    @Override
+    public boolean isAuto()
+    {
+        // ISO/IEC 9899:TC1 6.9.1.4
+        return false;
+    }
+
+    @Override
+    public boolean isRegister()
+    {
+        // ISO/IEC 9899:TC1 6.9.1.4
+        return false;
+    }
+
+    @Override
+    public boolean isInline()
+    {
+        return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.INLINE_OFFSET);
+    }
+
+    @Override
+    public boolean takesVarArgs()
+    {
+        return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.VARARGS_OFFSET);
+    }
+
+    @Override
+    public boolean isNoReturn()
+    {
+        return getBit(getByte(record + ANNOTATIONS), PDOMCAnnotation.NO_RETURN);
+    }
+
+    @Override
+    public IScope getFunctionScope()
+    {
+        return null;
+    }
 }

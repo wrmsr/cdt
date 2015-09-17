@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    John Camelon (IBM) - Initial API and implementation
+ * John Camelon (IBM) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.gnu.cpp;
 
@@ -17,11 +17,13 @@ import org.eclipse.cdt.core.dom.ast.IASTPointer;
  * @deprecated Use {@link IASTPointer}, instead.
  */
 @Deprecated
-public interface IGPPASTPointer extends IASTPointer {
+public interface IGPPASTPointer
+        extends IASTPointer
+{
 
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public IGPPASTPointer copy();
+    /**
+     * @since 5.1
+     */
+    @Override
+    public IGPPASTPointer copy();
 }

@@ -4,69 +4,81 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser.scanner;
 
 /**
  * Wrapper around char[] to implement {@link AbstractCharArray}.
  */
-public final class CharArray extends AbstractCharArray {
-	private final char[] fArray;
-	private long hash64;
+public final class CharArray
+        extends AbstractCharArray
+{
+    private final char[] fArray;
+    private long hash64;
 
-	public CharArray(char[] array) {
-		fArray= array;
-	}
+    public CharArray(char[] array)
+    {
+        fArray = array;
+    }
 
-	public CharArray(String str) {
-		fArray= str.toCharArray();
-	}
-	
-	public char[] getArray() {
-		return fArray;
-	}
+    public CharArray(String str)
+    {
+        fArray = str.toCharArray();
+    }
 
-	@Override
-	public int getLength() {
-		return fArray.length;
-	}
+    public char[] getArray()
+    {
+        return fArray;
+    }
 
-	@Override
-	public int tryGetLength() {
-		return fArray.length;
-	}
+    @Override
+    public int getLength()
+    {
+        return fArray.length;
+    }
 
-	@Override
-	public char get(int pos) {
-		return fArray[pos];
-	}
+    @Override
+    public int tryGetLength()
+    {
+        return fArray.length;
+    }
 
-	@Override
-	public void arraycopy(int offset, char[] destination, int destPos, int length) {
-		System.arraycopy(fArray, offset, destination, destPos, length);
-	}
+    @Override
+    public char get(int pos)
+    {
+        return fArray[pos];
+    }
 
-	@Override
-	public boolean isValidOffset(int offset) {
-		return offset < fArray.length;
-	}
+    @Override
+    public void arraycopy(int offset, char[] destination, int destPos, int length)
+    {
+        System.arraycopy(fArray, offset, destination, destPos, length);
+    }
 
-	@Override
-	public boolean hasError() {
-		return false;
-	}
+    @Override
+    public boolean isValidOffset(int offset)
+    {
+        return offset < fArray.length;
+    }
 
-	@Override
-	public long getContentsHash() {
-		if (hash64 == 0 && fArray.length != 0) {
-			StreamHasher hasher = new StreamHasher();
-			hasher.addChunk(fArray);
-			hash64 = hasher.computeHash();
-		}
-		return hash64;
-	}
+    @Override
+    public boolean hasError()
+    {
+        return false;
+    }
+
+    @Override
+    public long getContentsHash()
+    {
+        if (hash64 == 0 && fArray.length != 0) {
+            StreamHasher hasher = new StreamHasher();
+            hasher.addChunk(fArray);
+            hash64 = hasher.computeHash();
+        }
+        return hash64;
+    }
 }

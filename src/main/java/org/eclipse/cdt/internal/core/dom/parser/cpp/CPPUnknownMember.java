@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * IBM Corporation - initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -29,51 +29,64 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Represents a binding that is unknown because it depends on template arguments.
  */
-public class CPPUnknownMember extends CPPUnknownBinding	implements ICPPUnknownMember, ISerializableType {
+public class CPPUnknownMember
+        extends CPPUnknownBinding
+        implements ICPPUnknownMember, ISerializableType
+{
     protected IType fOwner;
 
-    protected CPPUnknownMember(IType owner, char[] name) {
+    protected CPPUnknownMember(IType owner, char[] name)
+    {
         super(name);
         if (owner instanceof ICPPClassTemplate) {
-        	owner= CPPTemplates.createDeferredInstance((ICPPClassTemplate) owner);
+            owner = CPPTemplates.createDeferredInstance((ICPPClassTemplate) owner);
         }
-        fOwner= owner;
+        fOwner = owner;
     }
 
-	@Override
-	public IBinding getOwner() {
-		if (fOwner instanceof IBinding)
-			return (IBinding) fOwner;
-		return null;
-	}
-	
-	@Override
-	public IType getOwnerType() {
-		return fOwner;
-	}
-	
-	@Override
-	public void marshal(ITypeMarshalBuffer buffer) throws CoreException {
-		short firstBytes= ITypeMarshalBuffer.UNKNOWN_MEMBER;
-		if (this instanceof ICPPField) {
-			firstBytes |= ITypeMarshalBuffer.FLAG1;
-		} else if (this instanceof ICPPMethod) {
-			firstBytes |= ITypeMarshalBuffer.FLAG2;
-		}
-		
-		buffer.putShort(firstBytes);
-		buffer.marshalType(getOwnerType());
-		buffer.putCharArray(getNameCharArray());
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        if (fOwner instanceof IBinding) {
+            return (IBinding) fOwner;
+        }
+        return null;
+    }
 
-	public static IBinding unmarshal(IIndexFragment fragment, short firstBytes, ITypeMarshalBuffer buffer) throws CoreException {
-		IType owner= buffer.unmarshalType();
-		char[] name = buffer.getCharArray();
-		if ((firstBytes & ITypeMarshalBuffer.FLAG1) != 0) {
-			return new PDOMCPPUnknownField(fragment, owner, name);
-		} else if ((firstBytes & ITypeMarshalBuffer.FLAG2) != 0) {
-			return new PDOMCPPUnknownMethod(fragment, owner, name);
-		}
-		return new PDOMCPPUnknownMemberClass(fragment, owner, name);
-	}
+    @Override
+    public IType getOwnerType()
+    {
+        return fOwner;
+    }
+
+    @Override
+    public void marshal(ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        short firstBytes = ITypeMarshalBuffer.UNKNOWN_MEMBER;
+        if (this instanceof ICPPField) {
+            firstBytes |= ITypeMarshalBuffer.FLAG1;
+        }
+        else if (this instanceof ICPPMethod) {
+            firstBytes |= ITypeMarshalBuffer.FLAG2;
+        }
+
+        buffer.putShort(firstBytes);
+        buffer.marshalType(getOwnerType());
+        buffer.putCharArray(getNameCharArray());
+    }
+
+    public static IBinding unmarshal(IIndexFragment fragment, short firstBytes, ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        IType owner = buffer.unmarshalType();
+        char[] name = buffer.getCharArray();
+        if ((firstBytes & ITypeMarshalBuffer.FLAG1) != 0) {
+            return new PDOMCPPUnknownField(fragment, owner, name);
+        }
+        else if ((firstBytes & ITypeMarshalBuffer.FLAG2) != 0) {
+            return new PDOMCPPUnknownMethod(fragment, owner, name);
+        }
+        return new PDOMCPPUnknownMemberClass(fragment, owner, name);
+    }
 }

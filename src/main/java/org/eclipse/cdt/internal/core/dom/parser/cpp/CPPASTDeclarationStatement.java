@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Sergey Prigogin (Google)
- *     Thomas Corbat (IFS)
+ * IBM - Initial API and implementation
+ * Sergey Prigogin (Google)
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -24,68 +24,86 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 /**
  * @author jcamelon
  */
-public class CPPASTDeclarationStatement extends ASTNode
-		implements IASTDeclarationStatement, IASTAmbiguityParent {
+public class CPPASTDeclarationStatement
+        extends ASTNode
+        implements IASTDeclarationStatement, IASTAmbiguityParent
+{
     private IASTDeclaration declaration;
-    
-    public CPPASTDeclarationStatement() {
-	}
 
-	public CPPASTDeclarationStatement(IASTDeclaration declaration) {
-		setDeclaration(declaration);
-	}
+    public CPPASTDeclarationStatement()
+    {
+    }
 
-	@Override
-	public CPPASTDeclarationStatement copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CPPASTDeclarationStatement copy(CopyStyle style) {
-		CPPASTDeclarationStatement copy = new CPPASTDeclarationStatement();
-		copy.setDeclaration(declaration == null ? null : declaration.copy(style));
-		return copy(copy, style);
-	}
+    public CPPASTDeclarationStatement(IASTDeclaration declaration)
+    {
+        setDeclaration(declaration);
+    }
 
-	@Override
-	public IASTDeclaration getDeclaration() {
+    @Override
+    public CPPASTDeclarationStatement copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
+
+    @Override
+    public CPPASTDeclarationStatement copy(CopyStyle style)
+    {
+        CPPASTDeclarationStatement copy = new CPPASTDeclarationStatement();
+        copy.setDeclaration(declaration == null ? null : declaration.copy(style));
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTDeclaration getDeclaration()
+    {
         return declaration;
     }
 
     @Override
-	public void setDeclaration(IASTDeclaration declaration) {
+    public void setDeclaration(IASTDeclaration declaration)
+    {
         assertNotFrozen();
         this.declaration = declaration;
         if (declaration != null) {
-			declaration.setParent(this);
-			declaration.setPropertyInParent(DECLARATION);
-		}
+            declaration.setParent(this);
+            declaration.setPropertyInParent(DECLARATION);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitStatements) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-        if (declaration != null && !declaration.accept(action)) return false;
+        if (declaration != null && !declaration.accept(action)) {
+            return false;
+        }
 
         if (action.shouldVisitStatements) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
     @Override
-	public void replace(IASTNode child, IASTNode other) {
+    public void replace(IASTNode child, IASTNode other)
+    {
         if (declaration == child) {
             other.setParent(child.getParent());
             other.setPropertyInParent(child.getPropertyInParent());
@@ -93,27 +111,31 @@ public class CPPASTDeclarationStatement extends ASTNode
         }
     }
 
-	@Override
-	public IASTAttribute[] getAttributes() {
-		// Declaration statements don't have attributes.
-		return IASTAttribute.EMPTY_ATTRIBUTE_ARRAY;
-	}
+    @Override
+    public IASTAttribute[] getAttributes()
+    {
+        // Declaration statements don't have attributes.
+        return IASTAttribute.EMPTY_ATTRIBUTE_ARRAY;
+    }
 
-	@Override
-	public void addAttribute(IASTAttribute attribute) {
-		// Declaration statements don't have attributes.
-    	throw new UnsupportedOperationException();
-	}
+    @Override
+    public void addAttribute(IASTAttribute attribute)
+    {
+        // Declaration statements don't have attributes.
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public IASTAttributeSpecifier[] getAttributeSpecifiers() {
-		// Declaration statements don't have attributes.
-		return IASTAttributeSpecifier.EMPTY_ATTRIBUTE_SPECIFIER_ARRAY;
-	}
+    @Override
+    public IASTAttributeSpecifier[] getAttributeSpecifiers()
+    {
+        // Declaration statements don't have attributes.
+        return IASTAttributeSpecifier.EMPTY_ATTRIBUTE_SPECIFIER_ARRAY;
+    }
 
-	@Override
-	public void addAttributeSpecifier(IASTAttributeSpecifier attributeSpecifier) {
-		// Declaration statements don't have attributes.
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void addAttributeSpecifier(IASTAttributeSpecifier attributeSpecifier)
+    {
+        // Declaration statements don't have attributes.
+        throw new UnsupportedOperationException();
+    }
 }

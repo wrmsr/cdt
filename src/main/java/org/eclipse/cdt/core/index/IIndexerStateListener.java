@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.core.index;
 
 /**
@@ -22,18 +22,19 @@ package org.eclipse.cdt.core.index;
  * </p>
  * @since 4.0
  */
-public interface IIndexerStateListener {
-	/**
-	 * Notifies this listener that the state of the indexer has changed.
-	 * <p>
-	 * The supplied event provides the details. This event object is valid only for 
-	 * the duration of the invocation of this method.
-	 * </p>
-	 * <p>
-	 * Note: This method is called by CDT; it is not intended
-	 * to be called directly by clients.
-	 *
-	 * @param event the indexer state event
-	 */
-	public void indexChanged(IIndexerStateEvent event);
+public interface IIndexerStateListener
+{
+    /**
+     * Notifies this listener that the state of the indexer has changed.
+     * <p>
+     * The supplied event provides the details. This event object is valid only for
+     * the duration of the invocation of this method.
+     * </p>
+     * <p>
+     * Note: This method is called by CDT; it is not intended
+     * to be called directly by clients.
+     *
+     * @param event the indexer state event
+     */
+    public void indexChanged(IIndexerStateEvent event);
 }

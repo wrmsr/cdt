@@ -4,13 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser;
-
-import java.io.IOException;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ICodeReaderFactory;
@@ -22,54 +20,68 @@ import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContent;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContentProvider;
 import org.eclipse.core.runtime.CoreException;
 
+import java.io.IOException;
+
 @Deprecated
-public class FileContentProviderAdapter extends InternalFileContentProvider {
+public class FileContentProviderAdapter
+        extends InternalFileContentProvider
+{
 
-	/**
-	 * @deprecated avoid using the adapter, it's for backwards compatibility, only.
-	 */
-	@Deprecated
-	public static InternalFileContentProvider adapt(ICodeReaderFactory fileCreator) {
-		if (fileCreator == null)
-			return null;
-		
-		if (!(fileCreator instanceof AbstractCodeReaderFactory))
-			throw new IllegalArgumentException("Invalid code reader factory"); //$NON-NLS-1$
-		
-		if (fileCreator instanceof CodeReaderFactoryAdapter) {
-			return ((CodeReaderFactoryAdapter) fileCreator).getFileContentProvider();
-		}
-		return new FileContentProviderAdapter((AbstractCodeReaderFactory) fileCreator);
-	}
+    /**
+     * @deprecated avoid using the adapter, it's for backwards compatibility, only.
+     */
+    @Deprecated
+    public static InternalFileContentProvider adapt(ICodeReaderFactory fileCreator)
+    {
+        if (fileCreator == null) {
+            return null;
+        }
 
-	private AbstractCodeReaderFactory fDelegate;
-	private FileContentProviderAdapter(AbstractCodeReaderFactory factory) {
-		fDelegate= factory;
-		setIncludeResolutionHeuristics((IIncludeFileResolutionHeuristics) factory.getAdapter(IIncludeFileResolutionHeuristics.class));
-	}
+        if (!(fileCreator instanceof AbstractCodeReaderFactory)) {
+            throw new IllegalArgumentException("Invalid code reader factory"); //$NON-NLS-1$
+        }
 
-	/**
-	 * @deprecated avoid using the adapter, its for backwards compatibility, only.
-	 */
-	@Deprecated
-	public org.eclipse.cdt.core.dom.ICodeReaderFactory getCodeReaderFactory() {
-		return fDelegate;
-	}
+        if (fileCreator instanceof CodeReaderFactoryAdapter) {
+            return ((CodeReaderFactoryAdapter) fileCreator).getFileContentProvider();
+        }
+        return new FileContentProviderAdapter((AbstractCodeReaderFactory) fileCreator);
+    }
 
-	@Override
-	public InternalFileContent getContentForInclusion(String path, IMacroDictionary macroDictionary) {
-		return (InternalFileContent) FileContent.adapt(fDelegate.createCodeReaderForInclusion(path));
-	}
+    private AbstractCodeReaderFactory fDelegate;
 
-	@Override
-	public InternalFileContent getContentForInclusion(IIndexFileLocation ifl, String astPath) {
-		try {
-			return (InternalFileContent) FileContent.adapt(fDelegate.createCodeReaderForInclusion(ifl, astPath));
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-		} catch (IOException e) {
-			CCorePlugin.log(e);
-		}
-		return null;
-	}
+    private FileContentProviderAdapter(AbstractCodeReaderFactory factory)
+    {
+        fDelegate = factory;
+        setIncludeResolutionHeuristics((IIncludeFileResolutionHeuristics) factory.getAdapter(IIncludeFileResolutionHeuristics.class));
+    }
+
+    /**
+     * @deprecated avoid using the adapter, its for backwards compatibility, only.
+     */
+    @Deprecated
+    public org.eclipse.cdt.core.dom.ICodeReaderFactory getCodeReaderFactory()
+    {
+        return fDelegate;
+    }
+
+    @Override
+    public InternalFileContent getContentForInclusion(String path, IMacroDictionary macroDictionary)
+    {
+        return (InternalFileContent) FileContent.adapt(fDelegate.createCodeReaderForInclusion(path));
+    }
+
+    @Override
+    public InternalFileContent getContentForInclusion(IIndexFileLocation ifl, String astPath)
+    {
+        try {
+            return (InternalFileContent) FileContent.adapt(fDelegate.createCodeReaderForInclusion(ifl, astPath));
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+        }
+        catch (IOException e) {
+            CCorePlugin.log(e);
+        }
+        return null;
+    }
 }

@@ -4,19 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
- *     Thomas Corbat (IFS)
+ * Andrew Ferguson (Symbian) - Initial implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.composite.cpp;
-
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.getNestedType;
-
-import java.util.Arrays;
 
 import org.eclipse.cdt.core.dom.IName;
 import org.eclipse.cdt.core.dom.ast.IBinding;
@@ -33,196 +28,243 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.IIndexType;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-class CompositeCPPClassType extends CompositeCPPBinding implements ICPPClassType, IIndexType {
-	public CompositeCPPClassType(ICompositesFactory cf, ICPPClassType rbinding) {
-		super(cf, rbinding);
-	}
+import java.util.Arrays;
 
-	@Override
-	public Object clone() {
-		fail(); return null;
-	}
+import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
+import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.getNestedType;
 
-	@Override
-	public final IField findField(String name) {
-		return ClassTypeHelper.findField(this, name);
-	}
+class CompositeCPPClassType
+        extends CompositeCPPBinding
+        implements ICPPClassType, IIndexType
+{
+    public CompositeCPPClassType(ICompositesFactory cf, ICPPClassType rbinding)
+    {
+        super(cf, rbinding);
+    }
 
-	@Override
-	public ICPPMethod[] getAllDeclaredMethods() {
-		return ClassTypeHelper.getAllDeclaredMethods(this, null);
-	}
+    @Override
+    public Object clone()
+    {
+        fail();
+        return null;
+    }
 
-	private class CPPBaseDelegate implements ICPPBase {
-		private final ICPPBase base;
-		private IType baseClass;
-		private final boolean writable;
-		
-		CPPBaseDelegate(ICPPBase b) {
-			this(b, false); 
-		}
-		
-		CPPBaseDelegate(ICPPBase b, boolean writable) {
-			this.base= b;
-			this.writable= writable; 
-		}
-		
-		@Override
-		public IBinding getBaseClass() {
-			IType type= getBaseClassType();
-			type = getNestedType(type, TDEF);
-			if (type instanceof IBinding)
-				return (IBinding) type;
-			return null;
-		}
+    @Override
+    public final IField findField(String name)
+    {
+        return ClassTypeHelper.findField(this, name);
+    }
 
-		@Override
-		public IType getBaseClassType() {
-			if (baseClass == null) {
-				baseClass= cf.getCompositeType(base.getBaseClassType());
-			}
-			return baseClass;
-		}
+    @Override
+    public ICPPMethod[] getAllDeclaredMethods()
+    {
+        return ClassTypeHelper.getAllDeclaredMethods(this, null);
+    }
 
-		@Override @Deprecated
-		public IName getBaseClassSpecifierName() {
-			return base.getBaseClassSpecifierName();
-		}
-		
-		@Override
-		public IName getClassDefinitionName() {
-			return base.getClassDefinitionName();
-		}
+    private class CPPBaseDelegate
+            implements ICPPBase
+    {
+        private final ICPPBase base;
+        private IType baseClass;
+        private final boolean writable;
 
-		@Override
-		public int getVisibility() {
-			return base.getVisibility();
-		}
+        CPPBaseDelegate(ICPPBase b)
+        {
+            this(b, false);
+        }
 
-		@Override
-		public boolean isVirtual() {
-			return base.isVirtual();
-		}
+        CPPBaseDelegate(ICPPBase b, boolean writable)
+        {
+            this.base = b;
+            this.writable = writable;
+        }
 
-		@Override
-		public boolean isInheritedConstructorsSource() {
-			return base.isInheritedConstructorsSource();
-		}
+        @Override
+        public IBinding getBaseClass()
+        {
+            IType type = getBaseClassType();
+            type = getNestedType(type, TDEF);
+            if (type instanceof IBinding) {
+                return (IBinding) type;
+            }
+            return null;
+        }
 
-		@Override
-		public void setBaseClass(IBinding binding) {
-			if (writable && binding instanceof IType) {
-				baseClass= (IType) binding;
-			} else {
-				base.setBaseClass(binding);
-			}
-		}
+        @Override
+        public IType getBaseClassType()
+        {
+            if (baseClass == null) {
+                baseClass = cf.getCompositeType(base.getBaseClassType());
+            }
+            return baseClass;
+        }
 
-		@Override
-		public void setBaseClass(IType binding) {
-			if (writable) {
-				baseClass= binding;
-			} else {
-				base.setBaseClass(binding);
-			}
-		}
+        @Override
+        @Deprecated
+        public IName getBaseClassSpecifierName()
+        {
+            return base.getBaseClassSpecifierName();
+        }
 
-	    @Override
-		public ICPPBase clone(){
-	    	return new CPPBaseDelegate(base, true);
-	    }
-	}
-	
-	@Override
-	public ICPPBase[] getBases() {
-		ICPPBase[] bases = ((ICPPClassType) rbinding).getBases();
-		return wrapBases(bases);
-	}
+        @Override
+        public IName getClassDefinitionName()
+        {
+            return base.getClassDefinitionName();
+        }
 
-	@Override
-	public ICPPConstructor[] getConstructors() {
-		ICPPConstructor[] result = ((ICPPClassType) rbinding).getConstructors();
-		return wrapBindings(result);
-	}
+        @Override
+        public int getVisibility()
+        {
+            return base.getVisibility();
+        }
 
-	@Override
-	public ICPPField[] getDeclaredFields() {
-		ICPPField[] result = ((ICPPClassType) rbinding).getDeclaredFields();
-		return wrapBindings(result);
-	}
+        @Override
+        public boolean isVirtual()
+        {
+            return base.isVirtual();
+        }
 
-	@Override
-	public ICPPMethod[] getDeclaredMethods() {
-		ICPPMethod[] result = ((ICPPClassType) rbinding).getDeclaredMethods();
-		return wrapBindings(result);
-	}
+        @Override
+        public boolean isInheritedConstructorsSource()
+        {
+            return base.isInheritedConstructorsSource();
+        }
 
-	@Override
-	public IField[] getFields() {
-		return ClassTypeHelper.getFields(this, null);
-	}
+        @Override
+        public void setBaseClass(IBinding binding)
+        {
+            if (writable && binding instanceof IType) {
+                baseClass = (IType) binding;
+            }
+            else {
+                base.setBaseClass(binding);
+            }
+        }
 
-	@Override
-	public IBinding[] getFriends() {
-		IBinding[] preResult = ((ICPPClassType) rbinding).getFriends();
-		return wrapBindings(preResult);
-	}
+        @Override
+        public void setBaseClass(IType binding)
+        {
+            if (writable) {
+                baseClass = binding;
+            }
+            else {
+                base.setBaseClass(binding);
+            }
+        }
 
-	@Override
-	public ICPPMethod[] getMethods() {
-		return ClassTypeHelper.getMethods(this, null);
-	}
+        @Override
+        public ICPPBase clone()
+        {
+            return new CPPBaseDelegate(base, true);
+        }
+    }
 
-	@Override
-	public ICPPClassType[] getNestedClasses() {
-		ICPPClassType[] result = ((ICPPClassType) rbinding).getNestedClasses();
-		return wrapBindings(result);
-	}
+    @Override
+    public ICPPBase[] getBases()
+    {
+        ICPPBase[] bases = ((ICPPClassType) rbinding).getBases();
+        return wrapBases(bases);
+    }
 
-	@Override
-	public ICPPScope getCompositeScope() {
-		return new CompositeCPPClassScope(cf, rbinding);
-	}
+    @Override
+    public ICPPConstructor[] getConstructors()
+    {
+        ICPPConstructor[] result = ((ICPPClassType) rbinding).getConstructors();
+        return wrapBindings(result);
+    }
 
-	@Override
-	public int getKey() {
-		return ((ICPPClassType) rbinding).getKey();
-	}
+    @Override
+    public ICPPField[] getDeclaredFields()
+    {
+        ICPPField[] result = ((ICPPClassType) rbinding).getDeclaredFields();
+        return wrapBindings(result);
+    }
 
-	@Override
-	public boolean isSameType(IType type) {
-		return ((ICPPClassType) rbinding).isSameType(type);
-	}
+    @Override
+    public ICPPMethod[] getDeclaredMethods()
+    {
+        ICPPMethod[] result = ((ICPPClassType) rbinding).getDeclaredMethods();
+        return wrapBindings(result);
+    }
 
-	@Override
-	public boolean isAnonymous() {
-		return ((ICPPClassType) rbinding).isAnonymous();
-	}
+    @Override
+    public IField[] getFields()
+    {
+        return ClassTypeHelper.getFields(this, null);
+    }
 
-	protected ICPPBase[] wrapBases(final ICPPBase[] bases) {
-		ICPPBase[] result = new ICPPBase[bases.length];
-		for (int i= 0; i < bases.length; i++) {
-			result[i] = new CPPBaseDelegate(bases[i]);
-		}
-		return result;
-	}
+    @Override
+    public IBinding[] getFriends()
+    {
+        IBinding[] preResult = ((ICPPClassType) rbinding).getFriends();
+        return wrapBindings(preResult);
+    }
 
-	@SuppressWarnings("unchecked")
-	protected <T extends IBinding> T[] wrapBindings(T[] bindings) {
-		T[] result = Arrays.copyOf(bindings, bindings.length);
-		for (int i= 0; i < bindings.length; i++) {
-			result[i] = (T) cf.getCompositeBinding((IIndexFragmentBinding) bindings[i]);
-		}
-		return result;
-	}
+    @Override
+    public ICPPMethod[] getMethods()
+    {
+        return ClassTypeHelper.getMethods(this, null);
+    }
 
-	@Override
-	public boolean isFinal() {
-		return ((ICPPClassType) rbinding).isFinal();
-	}
+    @Override
+    public ICPPClassType[] getNestedClasses()
+    {
+        ICPPClassType[] result = ((ICPPClassType) rbinding).getNestedClasses();
+        return wrapBindings(result);
+    }
 
-	@Override
-	public int getVisibility(IBinding member) {
-		return ((ICPPClassType) rbinding).getVisibility(member);
-	}
+    @Override
+    public ICPPScope getCompositeScope()
+    {
+        return new CompositeCPPClassScope(cf, rbinding);
+    }
+
+    @Override
+    public int getKey()
+    {
+        return ((ICPPClassType) rbinding).getKey();
+    }
+
+    @Override
+    public boolean isSameType(IType type)
+    {
+        return ((ICPPClassType) rbinding).isSameType(type);
+    }
+
+    @Override
+    public boolean isAnonymous()
+    {
+        return ((ICPPClassType) rbinding).isAnonymous();
+    }
+
+    protected ICPPBase[] wrapBases(final ICPPBase[] bases)
+    {
+        ICPPBase[] result = new ICPPBase[bases.length];
+        for (int i = 0; i < bases.length; i++) {
+            result[i] = new CPPBaseDelegate(bases[i]);
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T extends IBinding> T[] wrapBindings(T[] bindings)
+    {
+        T[] result = Arrays.copyOf(bindings, bindings.length);
+        for (int i = 0; i < bindings.length; i++) {
+            result[i] = (T) cf.getCompositeBinding((IIndexFragmentBinding) bindings[i]);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isFinal()
+    {
+        return ((ICPPClassType) rbinding).isFinal();
+    }
+
+    @Override
+    public int getVisibility(IBinding member)
+    {
+        return ((ICPPClassType) rbinding).getVisibility(member);
+    }
 }

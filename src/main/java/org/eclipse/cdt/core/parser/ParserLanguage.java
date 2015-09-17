@@ -4,26 +4,33 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corp. - Rational Software - initial implementation
- *     Mike Kucera (IBM) - convert to Java 5 enum
+ * IBM Corp. - Rational Software - initial implementation
+ * Mike Kucera (IBM) - convert to Java 5 enum
  *******************************************************************************/
 package org.eclipse.cdt.core.parser;
 
 /**
  * Enumeration of base languages supported by CDT.
  */
-public enum ParserLanguage {
-	C {
-		@Override public boolean isCPP() { return false; }
-		@Override public String toString() { return "C"; } //$NON-NLS-1$
-	},
-	
-	CPP {
-		@Override public boolean isCPP() { return true; }
-		@Override public String toString() { return "C++"; } //$NON-NLS-1$
-	};
+public enum ParserLanguage
+{
+    C {
+        @Override
+        public boolean isCPP() { return false; }
 
-	public abstract boolean isCPP();
+        @Override
+        public String toString() { return "C"; } //$NON-NLS-1$
+    },
+
+    CPP {
+        @Override
+        public boolean isCPP() { return true; }
+
+        @Override
+        public String toString() { return "C++"; } //$NON-NLS-1$
+    };
+
+    public abstract boolean isCPP();
 }

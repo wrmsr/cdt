@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Bryan Wilkinson (QNX) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Thomas Corbat (IFS)
+ * Bryan Wilkinson (QNX) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
@@ -28,137 +28,162 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Template for a method.
  */
-class PDOMCPPMethodTemplate extends PDOMCPPFunctionTemplate implements ICPPMethod {
+class PDOMCPPMethodTemplate
+        extends PDOMCPPFunctionTemplate
+        implements ICPPMethod
+{
 
-	/**
-	 * Offset of remaining annotation information (relative to the beginning of
-	 * the record).
-	 */
-	private static final int ANNOTATION1 = PDOMCPPFunctionTemplate.RECORD_SIZE; // byte
-	
-	/**
-	 * The size in bytes of a PDOMCPPMethodTemplate record in the database.
-	 */
-	@SuppressWarnings("hiding")
-	protected static final int RECORD_SIZE = PDOMCPPFunctionTemplate.RECORD_SIZE + 1;
-	
-	/**
-	 * The bit offset of CV qualifier flags within ANNOTATION1.
-	 */
-	private static final int CV_OFFSET = PDOMCPPAnnotation.MAX_EXTRA_OFFSET + 1;
+    /**
+     * Offset of remaining annotation information (relative to the beginning of
+     * the record).
+     */
+    private static final int ANNOTATION1 = PDOMCPPFunctionTemplate.RECORD_SIZE; // byte
 
-	private byte annotation1= -1;
-	
-	public PDOMCPPMethodTemplate(PDOMCPPLinkage linkage, PDOMNode parent, ICPPMethod method) 
-			throws CoreException, DOMException {
-		super(linkage, parent, (ICPPFunctionTemplate) method);
-		
-		Database db = getDB();
+    /**
+     * The size in bytes of a PDOMCPPMethodTemplate record in the database.
+     */
+    @SuppressWarnings("hiding")
+    protected static final int RECORD_SIZE = PDOMCPPFunctionTemplate.RECORD_SIZE + 1;
 
-		try {
-			ICPPFunctionType type = method.getType();
-			byte annotation = 0;
-			annotation |= PDOMCAnnotation.encodeCVQualifiers(type) << CV_OFFSET;
-			annotation |= PDOMCPPAnnotation.encodeExtraAnnotation(method);
-			db.putByte(record + ANNOTATION1, annotation);
-		} catch (DOMException e) {
-			throw new CoreException(Util.createStatus(e));
-		}
-	}
-	
-	public PDOMCPPMethodTemplate(PDOMLinkage linkage, long bindingRecord) {
-		super(linkage, bindingRecord);
-	}
+    /**
+     * The bit offset of CV qualifier flags within ANNOTATION1.
+     */
+    private static final int CV_OFFSET = PDOMCPPAnnotation.MAX_EXTRA_OFFSET + 1;
 
-	@Override
-	protected int getRecordSize() {
-		return RECORD_SIZE;
-	}
+    private byte annotation1 = -1;
 
-	@Override
-	public int getNodeType() {
-		return IIndexCPPBindingConstants.CPP_METHOD_TEMPLATE;
-	}
+    public PDOMCPPMethodTemplate(PDOMCPPLinkage linkage, PDOMNode parent, ICPPMethod method)
+            throws CoreException, DOMException
+    {
+        super(linkage, parent, (ICPPFunctionTemplate) method);
 
-	@Override
-	public boolean isDestructor() {
-		return getBit(getAnnotation1(), PDOMCPPAnnotation.DESTRUCTOR_OFFSET);
-	}
+        Database db = getDB();
 
-	final protected byte getAnnotation1() {
-		if (annotation1 == -1)
-			annotation1= getByte(record + ANNOTATION1);
-		return annotation1;
-	}
+        try {
+            ICPPFunctionType type = method.getType();
+            byte annotation = 0;
+            annotation |= PDOMCAnnotation.encodeCVQualifiers(type) << CV_OFFSET;
+            annotation |= PDOMCPPAnnotation.encodeExtraAnnotation(method);
+            db.putByte(record + ANNOTATION1, annotation);
+        }
+        catch (DOMException e) {
+            throw new CoreException(Util.createStatus(e));
+        }
+    }
 
-	@Override
-	public boolean isImplicit() {
-		return getBit(getAnnotation1(), PDOMCPPAnnotation.IMPLICIT_METHOD_OFFSET);
-	}
+    public PDOMCPPMethodTemplate(PDOMLinkage linkage, long bindingRecord)
+    {
+        super(linkage, bindingRecord);
+    }
 
-	@Override
-	public boolean isExplicit() {
-		return getBit(getAnnotation1(), PDOMCPPAnnotation.EXPLICIT_METHOD_OFFSET);
-	}
+    @Override
+    protected int getRecordSize()
+    {
+        return RECORD_SIZE;
+    }
 
-	@Override
-	public boolean isVirtual() {
-		return getBit(getAnnotation1(), PDOMCPPAnnotation.VIRTUAL_OFFSET);
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCPPBindingConstants.CPP_METHOD_TEMPLATE;
+    }
 
-	@Override
-	public ICPPClassType getClassOwner() {
-		return (ICPPClassType) getOwner();
-	}
+    @Override
+    public boolean isDestructor()
+    {
+        return getBit(getAnnotation1(), PDOMCPPAnnotation.DESTRUCTOR_OFFSET);
+    }
 
-	@Override
-	public int getVisibility() {
-		return PDOMCPPAnnotation.getVisibility(getAnnotation());
-	}
+    final protected byte getAnnotation1()
+    {
+        if (annotation1 == -1) {
+            annotation1 = getByte(record + ANNOTATION1);
+        }
+        return annotation1;
+    }
 
-	public boolean isConst() {
-		return getBit(getAnnotation1(), PDOMCAnnotation.CONST_OFFSET + CV_OFFSET);
-	}
+    @Override
+    public boolean isImplicit()
+    {
+        return getBit(getAnnotation1(), PDOMCPPAnnotation.IMPLICIT_METHOD_OFFSET);
+    }
 
-	public boolean isVolatile() {
-		return getBit(getAnnotation1(), PDOMCAnnotation.VOLATILE_OFFSET + CV_OFFSET);
-	}
-	
-	@Override
-	public boolean isExtern() {
-		// ISO/IEC 14882:2003 9.2.6
-		return false;
-	}
-	
-	@Override
-	public boolean isExternC() {
-		return false;
-	}
+    @Override
+    public boolean isExplicit()
+    {
+        return getBit(getAnnotation1(), PDOMCPPAnnotation.EXPLICIT_METHOD_OFFSET);
+    }
 
-	@Override
-	public boolean isAuto() {
-		// ISO/IEC 14882:2003 9.2.6
-		return false;
-	}
+    @Override
+    public boolean isVirtual()
+    {
+        return getBit(getAnnotation1(), PDOMCPPAnnotation.VIRTUAL_OFFSET);
+    }
 
-	@Override
-	public boolean isRegister() {
-		// ISO/IEC 14882:2003 9.2.6
-		return false;
-	}
+    @Override
+    public ICPPClassType getClassOwner()
+    {
+        return (ICPPClassType) getOwner();
+    }
 
-	@Override
-	public boolean isPureVirtual() {
-		return false;
-	}
+    @Override
+    public int getVisibility()
+    {
+        return PDOMCPPAnnotation.getVisibility(getAnnotation());
+    }
 
-	@Override
-	public boolean isOverride() {
-		return false;
-	}
+    public boolean isConst()
+    {
+        return getBit(getAnnotation1(), PDOMCAnnotation.CONST_OFFSET + CV_OFFSET);
+    }
 
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
+    public boolean isVolatile()
+    {
+        return getBit(getAnnotation1(), PDOMCAnnotation.VOLATILE_OFFSET + CV_OFFSET);
+    }
+
+    @Override
+    public boolean isExtern()
+    {
+        // ISO/IEC 14882:2003 9.2.6
+        return false;
+    }
+
+    @Override
+    public boolean isExternC()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isAuto()
+    {
+        // ISO/IEC 14882:2003 9.2.6
+        return false;
+    }
+
+    @Override
+    public boolean isRegister()
+    {
+        // ISO/IEC 14882:2003 9.2.6
+        return false;
+    }
+
+    @Override
+    public boolean isPureVirtual()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isOverride()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isFinal()
+    {
+        return false;
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
@@ -21,17 +21,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @deprecated
  */
 @Deprecated
-public interface ICDescriptorOperation {
-	
-	/**
-	 * Call-back method executed atomically on a ICDescriptor in a runnable.
-	 * 
-	 * @see ICDescriptorManager#runDescriptorOperation(IProject, ICDescriptorOperation, IProgressMonitor)
-	 * @see ICDescriptorManager#runDescriptorOperation(IProject, ICProjectDescription, ICDescriptorOperation, IProgressMonitor)
-	 * @param descriptor
-	 * @param monitor
-	 * @throws CoreException
-	 */
-	void execute(ICDescriptor descriptor, IProgressMonitor monitor) throws CoreException;
+public interface ICDescriptorOperation
+{
 
+    /**
+     * Call-back method executed atomically on a ICDescriptor in a runnable.
+     *
+     * @see ICDescriptorManager#runDescriptorOperation(IProject, ICDescriptorOperation, IProgressMonitor)
+     * @see ICDescriptorManager#runDescriptorOperation(IProject, ICProjectDescription, ICDescriptorOperation, IProgressMonitor)
+     * @param descriptor
+     * @param monitor
+     * @throws CoreException
+     */
+    void execute(ICDescriptor descriptor, IProgressMonitor monitor)
+            throws CoreException;
 }

@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * QNX Software Systems - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
 
@@ -21,84 +21,100 @@ import org.eclipse.cdt.core.model.ISourceReference;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/** 
+/**
  * Element info for ISourceReference elements. 
  */
-class SourceManipulationInfo extends CElementInfo {
-	protected int fStartPos;
-	protected int fLength;
-	protected int fIdStartPos;
-	protected int fIdLength;
-	protected int fStartLine;
-	protected int fEndLine;
+class SourceManipulationInfo
+        extends CElementInfo
+{
+    protected int fStartPos;
+    protected int fLength;
+    protected int fIdStartPos;
+    protected int fIdLength;
+    protected int fStartLine;
+    protected int fEndLine;
 
-	protected SourceManipulationInfo(CElement element) {
-		super(element);
-		setIsStructureKnown(true);
-	}
+    protected SourceManipulationInfo(CElement element)
+    {
+        super(element);
+        setIsStructureKnown(true);
+    }
 
-	public void setPos(int startPos, int length) {
-		fStartPos = startPos;
-		fLength = length;
-	}
-	
-	public int getStartPos() {
-		return fStartPos;
-	}
+    public void setPos(int startPos, int length)
+    {
+        fStartPos = startPos;
+        fLength = length;
+    }
 
-	public int getLength() {
-		return fLength;
-	}
+    public int getStartPos()
+    {
+        return fStartPos;
+    }
 
-	public void setIdPos(int startPos, int length) {
-		fIdStartPos= startPos;
-		fIdLength= length;
-	}
+    public int getLength()
+    {
+        return fLength;
+    }
 
-	public int getIdStartPos() {
-		return fIdStartPos;
-	}
+    public void setIdPos(int startPos, int length)
+    {
+        fIdStartPos = startPos;
+        fIdLength = length;
+    }
 
-	public int getIdLength() {
-		return fIdLength;
-	}
+    public int getIdStartPos()
+    {
+        return fIdStartPos;
+    }
 
-	public int getStartLine() {
-		return fStartLine;
-	}
+    public int getIdLength()
+    {
+        return fIdLength;
+    }
 
-	public int getEndLine() {
-		return fEndLine;
-	}
+    public int getStartLine()
+    {
+        return fStartLine;
+    }
 
-	public void setLines(int startLine, int endLine) {
-		fStartLine = startLine;
-		fEndLine = endLine;
-	}
+    public int getEndLine()
+    {
+        return fEndLine;
+    }
 
-	protected ISourceRange getSourceRange() {
-		return new SourceRange(fStartPos, fLength, fIdStartPos, fIdLength, fStartLine, fEndLine);
-	}
+    public void setLines(int startLine, int endLine)
+    {
+        fStartLine = startLine;
+        fEndLine = endLine;
+    }
 
-	/**
-	 * @see ISourceReference#getSource()
-	 */
-	public String getSource() throws CModelException {
-		ITranslationUnit unit = getTranslationUnit();
-		IBuffer buffer = unit.getBuffer();
-		if (buffer == null) {
-			return null;
-		}
-		int offset = fStartPos;
-		int length = fLength;
-		if (offset == -1 || length == 0 ) {
-			return null;
-		}
-		try {
-			return buffer.getText(offset, length);
-		} catch (RuntimeException e) {
-			return null;
-		}
+    protected ISourceRange getSourceRange()
+    {
+        return new SourceRange(fStartPos, fLength, fIdStartPos, fIdLength, fStartLine, fEndLine);
+    }
+
+    /**
+     * @see ISourceReference#getSource()
+     */
+    public String getSource()
+            throws CModelException
+    {
+        ITranslationUnit unit = getTranslationUnit();
+        IBuffer buffer = unit.getBuffer();
+        if (buffer == null) {
+            return null;
+        }
+        int offset = fStartPos;
+        int length = fLength;
+        if (offset == -1 || length == 0) {
+            return null;
+        }
+        try {
+            return buffer.getText(offset, length);
+        }
+        catch (RuntimeException e) {
+            return null;
+        }
 
 //		ITranslationUnit tu = getTranslationUnit();
 //		if (tu != null) {
@@ -117,93 +133,105 @@ class SourceManipulationInfo extends CElementInfo {
 //			}
 //		}
 //		return ""; //$NON-NLS-1$
-	}
+    }
 
-	/**
-	 * @see IMember#getTranslationUnit()
-	 */
-	public ITranslationUnit getTranslationUnit() {
-		for (ICElement celem = getElement(); celem != null; celem = celem.getParent()) {
-			if (celem instanceof ITranslationUnit)
-				return (ITranslationUnit) celem;
-		}
-		return null;
-	}
+    /**
+     * @see IMember#getTranslationUnit()
+     */
+    public ITranslationUnit getTranslationUnit()
+    {
+        for (ICElement celem = getElement(); celem != null; celem = celem.getParent()) {
+            if (celem instanceof ITranslationUnit) {
+                return (ITranslationUnit) celem;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * @see ISourceManipulation#copy(ICElement, ICElement, String, boolean, IProgressMonitor)
-	 */
-	public void copy(ICElement container, ICElement sibling, String rename, boolean force,
-		IProgressMonitor monitor) throws CModelException {
-		if (container == null) {
-			throw new IllegalArgumentException(CoreModelMessages.getString("operation.nullContainer")); //$NON-NLS-1$
-		}
-		ICElement[] elements= new ICElement[] { getElement() };
-		ICElement[] containers= new ICElement[] { container };
-		ICElement[] siblings= null;
-		if (sibling != null) {
-			siblings= new ICElement[] { sibling };
-		}
-		String[] renamings= null;
-		if (rename != null) {
-			renamings= new String[] { rename };
-		}
-		getElement().getCModel().copy(elements, containers, siblings, renamings, force, monitor);
-	}
+    /**
+     * @see ISourceManipulation#copy(ICElement, ICElement, String, boolean, IProgressMonitor)
+     */
+    public void copy(ICElement container, ICElement sibling, String rename, boolean force,
+            IProgressMonitor monitor)
+            throws CModelException
+    {
+        if (container == null) {
+            throw new IllegalArgumentException(CoreModelMessages.getString("operation.nullContainer")); //$NON-NLS-1$
+        }
+        ICElement[] elements = new ICElement[] {getElement()};
+        ICElement[] containers = new ICElement[] {container};
+        ICElement[] siblings = null;
+        if (sibling != null) {
+            siblings = new ICElement[] {sibling};
+        }
+        String[] renamings = null;
+        if (rename != null) {
+            renamings = new String[] {rename};
+        }
+        getElement().getCModel().copy(elements, containers, siblings, renamings, force, monitor);
+    }
 
-	/**
-	 * @see ISourceManipulation#delete(boolean, IProgressMonitor)
-	 */
-	public void delete(boolean force, IProgressMonitor monitor) throws CModelException {
-		ICElement[] elements = new ICElement[] { getElement() };
-		getElement().getCModel().delete(elements, force, monitor);
-	}
+    /**
+     * @see ISourceManipulation#delete(boolean, IProgressMonitor)
+     */
+    public void delete(boolean force, IProgressMonitor monitor)
+            throws CModelException
+    {
+        ICElement[] elements = new ICElement[] {getElement()};
+        getElement().getCModel().delete(elements, force, monitor);
+    }
 
-	/**
-	 * @see ISourceManipulation#move(ICElement, ICElement, String, boolean, IProgressMonitor)
-	 */
-	public void move(ICElement container, ICElement sibling, String rename, boolean force,
-			IProgressMonitor monitor) throws CModelException {
-		if (container == null) {
-			throw new IllegalArgumentException(CoreModelMessages.getString("operation.nullContainer")); //$NON-NLS-1$
-		}
-		ICElement[] elements= new ICElement[] { getElement() };
-		ICElement[] containers= new ICElement[] { container };
-		ICElement[] siblings= null;
-		if (sibling != null) {
-			siblings= new ICElement[] { sibling };
-		}
-		String[] renamings= null;
-		if (rename != null) {
-			renamings= new String[] { rename };
-		}
-		getElement().getCModel().move(elements, containers, siblings, renamings, force, monitor);
-	}
+    /**
+     * @see ISourceManipulation#move(ICElement, ICElement, String, boolean, IProgressMonitor)
+     */
+    public void move(ICElement container, ICElement sibling, String rename, boolean force,
+            IProgressMonitor monitor)
+            throws CModelException
+    {
+        if (container == null) {
+            throw new IllegalArgumentException(CoreModelMessages.getString("operation.nullContainer")); //$NON-NLS-1$
+        }
+        ICElement[] elements = new ICElement[] {getElement()};
+        ICElement[] containers = new ICElement[] {container};
+        ICElement[] siblings = null;
+        if (sibling != null) {
+            siblings = new ICElement[] {sibling};
+        }
+        String[] renamings = null;
+        if (rename != null) {
+            renamings = new String[] {rename};
+        }
+        getElement().getCModel().move(elements, containers, siblings, renamings, force, monitor);
+    }
 
-	/**
-	 * @see ISourceManipulation#rename(String, boolean, IProgressMonitor)
-	 */
-	public void rename(String name, boolean force, IProgressMonitor monitor) throws CModelException {
-		if (name == null) {
-			throw new IllegalArgumentException("element.nullName"); //$NON-NLS-1$
-		}
-		ICElement[] elements= new ICElement[] { getElement() };
-		ICElement[] dests= new ICElement[] { getElement().getParent() };
-		String[] renamings= new String[] { name };
-		getElement().getCModel().rename(elements, dests, renamings, force, monitor);
-	}
-	
-	/**
-	 * Returns the element modifiers.
-	 */
-	public int getModifiers() {
-		return 0;
-	}
-	
-	/**
-	 * Subclasses should override
-	 */
-	public boolean hasSameContentsAs(SourceManipulationInfo otherInfo) {
-		return element.fType == otherInfo.element.fType;
-	}
+    /**
+     * @see ISourceManipulation#rename(String, boolean, IProgressMonitor)
+     */
+    public void rename(String name, boolean force, IProgressMonitor monitor)
+            throws CModelException
+    {
+        if (name == null) {
+            throw new IllegalArgumentException("element.nullName"); //$NON-NLS-1$
+        }
+        ICElement[] elements = new ICElement[] {getElement()};
+        ICElement[] dests = new ICElement[] {getElement().getParent()};
+        String[] renamings = new String[] {name};
+        getElement().getCModel().rename(elements, dests, renamings, force, monitor);
+    }
+
+    /**
+     * Returns the element modifiers.
+     */
+    public int getModifiers()
+    {
+        return 0;
+    }
+
+    /**
+     * Subclasses should override
+     */
+    public boolean hasSameContentsAs(SourceManipulationInfo otherInfo)
+    {
+        return element.fType == otherInfo.element.fType;
+    }
 }

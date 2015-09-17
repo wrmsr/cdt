@@ -4,16 +4,18 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
+ * IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser;
 
 import org.eclipse.cdt.core.dom.ast.ASTNodeProperty;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 
-public interface IASTAmbiguousStatement extends IASTStatement {
+public interface IASTAmbiguousStatement
+        extends IASTStatement
+{
     public static final ASTNodeProperty STATEMENT = new ASTNodeProperty("IASTAmbiguousStatement.STATEMENT - Ambiguous statement."); //$NON-NLS-1$
 
     public void addStatement(IASTStatement s);

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.resources;
 
@@ -18,15 +18,21 @@ import org.eclipse.core.runtime.CoreException;
  * CDT console adaptor interface providing output streams.
  * The adaptor provides the means of access to UI plugin console streams.
  */
-public interface IConsole {
-	/**
-	 * Start the console for a given project.
-	 * 
-	 * @param project - the project to start the console.
-	 */
-	void start(IProject project);
+public interface IConsole
+{
+    /**
+     * Start the console for a given project.
+     *
+     * @param project - the project to start the console.
+     */
+    void start(IProject project);
 
-	ConsoleOutputStream getOutputStream() throws CoreException;
-	ConsoleOutputStream getInfoStream() throws CoreException;
-	ConsoleOutputStream getErrorStream() throws CoreException;
+    ConsoleOutputStream getOutputStream()
+            throws CoreException;
+
+    ConsoleOutputStream getInfoStream()
+            throws CoreException;
+
+    ConsoleOutputStream getErrorStream()
+            throws CoreException;
 }

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
@@ -17,12 +17,15 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBindingComparator;
  * {@link IIndexFragmentBindingComparator} suitable for comparing two PDOMBindings
  *
  */
-public class PDOMFragmentBindingComparator implements IIndexFragmentBindingComparator {
-	@Override
-	public int compare(IIndexFragmentBinding a, IIndexFragmentBinding b) {
-		if(a instanceof PDOMBinding && b instanceof PDOMBinding) {
-			return ((PDOMBinding) a).pdomCompareTo((PDOMBinding) b);			
-		}
-		return Integer.MIN_VALUE;
-	}
+public class PDOMFragmentBindingComparator
+        implements IIndexFragmentBindingComparator
+{
+    @Override
+    public int compare(IIndexFragmentBinding a, IIndexFragmentBinding b)
+    {
+        if (a instanceof PDOMBinding && b instanceof PDOMBinding) {
+            return ((PDOMBinding) a).pdomCompareTo((PDOMBinding) b);
+        }
+        return Integer.MIN_VALUE;
+    }
 }

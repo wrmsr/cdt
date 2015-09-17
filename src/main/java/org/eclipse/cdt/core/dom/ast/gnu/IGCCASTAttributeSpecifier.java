@@ -5,9 +5,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Thomas Corbat (IFS) - initial API and implementation
+ * Thomas Corbat (IFS) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.gnu;
 
@@ -21,13 +21,15 @@ import org.eclipse.cdt.core.parser.util.InstanceOfPredicate;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 5.7
  */
-public interface IGCCASTAttributeSpecifier extends IASTAttributeSpecifier {
-	public static InstanceOfPredicate<IASTAttributeSpecifier> TYPE_FILTER =
-			new InstanceOfPredicate<>(IGCCASTAttributeSpecifier.class);
+public interface IGCCASTAttributeSpecifier
+        extends IASTAttributeSpecifier
+{
+    public static InstanceOfPredicate<IASTAttributeSpecifier> TYPE_FILTER =
+            new InstanceOfPredicate<>(IGCCASTAttributeSpecifier.class);
 
-	@Override
-	public IGCCASTAttributeSpecifier copy();
+    @Override
+    public IGCCASTAttributeSpecifier copy();
 
-	@Override
-	public IGCCASTAttributeSpecifier copy(CopyStyle style);
+    @Override
+    public IGCCASTAttributeSpecifier copy(CopyStyle style);
 }

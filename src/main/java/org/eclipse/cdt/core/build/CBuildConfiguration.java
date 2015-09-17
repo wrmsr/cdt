@@ -30,117 +30,140 @@ import org.osgi.service.prefs.BackingStoreException;
 /**
  * Root class for CDT build configurations. Provides access to the build
  * settings for subclasses.
- * 
+ *
  * @since 5.12
  */
-public abstract class CBuildConfiguration extends PlatformObject {
+public abstract class CBuildConfiguration
+        extends PlatformObject
+{
 
-	private static final String TOOLCHAIN = "cdt.toolChain"; //$NON-NLS-1$
+    private static final String TOOLCHAIN = "cdt.toolChain"; //$NON-NLS-1$
 
-	private final IBuildConfiguration config;
-	private CToolChain toolChain;
+    private final IBuildConfiguration config;
+    private CToolChain toolChain;
 
-	protected CBuildConfiguration(IBuildConfiguration config) {
-		this.config = config;
-	}
+    protected CBuildConfiguration(IBuildConfiguration config)
+    {
+        this.config = config;
+    }
 
-	public IBuildConfiguration getBuildConfiguration() {
-		return config;
-	}
+    public IBuildConfiguration getBuildConfiguration()
+    {
+        return config;
+    }
 
-	public String getName() {
-		return config.getName();
-	}
+    public String getName()
+    {
+        return config.getName();
+    }
 
-	public IProject getProject() {
-		return config.getProject();
-	}
+    public IProject getProject()
+    {
+        return config.getProject();
+    }
 
-	public void setActive(IProgressMonitor monitor) throws CoreException {
-		IProject project = config.getProject();
-		if (config.equals(project.getActiveBuildConfig())) {
-			// already set
-			return;
-		}
+    public void setActive(IProgressMonitor monitor)
+            throws CoreException
+    {
+        IProject project = config.getProject();
+        if (config.equals(project.getActiveBuildConfig())) {
+            // already set
+            return;
+        }
 
-		IProjectDescription projectDesc = project.getDescription();
-		projectDesc.setActiveBuildConfig(config.getName());
-		project.setDescription(projectDesc, monitor);
-	}
+        IProjectDescription projectDesc = project.getDescription();
+        projectDesc.setActiveBuildConfig(config.getName());
+        project.setDescription(projectDesc, monitor);
+    }
 
-	protected IEclipsePreferences getSettings() {
-		return (IEclipsePreferences) new ProjectScope(config.getProject()).getNode("org.eclipse.cdt.core") //$NON-NLS-1$
-				.node("config") //$NON-NLS-1$
-				.node(config.getName());
-	}
+    protected IEclipsePreferences getSettings()
+    {
+        return (IEclipsePreferences) new ProjectScope(config.getProject()).getNode("org.eclipse.cdt.core") //$NON-NLS-1$
+                .node("config") //$NON-NLS-1$
+                .node(config.getName());
+    }
 
-	private synchronized CToolChain getToolChain(String id) throws CoreException {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint(CCorePlugin.PLUGIN_ID + ".ToolChain"); //$NON-NLS-1$
-		for (IExtension extension : point.getExtensions()) {
-			for (IConfigurationElement element : extension.getConfigurationElements()) {
-				String eid = element.getAttribute("id"); //$NON-NLS-1$
-				if (id.equals(eid)) {
-					String clsName = element.getAttribute("adaptor"); //$NON-NLS-1$
-					if (clsName != null) {
-						try {
-							Class<?> cls = Class.forName(clsName);
-							return (CToolChain) getAdapter(cls);
-						} catch (ClassNotFoundException e) {
-							throw new CoreException(new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID,
-									"creating toolchain", e)); //$NON-NLS-1$
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
+    private synchronized CToolChain getToolChain(String id)
+            throws CoreException
+    {
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IExtensionPoint point = registry.getExtensionPoint(CCorePlugin.PLUGIN_ID + ".ToolChain"); //$NON-NLS-1$
+        for (IExtension extension : point.getExtensions()) {
+            for (IConfigurationElement element : extension.getConfigurationElements()) {
+                String eid = element.getAttribute("id"); //$NON-NLS-1$
+                if (id.equals(eid)) {
+                    String clsName = element.getAttribute("adaptor"); //$NON-NLS-1$
+                    if (clsName != null) {
+                        try {
+                            Class<?> cls = Class.forName(clsName);
+                            return (CToolChain) getAdapter(cls);
+                        }
+                        catch (ClassNotFoundException e) {
+                            throw new CoreException(new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID,
+                                    "creating toolchain", e)); //$NON-NLS-1$
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
-	public synchronized void setToolChain(String id) throws CoreException {
-		CToolChain newtc = getToolChain(id);
-		if (newtc == null) {
-			throw new CoreException(
-					new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, "unknown toolchain: " + id)); //$NON-NLS-1$
-		}
+    public synchronized void setToolChain(String id)
+            throws CoreException
+    {
+        CToolChain newtc = getToolChain(id);
+        if (newtc == null) {
+            throw new CoreException(
+                    new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, "unknown toolchain: " + id)); //$NON-NLS-1$
+        }
 
-		IEclipsePreferences settings = getSettings();
-		settings.put(TOOLCHAIN, id);
-		try {
-			settings.flush();
-		} catch (BackingStoreException e) {
-			throw new CoreException(
-					new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, "saving toolchain id", e)); //$NON-NLS-1$
-		}
+        IEclipsePreferences settings = getSettings();
+        settings.put(TOOLCHAIN, id);
+        try {
+            settings.flush();
+        }
+        catch (BackingStoreException e) {
+            throw new CoreException(
+                    new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, "saving toolchain id", e)); //$NON-NLS-1$
+        }
 
-		toolChain = newtc;
-	}
+        toolChain = newtc;
+    }
 
-	public CToolChain getToolChain() throws CoreException {
-		if (toolChain == null) {
-			IEclipsePreferences settings = getSettings();
-			String id = settings.get(TOOLCHAIN, ""); //$NON-NLS-1$
-			if (id.isEmpty()) {
-				return null;
-			} else {
-				toolChain = getToolChain(id);
-			}
-		}
-		return toolChain;
-	}
+    public CToolChain getToolChain()
+            throws CoreException
+    {
+        if (toolChain == null) {
+            IEclipsePreferences settings = getSettings();
+            String id = settings.get(TOOLCHAIN, ""); //$NON-NLS-1$
+            if (id.isEmpty()) {
+                return null;
+            }
+            else {
+                toolChain = getToolChain(id);
+            }
+        }
+        return toolChain;
+    }
 
-	public IScannerInfo getScannerInfo(IResource resource) throws CoreException {
-		// By default, get it from the toolchain.
-		CToolChain toolChain = getToolChain();
-		return toolChain != null ? toolChain.getScannerInfo(resource) : null;
-	}
+    public IScannerInfo getScannerInfo(IResource resource)
+            throws CoreException
+    {
+        // By default, get it from the toolchain.
+        CToolChain toolChain = getToolChain();
+        return toolChain != null ? toolChain.getScannerInfo(resource) : null;
+    }
 
-	public void clearScannerInfo() throws CoreException {
-	}
+    public void clearScannerInfo()
+            throws CoreException
+    {
+    }
 
-	public CConsoleParser[] getConsoleParsers() throws CoreException {
-		CToolChain toolChain = getToolChain();
-		return toolChain != null ? toolChain.getConsoleParsers() : null;
-	}
-
+    public CConsoleParser[] getConsoleParsers()
+            throws CoreException
+    {
+        CToolChain toolChain = getToolChain();
+        return toolChain != null ? toolChain.getConsoleParsers() : null;
+    }
 }

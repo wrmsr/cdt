@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn (Wind River Systems) - initial API and implementation
+ * Markus Schorn (Wind River Systems) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom;
 
@@ -25,60 +25,74 @@ import org.eclipse.core.runtime.jobs.Job;
 /**
  * Job without rule to setup the indexer.
  */
-public class PDOMSetupJob extends Job {
-	private static final String SETTINGS_FOLDER_NAME = ".settings"; //$NON-NLS-1$
+public class PDOMSetupJob
+        extends Job
+{
+    private static final String SETTINGS_FOLDER_NAME = ".settings"; //$NON-NLS-1$
 
-	private PDOMManager fManager;
+    private PDOMManager fManager;
 
-	PDOMSetupJob(PDOMManager manager) {
-		super(Messages.PDOMManager_StartJob_name);
-		fManager= manager;
-	}
-	
-	@Override
-	protected IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask("", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-		while (true) {
-			ICProject cproject= fManager.getNextProject();
-			if (cproject == null)
-				return Status.OK_STATUS;
-			
-			final IProject project= cproject.getProject();
-			monitor.setTaskName(project.getName());
-			if (!project.isOpen()) {
-				if (fManager.fTraceIndexerSetup) 
-					System.out.println("Indexer: Project is not open: " + project.getName()); //$NON-NLS-1$
-			} else if (fManager.postponeSetup(cproject)) {
-				if (fManager.fTraceIndexerSetup) 
-					System.out.println("Indexer: Setup is postponed: " + project.getName()); //$NON-NLS-1$
-			} else {
-				syncronizeProjectSettings(project, new SubProgressMonitor(monitor, 1));
-				if (fManager.getIndexer(cproject) == null) {
-					try {
-						fManager.createIndexer(cproject, new SubProgressMonitor(monitor, 99));
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-						return Status.CANCEL_STATUS;
-					}
-				} else if (fManager.fTraceIndexerSetup) { 
-					System.out.println("Indexer: No action, indexer already exists: " + project.getName()); //$NON-NLS-1$
-				}
-			}
-		}
-	}
+    PDOMSetupJob(PDOMManager manager)
+    {
+        super(Messages.PDOMManager_StartJob_name);
+        fManager = manager;
+    }
 
-	private void syncronizeProjectSettings(IProject project, IProgressMonitor monitor) {
-		try {
-			IFolder settings= project.getFolder(SETTINGS_FOLDER_NAME);  
-			settings.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-		}
-		monitor.done();
-	}
+    @Override
+    protected IStatus run(IProgressMonitor monitor)
+    {
+        monitor.beginTask("", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+        while (true) {
+            ICProject cproject = fManager.getNextProject();
+            if (cproject == null) {
+                return Status.OK_STATUS;
+            }
 
-	@Override
-	public boolean belongsTo(Object family) {
-		return family == fManager;
-	}
+            final IProject project = cproject.getProject();
+            monitor.setTaskName(project.getName());
+            if (!project.isOpen()) {
+                if (fManager.fTraceIndexerSetup) {
+                    System.out.println("Indexer: Project is not open: " + project.getName()); //$NON-NLS-1$
+                }
+            }
+            else if (fManager.postponeSetup(cproject)) {
+                if (fManager.fTraceIndexerSetup) {
+                    System.out.println("Indexer: Setup is postponed: " + project.getName()); //$NON-NLS-1$
+                }
+            }
+            else {
+                syncronizeProjectSettings(project, new SubProgressMonitor(monitor, 1));
+                if (fManager.getIndexer(cproject) == null) {
+                    try {
+                        fManager.createIndexer(cproject, new SubProgressMonitor(monitor, 99));
+                    }
+                    catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return Status.CANCEL_STATUS;
+                    }
+                }
+                else if (fManager.fTraceIndexerSetup) {
+                    System.out.println("Indexer: No action, indexer already exists: " + project.getName()); //$NON-NLS-1$
+                }
+            }
+        }
+    }
+
+    private void syncronizeProjectSettings(IProject project, IProgressMonitor monitor)
+    {
+        try {
+            IFolder settings = project.getFolder(SETTINGS_FOLDER_NAME);
+            settings.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+        }
+        monitor.done();
+    }
+
+    @Override
+    public boolean belongsTo(Object family)
+    {
+        return family == fManager;
+    }
 }

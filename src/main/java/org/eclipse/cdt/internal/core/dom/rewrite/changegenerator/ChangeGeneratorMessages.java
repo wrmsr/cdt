@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
+ * Markus Schorn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.rewrite.changegenerator;
 
@@ -16,15 +16,18 @@ import org.eclipse.osgi.util.NLS;
  * External strings for the change generator.
  * @since 5.0
  */
-public class ChangeGeneratorMessages extends NLS {
-	public static String ChangeGenerator_compositeChange;
-	public static String ChangeGenerator_group;
+public class ChangeGeneratorMessages
+        extends NLS
+{
+    public static String ChangeGenerator_compositeChange;
+    public static String ChangeGenerator_group;
 
-	static {
-		// Initialize resource bundle
-		NLS.initializeMessages(ChangeGeneratorMessages.class.getName(), ChangeGeneratorMessages.class);
-	}
+    static {
+        // Initialize resource bundle
+        NLS.initializeMessages(ChangeGeneratorMessages.class.getName(), ChangeGeneratorMessages.class);
+    }
 
-	private ChangeGeneratorMessages() {
-	}
+    private ChangeGeneratorMessages()
+    {
+    }
 }

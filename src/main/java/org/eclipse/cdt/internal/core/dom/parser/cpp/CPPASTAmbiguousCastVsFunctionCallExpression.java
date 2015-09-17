@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - Initial API and implementation
- *     Sergey Prigogin (Google)
+ * Markus Schorn - Initial API and implementation
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -18,14 +18,18 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTExpression;
 import org.eclipse.cdt.internal.core.dom.parser.ASTAmbiguousCastVsFunctionCallExpression;
 
 public class CPPASTAmbiguousCastVsFunctionCallExpression
-		extends	ASTAmbiguousCastVsFunctionCallExpression implements ICPPASTExpression {
+        extends ASTAmbiguousCastVsFunctionCallExpression
+        implements ICPPASTExpression
+{
 
-    public CPPASTAmbiguousCastVsFunctionCallExpression(IASTCastExpression castExpr, IASTFunctionCallExpression funcCall) {
-    	super(castExpr, funcCall);
-	}
+    public CPPASTAmbiguousCastVsFunctionCallExpression(IASTCastExpression castExpr, IASTFunctionCallExpression funcCall)
+    {
+        super(castExpr, funcCall);
+    }
 
-	@Override
-	public IASTImplicitDestructorName[] getImplicitDestructorNames() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public IASTImplicitDestructorName[] getImplicitDestructorNames()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

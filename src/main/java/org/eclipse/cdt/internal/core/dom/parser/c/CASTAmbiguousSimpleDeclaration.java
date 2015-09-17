@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - Initial API and implementation
- *     Sergey Prigogin (Google)
- *     Thomas Corbat (IFS)
+ * Markus Schorn - Initial API and implementation
+ * Sergey Prigogin (Google)
+ * Thomas Corbat (IFS)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -35,121 +35,138 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTInternalScope;
  * </pre>
  * @since 5.0.1
  */
-public class CASTAmbiguousSimpleDeclaration extends ASTAmbiguousNode implements IASTAmbiguousSimpleDeclaration {
+public class CASTAmbiguousSimpleDeclaration
+        extends ASTAmbiguousNode
+        implements IASTAmbiguousSimpleDeclaration
+{
     private IASTSimpleDeclaration fSimpleDecl;
     private IASTDeclSpecifier fAltDeclSpec;
     private IASTDeclarator fAltDtor;
-    
-    public CASTAmbiguousSimpleDeclaration(IASTSimpleDeclaration decl, IASTDeclSpecifier declSpec, IASTDeclarator dtor) {
-    	fSimpleDecl= decl;
-    	fAltDeclSpec= declSpec;
-    	fAltDtor= dtor;
-	}
 
-	@Override
-	protected void beforeResolution() {
-		// Populate containing scope, so that it will not be affected by the alternative branches.
-		IScope scope= CVisitor.getContainingScope(this);
-		if (scope instanceof IASTInternalScope) {
-			((IASTInternalScope) scope).populateCache();
-		}
-	}
+    public CASTAmbiguousSimpleDeclaration(IASTSimpleDeclaration decl, IASTDeclSpecifier declSpec, IASTDeclarator dtor)
+    {
+        fSimpleDecl = decl;
+        fAltDeclSpec = declSpec;
+        fAltDtor = dtor;
+    }
 
     @Override
-	public IASTNode[] getNodes() {
+    protected void beforeResolution()
+    {
+        // Populate containing scope, so that it will not be affected by the alternative branches.
+        IScope scope = CVisitor.getContainingScope(this);
+        if (scope instanceof IASTInternalScope) {
+            ((IASTInternalScope) scope).populateCache();
+        }
+    }
+
+    @Override
+    public IASTNode[] getNodes()
+    {
         return new IASTNode[] {fSimpleDecl, fAltDeclSpec, fAltDtor};
     }
 
-	@Override
-	public IASTSimpleDeclaration copy() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public IASTSimpleDeclaration copy()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public IASTSimpleDeclaration copy(CopyStyle style) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public IASTSimpleDeclaration copy(CopyStyle style)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void addDeclarator(IASTDeclarator declarator) {
-		fSimpleDecl.addDeclarator(declarator);
-	}
+    @Override
+    public void addDeclarator(IASTDeclarator declarator)
+    {
+        fSimpleDecl.addDeclarator(declarator);
+    }
 
-	@Override
-	public IASTDeclSpecifier getDeclSpecifier() {
-		return fSimpleDecl.getDeclSpecifier();
-	}
+    @Override
+    public IASTDeclSpecifier getDeclSpecifier()
+    {
+        return fSimpleDecl.getDeclSpecifier();
+    }
 
-	@Override
-	public IASTDeclarator[] getDeclarators() {
-		return fSimpleDecl.getDeclarators();
-	}
+    @Override
+    public IASTDeclarator[] getDeclarators()
+    {
+        return fSimpleDecl.getDeclarators();
+    }
 
-	@Override
-	public void setDeclSpecifier(IASTDeclSpecifier declSpec) {
-		fSimpleDecl.setDeclSpecifier(declSpec);
-	}
+    @Override
+    public void setDeclSpecifier(IASTDeclSpecifier declSpec)
+    {
+        fSimpleDecl.setDeclSpecifier(declSpec);
+    }
 
-	@Override
-	public IASTAttribute[] getAttributes() {
-		return fSimpleDecl.getAttributes();
-	}
+    @Override
+    public IASTAttribute[] getAttributes()
+    {
+        return fSimpleDecl.getAttributes();
+    }
 
-	@Deprecated
-	@Override
-	public void addAttribute(IASTAttribute attribute) {
-		fSimpleDecl.addAttribute(attribute);
-	}
+    @Deprecated
+    @Override
+    public void addAttribute(IASTAttribute attribute)
+    {
+        fSimpleDecl.addAttribute(attribute);
+    }
 
-	@Override
-	public IASTAttributeSpecifier[] getAttributeSpecifiers() {
-		return fSimpleDecl.getAttributeSpecifiers();
-	}
+    @Override
+    public IASTAttributeSpecifier[] getAttributeSpecifiers()
+    {
+        return fSimpleDecl.getAttributeSpecifiers();
+    }
 
-	@Override
-	public void addAttributeSpecifier(IASTAttributeSpecifier attributeSpecifier) {
-		fSimpleDecl.addAttributeSpecifier(attributeSpecifier);
-	}
+    @Override
+    public void addAttributeSpecifier(IASTAttributeSpecifier attributeSpecifier)
+    {
+        fSimpleDecl.addAttributeSpecifier(attributeSpecifier);
+    }
 
-	@Override
-	protected final IASTNode doResolveAmbiguity(ASTVisitor resolver) {
-		final IASTAmbiguityParent owner= (IASTAmbiguityParent) getParent();
-		IASTNode nodeToReplace= this;
+    @Override
+    protected final IASTNode doResolveAmbiguity(ASTVisitor resolver)
+    {
+        final IASTAmbiguityParent owner = (IASTAmbiguityParent) getParent();
+        IASTNode nodeToReplace = this;
 
-		// Handle nested ambiguities first.
-		owner.replace(nodeToReplace, fSimpleDecl);
-		IASTDeclSpecifier declSpec= fSimpleDecl.getDeclSpecifier();
-		declSpec.accept(resolver);
-		
+        // Handle nested ambiguities first.
+        owner.replace(nodeToReplace, fSimpleDecl);
+        IASTDeclSpecifier declSpec = fSimpleDecl.getDeclSpecifier();
+        declSpec.accept(resolver);
 
-		// Find nested names.
-		final NameCollector nameCollector= new NameCollector();
-		declSpec.accept(nameCollector);
-		final IASTName[] names= nameCollector.getNames();
+        // Find nested names.
+        final NameCollector nameCollector = new NameCollector();
+        declSpec.accept(nameCollector);
+        final IASTName[] names = nameCollector.getNames();
 
-		// Resolve names. 
-		boolean hasIssue= false;
-		for (IASTName name : names) {
-			try {
-				IBinding b = name.resolveBinding();
-				if (b instanceof IProblemBinding) {
-					hasIssue= true;
-					break;
-				}
-			} catch (Exception t) {
-				hasIssue= true;
-				break;
-			}
-		}
-		if (hasIssue) {
-			// Use the alternate version.
-			final IASTAmbiguityParent parent = (IASTAmbiguityParent) fSimpleDecl;
-			parent.replace(declSpec, fAltDeclSpec);
-			parent.replace(fSimpleDecl.getDeclarators()[0], fAltDtor);
-		}
-			
-		// Resolve further nested ambiguities.
-		fSimpleDecl.accept(resolver);
-		return fSimpleDecl;
-	}
+        // Resolve names.
+        boolean hasIssue = false;
+        for (IASTName name : names) {
+            try {
+                IBinding b = name.resolveBinding();
+                if (b instanceof IProblemBinding) {
+                    hasIssue = true;
+                    break;
+                }
+            }
+            catch (Exception t) {
+                hasIssue = true;
+                break;
+            }
+        }
+        if (hasIssue) {
+            // Use the alternate version.
+            final IASTAmbiguityParent parent = (IASTAmbiguityParent) fSimpleDecl;
+            parent.replace(declSpec, fAltDeclSpec);
+            parent.replace(fSimpleDecl.getDeclarators()[0], fAltDtor);
+        }
+
+        // Resolve further nested ambiguities.
+        fSimpleDecl.accept(resolver);
+        return fSimpleDecl;
+    }
 }

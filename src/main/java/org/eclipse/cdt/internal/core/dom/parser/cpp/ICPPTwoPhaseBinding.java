@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IBinding;
@@ -23,15 +23,17 @@ import org.eclipse.cdt.core.dom.ast.IBinding;
  * This allows for having multiple bindings for one final binding and deferring
  * the act of unifying them to a later point in time.
  */
-public interface ICPPTwoPhaseBinding extends IBinding {
+public interface ICPPTwoPhaseBinding
+        extends IBinding
+{
 
-	/**
-	 * Triggers the second step of the resolution where the binding that will be 
-	 * exposed via public API has to be computed. If this binding is already final 
-	 * {@code this} must be returned.
-	 * <p> Note, that the result of this operation is an instance of 
-	 * {@link ICPPTwoPhaseBinding}, however it must resolve to itself using 
-	 * {@link #resolveFinalBinding(CPPASTNameBase)}.
-	 */
-	IBinding resolveFinalBinding(CPPASTNameBase astName);
+    /**
+     * Triggers the second step of the resolution where the binding that will be
+     * exposed via public API has to be computed. If this binding is already final
+     * {@code this} must be returned.
+     * <p> Note, that the result of this operation is an instance of
+     * {@link ICPPTwoPhaseBinding}, however it must resolve to itself using
+     * {@link #resolveFinalBinding(CPPASTNameBase)}.
+     */
+    IBinding resolveFinalBinding(CPPASTNameBase astName);
 }

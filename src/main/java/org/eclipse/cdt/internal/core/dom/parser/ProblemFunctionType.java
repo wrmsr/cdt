@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser;
 
 import org.eclipse.cdt.core.dom.ast.IPointerType;
@@ -20,59 +20,75 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Implementation of problem types.
  */
-public class ProblemFunctionType extends ProblemType implements ICPPFunctionType {
+public class ProblemFunctionType
+        extends ProblemType
+        implements ICPPFunctionType
+{
 
-	public ProblemFunctionType(int id) {
-		super(id);
-	}
-	
-	@Override
-	public void marshal(ITypeMarshalBuffer buffer) throws CoreException {
-		buffer.putShort((short) (ITypeMarshalBuffer.PROBLEM_TYPE | ITypeMarshalBuffer.FLAG1));
-		buffer.putInt(getID());
-	}
-	
-	public static IType unmarshal(short firstBytes, ITypeMarshalBuffer buffer) throws CoreException {
-		return new ProblemFunctionType(buffer.getInt());
-	}
+    public ProblemFunctionType(int id)
+    {
+        super(id);
+    }
 
-	@Override
-	public IType getReturnType() {
-		return new ProblemType(getID());
-	}
+    @Override
+    public void marshal(ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        buffer.putShort((short) (ITypeMarshalBuffer.PROBLEM_TYPE | ITypeMarshalBuffer.FLAG1));
+        buffer.putInt(getID());
+    }
 
-	@Override
-	public IType[] getParameterTypes() {
-		return new IType[] {new ProblemType(getID())};
-	}
+    public static IType unmarshal(short firstBytes, ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        return new ProblemFunctionType(buffer.getInt());
+    }
 
-	@Override
-	public boolean isConst() {
-		return false;
-	}
+    @Override
+    public IType getReturnType()
+    {
+        return new ProblemType(getID());
+    }
 
-	@Override
-	public boolean isVolatile() {
-		return false;
-	}
+    @Override
+    public IType[] getParameterTypes()
+    {
+        return new IType[] {new ProblemType(getID())};
+    }
 
-	@Override
-	public boolean hasRefQualifier() {
-		return false;
-	}
+    @Override
+    public boolean isConst()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isRValueReference() {
-		return false;
-	}
+    @Override
+    public boolean isVolatile()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean takesVarArgs() {
-		return false;
-	}
+    @Override
+    public boolean hasRefQualifier()
+    {
+        return false;
+    }
 
-	@Override
-	public IPointerType getThisType() {
-		return new CPPPointerType(new ProblemType(getID()));
-	}
+    @Override
+    public boolean isRValueReference()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean takesVarArgs()
+    {
+        return false;
+    }
+
+    @Override
+    public IPointerType getThisType()
+    {
+        return new CPPPointerType(new ProblemType(getID()));
+    }
 }

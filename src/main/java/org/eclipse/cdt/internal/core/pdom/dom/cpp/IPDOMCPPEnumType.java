@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IEnumerator;
@@ -22,17 +22,19 @@ import org.eclipse.cdt.internal.core.pdom.dom.IPDOMBinding;
 /**
  * Interface that allows to implement a class-scope.
  */
-public interface IPDOMCPPEnumType extends ICPPEnumeration, IPDOMBinding, IIndexType {
-	/**
-	 * Returns the scope name, for use in {@link IScope#getScopeName()}
-	 */
-	IIndexName getScopeName();
-	
-	@Override
-	IEnumerator[] getEnumerators();
+public interface IPDOMCPPEnumType
+        extends ICPPEnumeration, IPDOMBinding, IIndexType
+{
+    /**
+     * Returns the scope name, for use in {@link IScope#getScopeName()}
+     */
+    IIndexName getScopeName();
 
-	/**
-	 * Called by the scope to access the enumerators.
-	 */
-	void loadEnumerators(CharArrayMap<IPDOMCPPEnumerator> map);
+    @Override
+    IEnumerator[] getEnumerators();
+
+    /**
+     * Called by the scope to access the enumerators.
+     */
+    void loadEnumerators(CharArrayMap<IPDOMCPPEnumerator> map);
 }

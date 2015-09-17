@@ -4,13 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    QNX - Initial API and implementation
- *    Markus Schorn (Wind River Systems)
- *    IBM Corporation
- *    Anton Leherbauer (Wind River Systems)
- *    Mike Kucera - IBM
+ * QNX - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * IBM Corporation
+ * Anton Leherbauer (Wind River Systems)
+ * Mike Kucera - IBM
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.gnu.c;
 
@@ -36,81 +36,93 @@ import org.eclipse.cdt.internal.core.pdom.dom.c.PDOMCLinkageFactory;
 /**
  * Concrete ILanguage implementation for the DOM C parser.
  */
-public class GCCLanguage extends AbstractCLikeLanguage {
-	protected static final GCCScannerExtensionConfiguration C_GNU_SCANNER_EXTENSION= GCCScannerExtensionConfiguration.getInstance();
-	protected static final GCCParserExtensionConfiguration C_GNU_PARSER_EXTENSION= GCCParserExtensionConfiguration.getInstance();
-	// Must match the id in the extension
-	public static final String ID = CCorePlugin.PLUGIN_ID + ".gcc"; //$NON-NLS-1$ 
+public class GCCLanguage
+        extends AbstractCLikeLanguage
+{
+    protected static final GCCScannerExtensionConfiguration C_GNU_SCANNER_EXTENSION = GCCScannerExtensionConfiguration.getInstance();
+    protected static final GCCParserExtensionConfiguration C_GNU_PARSER_EXTENSION = GCCParserExtensionConfiguration.getInstance();
+    // Must match the id in the extension
+    public static final String ID = CCorePlugin.PLUGIN_ID + ".gcc"; //$NON-NLS-1$
 
-	private static final GCCLanguage DEFAULT_INSTANCE = new GCCLanguage();
-	
-	public static GCCLanguage getDefault() {
-		return DEFAULT_INSTANCE;
-	}
-	
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPDOMLinkageFactory.class) {
-			return new PDOMCLinkageFactory();
-		}
-		return super.getAdapter(adapter);
-	}
-	
-	@Override
-	public String getId() {
-		return ID; 
-	}
+    private static final GCCLanguage DEFAULT_INSTANCE = new GCCLanguage();
 
-	@Override
-	public int getLinkageID() {
-		return ILinkage.C_LINKAGE_ID;
-	}
+    public static GCCLanguage getDefault()
+    {
+        return DEFAULT_INSTANCE;
+    }
 
-	/**
-	 * @nooverride This method is not intended to be re-implemented or extended by clients.
-	 * @deprecated Since 5.4 not called by the framework. Override
-	 *     {@link #getScannerExtensionConfiguration(IScannerInfo)} instead.
-	 */
-	@Deprecated
-	@Override
-	protected IScannerExtensionConfiguration getScannerExtensionConfiguration() {
-		return C_GNU_SCANNER_EXTENSION;
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(Class adapter)
+    {
+        if (adapter == IPDOMLinkageFactory.class) {
+            return new PDOMCLinkageFactory();
+        }
+        return super.getAdapter(adapter);
+    }
 
-	@Override
-	protected IScannerExtensionConfiguration getScannerExtensionConfiguration(IScannerInfo info) {
-		return GCCScannerExtensionConfiguration.getInstance(info);
-	}
+    @Override
+    public String getId()
+    {
+        return ID;
+    }
 
-	/**
-	 * Returns the extension configuration used for creating the parser.
-	 * @since 5.1
-	 */
-	protected ICParserExtensionConfiguration getParserExtensionConfiguration() {
-		return C_GNU_PARSER_EXTENSION;
-	}
+    @Override
+    public int getLinkageID()
+    {
+        return ILinkage.C_LINKAGE_ID;
+    }
 
-	@Override
-	protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index) {
-		return new GNUCSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
-	}
+    /**
+     * @nooverride This method is not intended to be re-implemented or extended by clients.
+     * @deprecated Since 5.4 not called by the framework. Override
+     *     {@link #getScannerExtensionConfiguration(IScannerInfo)} instead.
+     */
+    @Deprecated
+    @Override
+    protected IScannerExtensionConfiguration getScannerExtensionConfiguration()
+    {
+        return C_GNU_SCANNER_EXTENSION;
+    }
 
-	@Override
-	protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index,
-			int options, IParserSettings settings) {
-		GNUCSourceParser parser = new GNUCSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
-		if (settings != null) {
-			int maximumTrivialExpressions = settings.getMaximumTrivialExpressionsInAggregateInitializers();
-			if (maximumTrivialExpressions >= 0 && (options & OPTION_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS) != 0) {
-					parser.setMaximumTrivialExpressionsInAggregateInitializers(maximumTrivialExpressions);
-			}
-		}
-		return parser;
-	}
+    @Override
+    protected IScannerExtensionConfiguration getScannerExtensionConfiguration(IScannerInfo info)
+    {
+        return GCCScannerExtensionConfiguration.getInstance(info);
+    }
 
-	@Override
-	protected ParserLanguage getParserLanguage() {
-		return ParserLanguage.C;
-	}
+    /**
+     * Returns the extension configuration used for creating the parser.
+     * @since 5.1
+     */
+    protected ICParserExtensionConfiguration getParserExtensionConfiguration()
+    {
+        return C_GNU_PARSER_EXTENSION;
+    }
+
+    @Override
+    protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index)
+    {
+        return new GNUCSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
+    }
+
+    @Override
+    protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index,
+            int options, IParserSettings settings)
+    {
+        GNUCSourceParser parser = new GNUCSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
+        if (settings != null) {
+            int maximumTrivialExpressions = settings.getMaximumTrivialExpressionsInAggregateInitializers();
+            if (maximumTrivialExpressions >= 0 && (options & OPTION_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS) != 0) {
+                parser.setMaximumTrivialExpressionsInAggregateInitializers(maximumTrivialExpressions);
+            }
+        }
+        return parser;
+    }
+
+    @Override
+    protected ParserLanguage getParserLanguage()
+    {
+        return ParserLanguage.C;
+    }
 }

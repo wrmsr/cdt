@@ -4,32 +4,34 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.utils.debug;
 
-
 /**
  * DebugArrayType
- *  
+ *
  */
-public class DebugArrayType extends DebugDerivedType {
+public class DebugArrayType
+        extends DebugDerivedType
+{
 
-	int size;
+    int size;
 
-	/**
-	 *  
-	 */
-	public DebugArrayType(DebugType type, int arraySize) {
-		super(type);
-		size = arraySize;
-	}
+    /**
+     *
+     */
+    public DebugArrayType(DebugType type, int arraySize)
+    {
+        super(type);
+        size = arraySize;
+    }
 
-	public int getSize() {
-		return size;
-	}
-
+    public int getSize()
+    {
+        return size;
+    }
 }

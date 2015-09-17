@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser;
 
 import org.eclipse.cdt.core.index.IIndexFileLocation;
@@ -16,27 +16,34 @@ import org.eclipse.cdt.core.parser.util.CharArrayUtils;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContent;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContentProvider;
 
-public class EmptyFilesProvider extends InternalFileContentProvider {
-	final private static EmptyFilesProvider INSTANCE= new EmptyFilesProvider();
+public class EmptyFilesProvider
+        extends InternalFileContentProvider
+{
+    final private static EmptyFilesProvider INSTANCE = new EmptyFilesProvider();
 
-	public static InternalFileContentProvider getInstance() {
-		return INSTANCE;
-	}
+    public static InternalFileContentProvider getInstance()
+    {
+        return INSTANCE;
+    }
 
-	private EmptyFilesProvider() {
-	}
+    private EmptyFilesProvider()
+    {
+    }
 
-	@Override
-	public InternalFileContent getContentForInclusion(String path, 
-			IMacroDictionary macroDictionary) {
-		if (!getInclusionExists(path))
-			return null;
-		
-		return (InternalFileContent) FileContent.create(path, CharArrayUtils.EMPTY);
-	}
+    @Override
+    public InternalFileContent getContentForInclusion(String path,
+            IMacroDictionary macroDictionary)
+    {
+        if (!getInclusionExists(path)) {
+            return null;
+        }
 
-	@Override
-	public InternalFileContent getContentForInclusion(IIndexFileLocation ifl, String astPath) {
-		return (InternalFileContent) FileContent.create(astPath, CharArrayUtils.EMPTY);
-	}
+        return (InternalFileContent) FileContent.create(path, CharArrayUtils.EMPTY);
+    }
+
+    @Override
+    public InternalFileContent getContentForInclusion(IIndexFileLocation ifl, String astPath)
+    {
+        return (InternalFileContent) FileContent.create(astPath, CharArrayUtils.EMPTY);
+    }
 }

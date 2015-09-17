@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Nathan Ridge
+ * Nathan Ridge
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -28,101 +28,124 @@ import org.eclipse.core.runtime.PlatformObject;
  * This class provides common implementation for CPPTemplateNonTypeParameterSpecialization,
  * CPPTemplateTypeParameterSpecialization, and CPPTemplateTemplateParameterSpecialization.
  */
-public abstract class CPPTemplateParameterSpecialization extends PlatformObject
-		implements ICPPTemplateParameter, ICPPSpecialization {
-	private final ICPPSpecialization fOwner;
-	private final ICPPScope fScope;
-	private final ICPPTemplateParameter fSpecialized;
-	private final ICPPTemplateParameterMap fTemplateParameterMap;
-	private final ICPPTemplateArgument fDefaultValue;
+public abstract class CPPTemplateParameterSpecialization
+        extends PlatformObject
+        implements ICPPTemplateParameter, ICPPSpecialization
+{
+    private final ICPPSpecialization fOwner;
+    private final ICPPScope fScope;
+    private final ICPPTemplateParameter fSpecialized;
+    private final ICPPTemplateParameterMap fTemplateParameterMap;
+    private final ICPPTemplateArgument fDefaultValue;
 
-	public CPPTemplateParameterSpecialization(ICPPSpecialization owner, ICPPScope scope, ICPPTemplateParameter specialized,
-			ICPPTemplateArgument defaultValue) {
-		fOwner = owner;
-		fScope = scope;
-		fSpecialized = specialized;
-		fTemplateParameterMap = owner.getTemplateParameterMap();
-		fDefaultValue = defaultValue;
-	}
+    public CPPTemplateParameterSpecialization(ICPPSpecialization owner, ICPPScope scope, ICPPTemplateParameter specialized,
+            ICPPTemplateArgument defaultValue)
+    {
+        fOwner = owner;
+        fScope = scope;
+        fSpecialized = specialized;
+        fTemplateParameterMap = owner.getTemplateParameterMap();
+        fDefaultValue = defaultValue;
+    }
 
-	@Override
-	public String[] getQualifiedName() throws DOMException {
-		return fSpecialized.getQualifiedName();
-	}
+    @Override
+    public String[] getQualifiedName()
+            throws DOMException
+    {
+        return fSpecialized.getQualifiedName();
+    }
 
-	@Override
-	public char[][] getQualifiedNameCharArray() throws DOMException {
-		return fSpecialized.getQualifiedNameCharArray();
-	}
+    @Override
+    public char[][] getQualifiedNameCharArray()
+            throws DOMException
+    {
+        return fSpecialized.getQualifiedNameCharArray();
+    }
 
-	@Override
-	public boolean isGloballyQualified() throws DOMException {
-		return false;
-	}
+    @Override
+    public boolean isGloballyQualified()
+            throws DOMException
+    {
+        return false;
+    }
 
-	@Override
-	public String getName() {
-		return fSpecialized.getName();
-	}
+    @Override
+    public String getName()
+    {
+        return fSpecialized.getName();
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return fSpecialized.getNameCharArray();
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        return fSpecialized.getNameCharArray();
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
 
-	@Override
-	public ICPPSpecialization getOwner() {
-		return fOwner;
-	}
+    @Override
+    public ICPPSpecialization getOwner()
+    {
+        return fOwner;
+    }
 
-	@Override
-	public ICPPScope getScope() throws DOMException {
-		return fScope;
-	}
+    @Override
+    public ICPPScope getScope()
+            throws DOMException
+    {
+        return fScope;
+    }
 
-	@Override
-	public ICPPTemplateParameter getSpecializedBinding() {
-		return fSpecialized;
-	}
+    @Override
+    public ICPPTemplateParameter getSpecializedBinding()
+    {
+        return fSpecialized;
+    }
 
-	@Override
-	public ICPPTemplateParameterMap getTemplateParameterMap() {
-		return fTemplateParameterMap;
-	}
+    @Override
+    public ICPPTemplateParameterMap getTemplateParameterMap()
+    {
+        return fTemplateParameterMap;
+    }
 
-	@Override
-	@Deprecated
-	public ObjectMap getArgumentMap() {
-		return CPPTemplates.getArgumentMap(this, getTemplateParameterMap());
-	}
+    @Override
+    @Deprecated
+    public ObjectMap getArgumentMap()
+    {
+        return CPPTemplates.getArgumentMap(this, getTemplateParameterMap());
+    }
 
-	@Override
-	public short getParameterPosition() {
-		return fSpecialized.getParameterPosition();
-	}
+    @Override
+    public short getParameterPosition()
+    {
+        return fSpecialized.getParameterPosition();
+    }
 
-	@Override
-	public short getTemplateNestingLevel() {
-		return fSpecialized.getTemplateNestingLevel();
-	}
+    @Override
+    public short getTemplateNestingLevel()
+    {
+        return fSpecialized.getTemplateNestingLevel();
+    }
 
-	@Override
-	public int getParameterID() {
-		return fSpecialized.getParameterID();
-	}
+    @Override
+    public int getParameterID()
+    {
+        return fSpecialized.getParameterID();
+    }
 
-	@Override
-	public ICPPTemplateArgument getDefaultValue() {
-		return fDefaultValue;
-	}
+    @Override
+    public ICPPTemplateArgument getDefaultValue()
+    {
+        return fDefaultValue;
+    }
 
-	@Override
-	public boolean isParameterPack() {
-		return fSpecialized.isParameterPack();
-	}
+    @Override
+    public boolean isParameterPack()
+    {
+        return fSpecialized.isParameterPack();
+    }
 }

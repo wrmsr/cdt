@@ -5,9 +5,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Thomas Corbat (IFS) - initial API and implementation
+ * Thomas Corbat (IFS) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -19,24 +19,26 @@ package org.eclipse.cdt.core.dom.ast;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 5.7
  */
-public interface IASTAttributeSpecifier extends IASTNode {
-	public static final IASTAttributeSpecifier[] EMPTY_ATTRIBUTE_SPECIFIER_ARRAY = {};
-	public static final ASTNodeProperty ATTRIBUTE = 
-			new ASTNodeProperty("IASTAttributeSpecifier.ATTRIBUTE"); //$NON-NLS-1$
+public interface IASTAttributeSpecifier
+        extends IASTNode
+{
+    public static final IASTAttributeSpecifier[] EMPTY_ATTRIBUTE_SPECIFIER_ARRAY = {};
+    public static final ASTNodeProperty ATTRIBUTE =
+            new ASTNodeProperty("IASTAttributeSpecifier.ATTRIBUTE"); //$NON-NLS-1$
 
-	/**
-	 * Returns the attributes of the specifier.
-	 */
-	public abstract IASTAttribute[] getAttributes();
+    /**
+     * Returns the attributes of the specifier.
+     */
+    public abstract IASTAttribute[] getAttributes();
 
-	/**
-	 * Adds an attribute to the specifier.
-	 */
-	public abstract void addAttribute(IASTAttribute attribute);
+    /**
+     * Adds an attribute to the specifier.
+     */
+    public abstract void addAttribute(IASTAttribute attribute);
 
-	@Override
-	public IASTAttributeSpecifier copy();
+    @Override
+    public IASTAttributeSpecifier copy();
 
-	@Override
-	public IASTAttributeSpecifier copy(CopyStyle style);
+    @Override
+    public IASTAttributeSpecifier copy(CopyStyle style);
 }

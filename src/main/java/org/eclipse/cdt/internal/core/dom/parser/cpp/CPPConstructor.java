@@ -4,19 +4,23 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPConstructor;
 
-public class CPPConstructor extends CPPMethod implements ICPPConstructor {
+public class CPPConstructor
+        extends CPPMethod
+        implements ICPPConstructor
+{
 
-	public CPPConstructor(ICPPASTFunctionDeclarator declarator) {
-		super(declarator);
-	}
+    public CPPConstructor(ICPPASTFunctionDeclarator declarator)
+    {
+        super(declarator);
+    }
 }

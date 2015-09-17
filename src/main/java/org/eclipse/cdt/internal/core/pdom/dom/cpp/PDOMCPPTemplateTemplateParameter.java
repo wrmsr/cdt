@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Thomas Corbat (IFS)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Thomas Corbat (IFS)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
 import org.eclipse.cdt.core.CCorePlugin;
@@ -47,327 +47,387 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Implementation of template template parameters for the index.
  */
-public class PDOMCPPTemplateTemplateParameter extends PDOMCPPBinding 
-		implements ICPPTemplateTemplateParameter, ICPPUnknownBinding, ICPPUnknownType, IIndexType, 
-		IPDOMCPPTemplateParameter, IPDOMCPPTemplateParameterOwner {
-	private static final int PACK_BIT = 1 << 31;
+public class PDOMCPPTemplateTemplateParameter
+        extends PDOMCPPBinding
+        implements ICPPTemplateTemplateParameter, ICPPUnknownBinding, ICPPUnknownType, IIndexType,
+        IPDOMCPPTemplateParameter, IPDOMCPPTemplateParameterOwner
+{
+    private static final int PACK_BIT = 1 << 31;
 
-	private static final int DEFAULT_TYPE = PDOMCPPBinding.RECORD_SIZE;	
-	private static final int MEMBERLIST = DEFAULT_TYPE + Database.TYPE_SIZE;
-	private static final int PARAMETERID= MEMBERLIST + Database.PTR_SIZE;
-	private static final int PARAMETERS= PARAMETERID + 4;
-	@SuppressWarnings("hiding")
-	protected static final int RECORD_SIZE = PARAMETERS + Database.PTR_SIZE;
-	
-	private PDOMCPPUnknownScope fUnknownScope;  // No need for volatile, PDOMCPPUnknownScope protects its fields.
-	private int fCachedParamID= -1;
-	private volatile IPDOMCPPTemplateParameter[] params;
-	
-	public PDOMCPPTemplateTemplateParameter(PDOMLinkage linkage, PDOMNode parent, ICPPTemplateTemplateParameter param) 
-			throws CoreException, DOMException {
-		super(linkage, parent, param.getNameCharArray());
-		
-		final Database db = getDB();
-		int id= param.getParameterID();
-		if (param.isParameterPack()) {
-			id |= PACK_BIT;
-		}
-		db.putInt(record + PARAMETERID, id);
-		final ICPPTemplateParameter[] origParams= param.getTemplateParameters();
-		final IPDOMCPPTemplateParameter[] params = PDOMTemplateParameterArray.createPDOMTemplateParameters(linkage, this, origParams);
-		long rec= PDOMTemplateParameterArray.putArray(db, params);
-		getDB().putRecPtr(record + PARAMETERS, rec);
-	}
+    private static final int DEFAULT_TYPE = PDOMCPPBinding.RECORD_SIZE;
+    private static final int MEMBERLIST = DEFAULT_TYPE + Database.TYPE_SIZE;
+    private static final int PARAMETERID = MEMBERLIST + Database.PTR_SIZE;
+    private static final int PARAMETERS = PARAMETERID + 4;
+    @SuppressWarnings("hiding")
+    protected static final int RECORD_SIZE = PARAMETERS + Database.PTR_SIZE;
 
-	public PDOMCPPTemplateTemplateParameter(PDOMLinkage linkage, long bindingRecord) {
-		super(linkage, bindingRecord);
-	}
+    private PDOMCPPUnknownScope fUnknownScope;  // No need for volatile, PDOMCPPUnknownScope protects its fields.
+    private int fCachedParamID = -1;
+    private volatile IPDOMCPPTemplateParameter[] params;
 
-	@Override
-	protected int getRecordSize() {
-		return RECORD_SIZE;
-	}
+    public PDOMCPPTemplateTemplateParameter(PDOMLinkage linkage, PDOMNode parent, ICPPTemplateTemplateParameter param)
+            throws CoreException, DOMException
+    {
+        super(linkage, parent, param.getNameCharArray());
 
-	@Override
-	public int getNodeType() {
-		return IIndexCPPBindingConstants.CPP_TEMPLATE_TEMPLATE_PARAMETER;
-	}
-	
-	@Override
-	public short getParameterPosition() {
-		return (short) getParameterID();
-	}
-	
-	@Override
-	public short getTemplateNestingLevel() {
-		readParamID();
-		return (short)(getParameterID() >> 16);
-	}
-	
-	@Override
-	public boolean isParameterPack() {
-		readParamID();
-		return (fCachedParamID & PACK_BIT) != 0;
-	}
+        final Database db = getDB();
+        int id = param.getParameterID();
+        if (param.isParameterPack()) {
+            id |= PACK_BIT;
+        }
+        db.putInt(record + PARAMETERID, id);
+        final ICPPTemplateParameter[] origParams = param.getTemplateParameters();
+        final IPDOMCPPTemplateParameter[] params = PDOMTemplateParameterArray.createPDOMTemplateParameters(linkage, this, origParams);
+        long rec = PDOMTemplateParameterArray.putArray(db, params);
+        getDB().putRecPtr(record + PARAMETERS, rec);
+    }
 
-	@Override
-	public int getParameterID() {
-		readParamID();
-		return fCachedParamID & ~PACK_BIT;
-	}
-	
-	private void readParamID() {
-		if (fCachedParamID == -1) {
-			try {
-				final Database db = getDB();
-				fCachedParamID= db.getInt(record + PARAMETERID);
-			} catch (CoreException e) {
-				CCorePlugin.log(e);
-				fCachedParamID= Integer.MAX_VALUE;
-			}
-		}
-	}
+    public PDOMCPPTemplateTemplateParameter(PDOMLinkage linkage, long bindingRecord)
+    {
+        super(linkage, bindingRecord);
+    }
 
-	@Override
-	public void addChild(PDOMNode member) throws CoreException {
-		PDOMNodeLinkedList list = new PDOMNodeLinkedList(getLinkage(), record + MEMBERLIST);
-		list.addMember(member);
-	}
+    @Override
+    protected int getRecordSize()
+    {
+        return RECORD_SIZE;
+    }
 
-	@Override
-	public void accept(IPDOMVisitor visitor) throws CoreException {
-		PDOMNodeLinkedList list = new PDOMNodeLinkedList(getLinkage(), record + MEMBERLIST);
-		list.accept(visitor);
-	}
-	
-	@Override
-	public boolean isSameType(IType type) {
-		if (type instanceof ITypedef) {
-			return type.isSameType(this);
-		}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCPPBindingConstants.CPP_TEMPLATE_TEMPLATE_PARAMETER;
+    }
 
-        if (!(type instanceof ICPPTemplateTemplateParameter))
-        	return false;
-        
+    @Override
+    public short getParameterPosition()
+    {
+        return (short) getParameterID();
+    }
+
+    @Override
+    public short getTemplateNestingLevel()
+    {
+        readParamID();
+        return (short) (getParameterID() >> 16);
+    }
+
+    @Override
+    public boolean isParameterPack()
+    {
+        readParamID();
+        return (fCachedParamID & PACK_BIT) != 0;
+    }
+
+    @Override
+    public int getParameterID()
+    {
+        readParamID();
+        return fCachedParamID & ~PACK_BIT;
+    }
+
+    private void readParamID()
+    {
+        if (fCachedParamID == -1) {
+            try {
+                final Database db = getDB();
+                fCachedParamID = db.getInt(record + PARAMETERID);
+            }
+            catch (CoreException e) {
+                CCorePlugin.log(e);
+                fCachedParamID = Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    @Override
+    public void addChild(PDOMNode member)
+            throws CoreException
+    {
+        PDOMNodeLinkedList list = new PDOMNodeLinkedList(getLinkage(), record + MEMBERLIST);
+        list.addMember(member);
+    }
+
+    @Override
+    public void accept(IPDOMVisitor visitor)
+            throws CoreException
+    {
+        PDOMNodeLinkedList list = new PDOMNodeLinkedList(getLinkage(), record + MEMBERLIST);
+        list.accept(visitor);
+    }
+
+    @Override
+    public boolean isSameType(IType type)
+    {
+        if (type instanceof ITypedef) {
+            return type.isSameType(this);
+        }
+
+        if (!(type instanceof ICPPTemplateTemplateParameter)) {
+            return false;
+        }
+
         return getParameterID() == ((ICPPTemplateParameter) type).getParameterID();
-	}
+    }
 
-	@Override
-	public IType getDefault() {
-		try {
-			return getLinkage().loadType(record + DEFAULT_TYPE);
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-		}
-		return null;
-	}
-		
-	@Override
-	public ICPPTemplateArgument getDefaultValue() {
-		IType d= getDefault();
-		if (d == null)
-			return null;
-		
-		return new CPPTemplateTypeArgument(d);
-	}
-	
-	@Override
-	public Object clone() { 
-		throw new UnsupportedOperationException(); 
-	}
+    @Override
+    public IType getDefault()
+    {
+        try {
+            return getLinkage().loadType(record + DEFAULT_TYPE);
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+        }
+        return null;
+    }
 
+    @Override
+    public ICPPTemplateArgument getDefaultValue()
+    {
+        IType d = getDefault();
+        if (d == null) {
+            return null;
+        }
 
-	@Override
-	public ICPPScope asScope() {
-		if (fUnknownScope == null) {
-			fUnknownScope= new PDOMCPPUnknownScope(this, new CPPASTName(getNameCharArray()));
-		}
-		return fUnknownScope;
-	}
+        return new CPPTemplateTypeArgument(d);
+    }
 
-	@Override
-	public void configure(ICPPTemplateParameter param) {
-		try {
-			ICPPTemplateArgument val= param.getDefaultValue();
-			if (val != null) {
-				IType dflt= val.getTypeValue();
-				if (dflt != null) {
-					getLinkage().storeType(record + DEFAULT_TYPE, dflt);
-				}
-			}
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-		}
-	}
+    @Override
+    public Object clone()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void update(PDOMLinkage linkage, IBinding newBinding) throws CoreException {
-		if (newBinding instanceof ICPPTemplateTemplateParameter) {
-			final Database db = getDB();
-			ICPPTemplateTemplateParameter ttp= (ICPPTemplateTemplateParameter) newBinding;
-			updateName(newBinding.getNameCharArray());
-			IType newDefault= null;
-			try {
-				newDefault = ttp.getDefault();
-			} catch (DOMException e) {
-				// ignore
-			}
-			if (newDefault != null) {
-				linkage.storeType(record + DEFAULT_TYPE, newDefault);
-			}
-			long oldRec= db.getRecPtr(record + PARAMETERS);
-			IPDOMCPPTemplateParameter[] oldParams= getTemplateParameters();
-			try {
-				params= PDOMTemplateParameterArray.createPDOMTemplateParameters(getLinkage(), this, ttp.getTemplateParameters());
-				long newRec= PDOMTemplateParameterArray.putArray(db, params);
-				db.putRecPtr(record + PARAMETERS, newRec);
-				if (oldRec != 0)
-					db.free(oldRec);
-				for (IPDOMCPPTemplateParameter opar : oldParams) {
-					opar.forceDelete(linkage);
-				} 
-			} catch (DOMException e) {
-			}
-		}
-	}
+    @Override
+    public ICPPScope asScope()
+    {
+        if (fUnknownScope == null) {
+            fUnknownScope = new PDOMCPPUnknownScope(this, new CPPASTName(getNameCharArray()));
+        }
+        return fUnknownScope;
+    }
 
-	@Override
-	public void forceDelete(PDOMLinkage linkage) throws CoreException {
-		getDBName().delete();
-		linkage.storeType(record + DEFAULT_TYPE, null);
+    @Override
+    public void configure(ICPPTemplateParameter param)
+    {
+        try {
+            ICPPTemplateArgument val = param.getDefaultValue();
+            if (val != null) {
+                IType dflt = val.getTypeValue();
+                if (dflt != null) {
+                    getLinkage().storeType(record + DEFAULT_TYPE, dflt);
+                }
+            }
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+        }
+    }
 
-		final Database db= getDB();
-		long oldRec= db.getRecPtr(record + PARAMETERS);
-		IPDOMCPPTemplateParameter[] oldParams= getTemplateParameters();
-		if (oldRec != 0)
-			db.free(oldRec);
-		for (IPDOMCPPTemplateParameter opar : oldParams) {
-			opar.forceDelete(linkage);
-		} 
-	}
+    @Override
+    public void update(PDOMLinkage linkage, IBinding newBinding)
+            throws CoreException
+    {
+        if (newBinding instanceof ICPPTemplateTemplateParameter) {
+            final Database db = getDB();
+            ICPPTemplateTemplateParameter ttp = (ICPPTemplateTemplateParameter) newBinding;
+            updateName(newBinding.getNameCharArray());
+            IType newDefault = null;
+            try {
+                newDefault = ttp.getDefault();
+            }
+            catch (DOMException e) {
+                // ignore
+            }
+            if (newDefault != null) {
+                linkage.storeType(record + DEFAULT_TYPE, newDefault);
+            }
+            long oldRec = db.getRecPtr(record + PARAMETERS);
+            IPDOMCPPTemplateParameter[] oldParams = getTemplateParameters();
+            try {
+                params = PDOMTemplateParameterArray.createPDOMTemplateParameters(getLinkage(), this, ttp.getTemplateParameters());
+                long newRec = PDOMTemplateParameterArray.putArray(db, params);
+                db.putRecPtr(record + PARAMETERS, newRec);
+                if (oldRec != 0) {
+                    db.free(oldRec);
+                }
+                for (IPDOMCPPTemplateParameter opar : oldParams) {
+                    opar.forceDelete(linkage);
+                }
+            }
+            catch (DOMException e) {
+            }
+        }
+    }
 
-	@Override
-	public IPDOMCPPTemplateParameter[] getTemplateParameters() {
-		if (params == null) {
-			try {
-				long rec= getDB().getRecPtr(record + PARAMETERS);
-				if (rec == 0) {
-					params= IPDOMCPPTemplateParameter.EMPTY_ARRAY;
-				} else {
-					params= PDOMTemplateParameterArray.getArray(this, rec);
-				}
-			} catch (CoreException e) {
-				CCorePlugin.log(e);
-				params = IPDOMCPPTemplateParameter.EMPTY_ARRAY;
-			}
-		}
-		return params;
-	}
+    @Override
+    public void forceDelete(PDOMLinkage linkage)
+            throws CoreException
+    {
+        getDBName().delete();
+        linkage.storeType(record + DEFAULT_TYPE, null);
 
-	@Override
-	public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations() {
-		return ICPPClassTemplatePartialSpecialization.EMPTY_PARTIAL_SPECIALIZATION_ARRAY;
-	}
+        final Database db = getDB();
+        long oldRec = db.getRecPtr(record + PARAMETERS);
+        IPDOMCPPTemplateParameter[] oldParams = getTemplateParameters();
+        if (oldRec != 0) {
+            db.free(oldRec);
+        }
+        for (IPDOMCPPTemplateParameter opar : oldParams) {
+            opar.forceDelete(linkage);
+        }
+    }
 
-	@Override
-	public IField findField(String name) {
-		return null;
-	}
+    @Override
+    public IPDOMCPPTemplateParameter[] getTemplateParameters()
+    {
+        if (params == null) {
+            try {
+                long rec = getDB().getRecPtr(record + PARAMETERS);
+                if (rec == 0) {
+                    params = IPDOMCPPTemplateParameter.EMPTY_ARRAY;
+                }
+                else {
+                    params = PDOMTemplateParameterArray.getArray(this, rec);
+                }
+            }
+            catch (CoreException e) {
+                CCorePlugin.log(e);
+                params = IPDOMCPPTemplateParameter.EMPTY_ARRAY;
+            }
+        }
+        return params;
+    }
 
-	@Override
-	public ICPPMethod[] getAllDeclaredMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations()
+    {
+        return ICPPClassTemplatePartialSpecialization.EMPTY_PARTIAL_SPECIALIZATION_ARRAY;
+    }
 
-	@Override
-	public ICPPBase[] getBases() {
-		return ICPPBase.EMPTY_BASE_ARRAY;
-	}
+    @Override
+    public IField findField(String name)
+    {
+        return null;
+    }
 
-	@Override
-	public ICPPConstructor[] getConstructors() {
-		return ICPPConstructor.EMPTY_CONSTRUCTOR_ARRAY;
-	}
+    @Override
+    public ICPPMethod[] getAllDeclaredMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public ICPPField[] getDeclaredFields() {
-		return ICPPField.EMPTY_CPPFIELD_ARRAY;
-	}
+    @Override
+    public ICPPBase[] getBases()
+    {
+        return ICPPBase.EMPTY_BASE_ARRAY;
+    }
 
-	@Override
-	public ICPPMethod[] getDeclaredMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public ICPPConstructor[] getConstructors()
+    {
+        return ICPPConstructor.EMPTY_CONSTRUCTOR_ARRAY;
+    }
 
-	@Override
-	public IField[] getFields() {
-		return ICPPField.EMPTY_CPPFIELD_ARRAY;
-	}
+    @Override
+    public ICPPField[] getDeclaredFields()
+    {
+        return ICPPField.EMPTY_CPPFIELD_ARRAY;
+    }
 
-	@Override
-	public IBinding[] getFriends() {
-		return IBinding.EMPTY_BINDING_ARRAY;
-	}
+    @Override
+    public ICPPMethod[] getDeclaredMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public ICPPMethod[] getMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public IField[] getFields()
+    {
+        return ICPPField.EMPTY_CPPFIELD_ARRAY;
+    }
 
-	@Override
-	public ICPPClassType[] getNestedClasses() {
-		return ICPPClassType.EMPTY_CLASS_ARRAY;
-	}
+    @Override
+    public IBinding[] getFriends()
+    {
+        return IBinding.EMPTY_BINDING_ARRAY;
+    }
 
-	@Override
-	public IScope getCompositeScope() {
-		return asScope();
-	}
+    @Override
+    public ICPPMethod[] getMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public int getKey() {
-		return 0;
-	}
+    @Override
+    public ICPPClassType[] getNestedClasses()
+    {
+        return ICPPClassType.EMPTY_CLASS_ARRAY;
+    }
 
-	@Override
-	public boolean isAnonymous() {
-		return false;
-	}
+    @Override
+    public IScope getCompositeScope()
+    {
+        return asScope();
+    }
 
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
+    @Override
+    public int getKey()
+    {
+        return 0;
+    }
 
-	@Override
-	public ICPPTemplateParameter adaptTemplateParameter(ICPPTemplateParameter param) {
-		int pos = param.getParameterPosition();
-		ICPPTemplateParameter[] pars = getTemplateParameters();
-		
-		if (pars == null || pos >= pars.length)
-			return null;
-		
-		ICPPTemplateParameter result= pars[pos];
-		if (param instanceof ICPPTemplateTypeParameter) {
-			if (result instanceof ICPPTemplateTypeParameter)
-				return result;
-		} else if (param instanceof ICPPTemplateNonTypeParameter) {
-			if (result instanceof ICPPTemplateNonTypeParameter)
-				return result;
-		} else if (param instanceof ICPPTemplateTemplateParameter) {
-			if (result instanceof ICPPTemplateTemplateParameter)
-				return result;
-		}
-		return null;
-	}
+    @Override
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	@Override
-	public ICPPDeferredClassInstance asDeferredInstance() {
-		return null;
-	}
+    @Override
+    public boolean isFinal()
+    {
+        return false;
+    }
 
-	@Override
-	public int getVisibility(IBinding member) {
-		throw new IllegalArgumentException(member.getName() + " is not a member of " + getName());  //$NON-NLS-1$
-	}
+    @Override
+    public ICPPTemplateParameter adaptTemplateParameter(ICPPTemplateParameter param)
+    {
+        int pos = param.getParameterPosition();
+        ICPPTemplateParameter[] pars = getTemplateParameters();
+
+        if (pars == null || pos >= pars.length) {
+            return null;
+        }
+
+        ICPPTemplateParameter result = pars[pos];
+        if (param instanceof ICPPTemplateTypeParameter) {
+            if (result instanceof ICPPTemplateTypeParameter) {
+                return result;
+            }
+        }
+        else if (param instanceof ICPPTemplateNonTypeParameter) {
+            if (result instanceof ICPPTemplateNonTypeParameter) {
+                return result;
+            }
+        }
+        else if (param instanceof ICPPTemplateTemplateParameter) {
+            if (result instanceof ICPPTemplateTemplateParameter) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ICPPDeferredClassInstance asDeferredInstance()
+    {
+        return null;
+    }
+
+    @Override
+    public int getVisibility(IBinding member)
+    {
+        throw new IllegalArgumentException(member.getName() + " is not a member of " + getName());  //$NON-NLS-1$
+    }
 }

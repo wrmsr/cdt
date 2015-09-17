@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -17,10 +17,12 @@ import org.eclipse.core.runtime.content.IContentType;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ILanguageDescriptor extends ICExtensionDescriptor {
-	ILanguage getLanguage();
-	
-	String[] getContentTypeIds();
+public interface ILanguageDescriptor
+        extends ICExtensionDescriptor
+{
+    ILanguage getLanguage();
 
-	IContentType[] getContentTypes();
+    String[] getContentTypeIds();
+
+    IContentType[] getContentTypes();
 }

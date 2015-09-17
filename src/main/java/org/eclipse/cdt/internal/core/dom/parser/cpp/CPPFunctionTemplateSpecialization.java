@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -26,52 +26,61 @@ import org.eclipse.cdt.core.parser.util.ObjectMap;
 /**
  * The specialization of a friend function template in the context of a class specialization.
  */
-public class CPPFunctionTemplateSpecialization extends CPPFunctionSpecialization
-		implements ICPPFunctionTemplate, ICPPInternalTemplate {
-	private ObjectMap instances;
-	
-	public CPPFunctionTemplateSpecialization(ICPPFunction original, IBinding owner,
-			ICPPTemplateParameterMap argumentMap, ICPPFunctionType type, IType[] exceptionSpecs) {
-		super(original, owner, argumentMap, type, exceptionSpecs);
-	}
+public class CPPFunctionTemplateSpecialization
+        extends CPPFunctionSpecialization
+        implements ICPPFunctionTemplate, ICPPInternalTemplate
+{
+    private ObjectMap instances;
 
-	@Override
-	public ICPPTemplateParameter[] getTemplateParameters() {
-		ICPPFunctionTemplate template = (ICPPFunctionTemplate) getSpecializedBinding();
-		return template.getTemplateParameters();
-	}
+    public CPPFunctionTemplateSpecialization(ICPPFunction original, IBinding owner,
+            ICPPTemplateParameterMap argumentMap, ICPPFunctionType type, IType[] exceptionSpecs)
+    {
+        super(original, owner, argumentMap, type, exceptionSpecs);
+    }
 
-	@Override
-	public synchronized final void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance) {
-		if (instances == null)
-			instances = new ObjectMap(2);
-		String key= ASTTypeUtil.getArgumentListString(arguments, true);
-		instances.put(key, instance);
-	}
+    @Override
+    public ICPPTemplateParameter[] getTemplateParameters()
+    {
+        ICPPFunctionTemplate template = (ICPPFunctionTemplate) getSpecializedBinding();
+        return template.getTemplateParameters();
+    }
 
-	@Override
-	public synchronized final ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments) {
-		if (instances != null) {
-			String key= ASTTypeUtil.getArgumentListString(arguments, true);
-			return (ICPPTemplateInstance) instances.get(key);
-		}
-		return null;
-	}
-	
-	@Override
-	public synchronized ICPPTemplateInstance[] getAllInstances() {
-		if (instances != null) {
-			ICPPTemplateInstance[] result= new ICPPTemplateInstance[instances.size()];
-			for (int i= 0; i < instances.size(); i++) {
-				result[i]= (ICPPTemplateInstance) instances.getAt(i);
-			}
-			return result;
-		}
-		return ICPPTemplateInstance.EMPTY_TEMPLATE_INSTANCE_ARRAY;
-	}
-	
-	@Override
-	public IBinding resolveTemplateParameter(ICPPTemplateParameter param) {
-		return param;
-	}
+    @Override
+    public synchronized final void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance)
+    {
+        if (instances == null) {
+            instances = new ObjectMap(2);
+        }
+        String key = ASTTypeUtil.getArgumentListString(arguments, true);
+        instances.put(key, instance);
+    }
+
+    @Override
+    public synchronized final ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments)
+    {
+        if (instances != null) {
+            String key = ASTTypeUtil.getArgumentListString(arguments, true);
+            return (ICPPTemplateInstance) instances.get(key);
+        }
+        return null;
+    }
+
+    @Override
+    public synchronized ICPPTemplateInstance[] getAllInstances()
+    {
+        if (instances != null) {
+            ICPPTemplateInstance[] result = new ICPPTemplateInstance[instances.size()];
+            for (int i = 0; i < instances.size(); i++) {
+                result[i] = (ICPPTemplateInstance) instances.getAt(i);
+            }
+            return result;
+        }
+        return ICPPTemplateInstance.EMPTY_TEMPLATE_INSTANCE_ARRAY;
+    }
+
+    @Override
+    public IBinding resolveTemplateParameter(ICPPTemplateParameter param)
+    {
+        return param;
+    }
 }

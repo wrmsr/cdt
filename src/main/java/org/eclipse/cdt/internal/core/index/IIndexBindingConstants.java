@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
@@ -13,10 +13,11 @@ package org.eclipse.cdt.internal.core.index;
 /**
  * Constants used by IIndexFragment implementations for identifying persisted binding types
  */
-public interface IIndexBindingConstants {
-	int LINKAGE= 0;
-	int ENUMERATOR= 3;
-	int MACRO_DEFINITION = 4;
-	int MACRO_CONTAINER = 5;
-	int LAST_CONSTANT= MACRO_CONTAINER;
+public interface IIndexBindingConstants
+{
+    int LINKAGE = 0;
+    int ENUMERATOR = 3;
+    int MACRO_DEFINITION = 4;
+    int MACRO_CONTAINER = 5;
+    int LAST_CONSTANT = MACRO_CONTAINER;
 }

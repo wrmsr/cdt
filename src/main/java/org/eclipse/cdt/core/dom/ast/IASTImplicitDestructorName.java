@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -17,11 +17,13 @@ package org.eclipse.cdt.core.dom.ast;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IASTImplicitDestructorName extends IASTImplicitName {
-	public static final IASTImplicitDestructorName[] EMPTY_NAME_ARRAY = {}; 
+public interface IASTImplicitDestructorName
+        extends IASTImplicitName
+{
+    public static final IASTImplicitDestructorName[] EMPTY_NAME_ARRAY = {};
 
-	/**
-	 * Returns the name corresponding to the constructor call.
-	 */
-	IASTName getConstructionPoint();
+    /**
+     * Returns the name corresponding to the constructor call.
+     */
+    IASTName getConstructionPoint();
 }

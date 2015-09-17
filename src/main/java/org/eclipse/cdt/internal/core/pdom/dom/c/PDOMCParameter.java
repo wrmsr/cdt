@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (QNX) - Initial API and implementation
- *     Andrew Ferguson (Symbian)
- *     Markus Schorn (Wind River Systems)
+ * Doug Schaefer (QNX) - Initial API and implementation
+ * Andrew Ferguson (Symbian)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.c;
 
@@ -30,174 +30,215 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Binding for a function parameter in the index.
  */
-final class PDOMCParameter extends PDOMNamedNode implements IParameter, IPDOMBinding {
-	private static final int NEXT_PARAM = PDOMNamedNode.RECORD_SIZE;
-	private static final int FLAG_OFFSET = NEXT_PARAM + Database.PTR_SIZE;
-	@SuppressWarnings("hiding")
-	public static final int RECORD_SIZE = FLAG_OFFSET + 1;
-	static {
-		assert RECORD_SIZE <= 22; // 23 would yield a 32-byte block
-	}
+final class PDOMCParameter
+        extends PDOMNamedNode
+        implements IParameter, IPDOMBinding
+{
+    private static final int NEXT_PARAM = PDOMNamedNode.RECORD_SIZE;
+    private static final int FLAG_OFFSET = NEXT_PARAM + Database.PTR_SIZE;
+    @SuppressWarnings("hiding")
+    public static final int RECORD_SIZE = FLAG_OFFSET + 1;
 
-	private final IType fType;
-	public PDOMCParameter(PDOMLinkage linkage, long record, IType type) {
-		super(linkage, record);
-		fType= type;
-	}
+    static {
+        assert RECORD_SIZE <= 22; // 23 would yield a 32-byte block
+    }
 
-	public PDOMCParameter(PDOMLinkage linkage, PDOMNode parent, IParameter param, PDOMCParameter next)
-			throws CoreException {
-		super(linkage, parent, param.getNameCharArray());
-		fType= null; // this constructor is used for adding parameters to the database, only.
+    private final IType fType;
 
-		Database db = getDB();
+    public PDOMCParameter(PDOMLinkage linkage, long record, IType type)
+    {
+        super(linkage, record);
+        fType = type;
+    }
 
-		db.putRecPtr(record + NEXT_PARAM, 0);
-		db.putRecPtr(record + NEXT_PARAM, next == null ? 0 : next.getRecord());
-		db.putByte(record + FLAG_OFFSET, encodeFlags(param));
-	}
+    public PDOMCParameter(PDOMLinkage linkage, PDOMNode parent, IParameter param, PDOMCParameter next)
+            throws CoreException
+    {
+        super(linkage, parent, param.getNameCharArray());
+        fType = null; // this constructor is used for adding parameters to the database, only.
 
-	@Override
-	protected int getRecordSize() {
-		return RECORD_SIZE;
-	}
+        Database db = getDB();
 
-	@Override
-	public int getNodeType() {
-		return IIndexCBindingConstants.CPARAMETER;
-	}
+        db.putRecPtr(record + NEXT_PARAM, 0);
+        db.putRecPtr(record + NEXT_PARAM, next == null ? 0 : next.getRecord());
+        db.putByte(record + FLAG_OFFSET, encodeFlags(param));
+    }
 
-	@Override
-	public IType getType() {
-		return fType;
-	}
+    @Override
+    protected int getRecordSize()
+    {
+        return RECORD_SIZE;
+    }
 
-	@Override
-	public boolean isAuto() {
-		byte flag = 1 << PDOMCAnnotation.AUTO_OFFSET;
-		return hasFlag(flag, true);
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCBindingConstants.CPARAMETER;
+    }
 
-	@Override
-	public boolean isRegister() {
-		byte flag = 1 << PDOMCAnnotation.REGISTER_OFFSET;
-		return hasFlag(flag, false);
-	}
+    @Override
+    public IType getType()
+    {
+        return fType;
+    }
 
-	@Override
-	public String getName() {
-		return new String(getNameCharArray());
-	}
+    @Override
+    public boolean isAuto()
+    {
+        byte flag = 1 << PDOMCAnnotation.AUTO_OFFSET;
+        return hasFlag(flag, true);
+    }
 
-	@Override
-	public IIndexScope getScope() {
-		return null;
-	}
+    @Override
+    public boolean isRegister()
+    {
+        byte flag = 1 << PDOMCAnnotation.REGISTER_OFFSET;
+        return hasFlag(flag, false);
+    }
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
+    @Override
+    public String getName()
+    {
+        return new String(getNameCharArray());
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		try {
-			return super.getNameCharArray();
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-			return new char[0];
-		}
-	}
+    @Override
+    public IIndexScope getScope()
+    {
+        return null;
+    }
 
-	@Override
-	public IIndexFragment getFragment() {
-		return getPDOM();
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(Class adapter)
+    {
+        return null;
+    }
 
-	@Override
-	public boolean hasDefinition() throws CoreException {
-		// parameter bindings do not span index fragments
-		return true;
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        try {
+            return super.getNameCharArray();
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+            return new char[0];
+        }
+    }
 
-	@Override
-	public boolean hasDeclaration() throws CoreException {
-		// parameter bindings do not span index fragments
-		return true;
-	}
+    @Override
+    public IIndexFragment getFragment()
+    {
+        return getPDOM();
+    }
 
-	@Override
-	public String[] getQualifiedName() {
-		return new String[] {getName()};
-	}
+    @Override
+    public boolean hasDefinition()
+            throws CoreException
+    {
+        // parameter bindings do not span index fragments
+        return true;
+    }
 
-	@Override
-	public int getBindingConstant() {
-		return getNodeType();
-	}
+    @Override
+    public boolean hasDeclaration()
+            throws CoreException
+    {
+        // parameter bindings do not span index fragments
+        return true;
+    }
 
-	@Override
-	public void delete(PDOMLinkage linkage) throws CoreException {
-		PDOMCParameter p= this;
-		for (;;) {
-			long rec = p.getNextPtr();
-			p.flatDelete(linkage);
-			if (rec == 0)
-				return;
-			p= new PDOMCParameter(linkage, rec, null);
-		}
-	}
+    @Override
+    public String[] getQualifiedName()
+    {
+        return new String[] {getName()};
+    }
 
-	private void flatDelete(PDOMLinkage linkage) throws CoreException {
-		super.delete(linkage);
-	}
+    @Override
+    public int getBindingConstant()
+    {
+        return getNodeType();
+    }
 
-	public long getNextPtr() throws CoreException {
-		long rec = getDB().getRecPtr(record + NEXT_PARAM);
-		return rec;
-	}
+    @Override
+    public void delete(PDOMLinkage linkage)
+            throws CoreException
+    {
+        PDOMCParameter p = this;
+        for (; ; ) {
+            long rec = p.getNextPtr();
+            p.flatDelete(linkage);
+            if (rec == 0) {
+                return;
+            }
+            p = new PDOMCParameter(linkage, rec, null);
+        }
+    }
 
-	@Override
-	public boolean isFileLocal() throws CoreException {
-		return false;
-	}
+    private void flatDelete(PDOMLinkage linkage)
+            throws CoreException
+    {
+        super.delete(linkage);
+    }
 
-	@Override
-	public IIndexFile getLocalToFile() throws CoreException {
-		return null;
-	}
+    public long getNextPtr()
+            throws CoreException
+    {
+        long rec = getDB().getRecPtr(record + NEXT_PARAM);
+        return rec;
+    }
 
-	@Override
-	public IValue getInitialValue() {
-		return null;
-	}
+    @Override
+    public boolean isFileLocal()
+            throws CoreException
+    {
+        return false;
+    }
 
-	protected byte encodeFlags(IParameter param) {
-		// C99 ISO/IEC 9899: 6.7.5.3.2
-		byte flags= 0;
-		flags |= (param.isAuto() ? 1 : 0) << PDOMCAnnotation.AUTO_OFFSET;
-		flags |= (param.isRegister() ? 1 : 0) << PDOMCAnnotation.REGISTER_OFFSET;
-		return flags;
-	}
+    @Override
+    public IIndexFile getLocalToFile()
+            throws CoreException
+    {
+        return null;
+    }
 
-	protected boolean hasFlag(byte flag, boolean defValue) {
-		try {
-			byte myflags= getDB().getByte(record + FLAG_OFFSET);
-			return (myflags & flag) == flag;
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-		}
-		return defValue;
-	}
+    @Override
+    public IValue getInitialValue()
+    {
+        return null;
+    }
 
-	@Override
-	public boolean isExtern() {
-		return false;
-	}
+    protected byte encodeFlags(IParameter param)
+    {
+        // C99 ISO/IEC 9899: 6.7.5.3.2
+        byte flags = 0;
+        flags |= (param.isAuto() ? 1 : 0) << PDOMCAnnotation.AUTO_OFFSET;
+        flags |= (param.isRegister() ? 1 : 0) << PDOMCAnnotation.REGISTER_OFFSET;
+        return flags;
+    }
 
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
+    protected boolean hasFlag(byte flag, boolean defValue)
+    {
+        try {
+            byte myflags = getDB().getByte(record + FLAG_OFFSET);
+            return (myflags & flag) == flag;
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+        }
+        return defValue;
+    }
+
+    @Override
+    public boolean isExtern()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isStatic()
+    {
+        return false;
+    }
 }

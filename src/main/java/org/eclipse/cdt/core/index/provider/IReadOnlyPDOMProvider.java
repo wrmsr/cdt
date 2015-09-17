@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Ferguson (Symbian) - Initial implementation
+ * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.index.provider;
 
@@ -20,11 +20,13 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 4.0
  */
-public interface IReadOnlyPDOMProvider extends IIndexProvider {
-	/**
-	 * Returns an array of IPDOMDescriptors that should contribute to the logical index
-	 * for the specified {@link ICConfigurationDescription}
-	 * @param config the configuration description whose logical index should be augmented
-	 */
-	public IPDOMDescriptor[] getDescriptors(ICConfigurationDescription config);
+public interface IReadOnlyPDOMProvider
+        extends IIndexProvider
+{
+    /**
+     * Returns an array of IPDOMDescriptors that should contribute to the logical index
+     * for the specified {@link ICConfigurationDescription}
+     * @param config the configuration description whose logical index should be augmented
+     */
+    public IPDOMDescriptor[] getDescriptors(ICConfigurationDescription config);
 }

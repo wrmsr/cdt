@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Rational Software) - Initial API and implementation
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * John Camelon (IBM Rational Software) - Initial API and implementation
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -31,131 +31,162 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.EvalTypeId;
 /**
  * Type id initializer expression for C++, type-id { initializer }
  */
-public class CPPASTTypeIdInitializerExpression extends ASTNode
-		implements IASTTypeIdInitializerExpression, ICPPASTExpression {
+public class CPPASTTypeIdInitializerExpression
+        extends ASTNode
+        implements IASTTypeIdInitializerExpression, ICPPASTExpression
+{
     private IASTTypeId fTypeId;
     private IASTInitializer fInitializer;
-	private ICPPEvaluation fEvaluation;
-	private IASTImplicitDestructorName[] fImplicitDestructorNames;
+    private ICPPEvaluation fEvaluation;
+    private IASTImplicitDestructorName[] fImplicitDestructorNames;
 
-    public CPPASTTypeIdInitializerExpression() {
-	}
+    public CPPASTTypeIdInitializerExpression()
+    {
+    }
 
-	public CPPASTTypeIdInitializerExpression(IASTTypeId t, IASTInitializer i) {
-		setTypeId(t);
-		setInitializer(i);
-	}
+    public CPPASTTypeIdInitializerExpression(IASTTypeId t, IASTInitializer i)
+    {
+        setTypeId(t);
+        setInitializer(i);
+    }
 
-	@Override
-	public IASTTypeId getTypeId() {
+    @Override
+    public IASTTypeId getTypeId()
+    {
         return fTypeId;
     }
 
     @Override
-	public void setTypeId(IASTTypeId typeId) {
+    public void setTypeId(IASTTypeId typeId)
+    {
         assertNotFrozen();
         this.fTypeId = typeId;
         if (typeId != null) {
-			typeId.setParent(this);
-			typeId.setPropertyInParent(TYPE_ID);
-		}
+            typeId.setParent(this);
+            typeId.setPropertyInParent(TYPE_ID);
+        }
     }
 
     @Override
-	public IASTInitializer getInitializer() {
+    public IASTInitializer getInitializer()
+    {
         return fInitializer;
     }
 
     @Override
-	public void setInitializer(IASTInitializer initializer) {
+    public void setInitializer(IASTInitializer initializer)
+    {
         assertNotFrozen();
         this.fInitializer = initializer;
         if (initializer != null) {
-			initializer.setParent(this);
-			initializer.setPropertyInParent(INITIALIZER);
-		}
+            initializer.setParent(this);
+            initializer.setPropertyInParent(INITIALIZER);
+        }
     }
 
-	@Override
-	public IASTImplicitDestructorName[] getImplicitDestructorNames() {
-		if (fImplicitDestructorNames == null) {
-			fImplicitDestructorNames = DestructorCallCollector.getTemporariesDestructorCalls(this);
-		}
-	
-		return fImplicitDestructorNames;
-	}
+    @Override
+    public IASTImplicitDestructorName[] getImplicitDestructorNames()
+    {
+        if (fImplicitDestructorNames == null) {
+            fImplicitDestructorNames = DestructorCallCollector.getTemporariesDestructorCalls(this);
+        }
 
-	@Override
-	public boolean accept(ASTVisitor action) {
+        return fImplicitDestructorNames;
+    }
+
+    @Override
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitExpressions) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
-        
-        if (fTypeId != null && !fTypeId.accept(action)) return false;
-        if (fInitializer != null && !fInitializer.accept(action)) return false;
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-		if (action.shouldVisitImplicitDestructorNames && !acceptByNodes(getImplicitDestructorNames(), action))
-			return false;
+        if (fTypeId != null && !fTypeId.accept(action)) {
+            return false;
+        }
+        if (fInitializer != null && !fInitializer.accept(action)) {
+            return false;
+        }
+
+        if (action.shouldVisitImplicitDestructorNames && !acceptByNodes(getImplicitDestructorNames(), action)) {
+            return false;
+        }
 
         if (action.shouldVisitExpressions) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
-	@Override
-	public final boolean isLValue() {
-		return false;
-	}
+    @Override
+    public final boolean isLValue()
+    {
+        return false;
+    }
 
-	@Override
-	public IASTTypeIdInitializerExpression copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public IASTTypeIdInitializerExpression copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public IASTTypeIdInitializerExpression copy(CopyStyle style) {
-		CPPASTTypeIdInitializerExpression copy =new CPPASTTypeIdInitializerExpression(
-				fTypeId == null ? null : fTypeId.copy(style),
-				fInitializer == null ? null : fInitializer.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public IASTTypeIdInitializerExpression copy(CopyStyle style)
+    {
+        CPPASTTypeIdInitializerExpression copy = new CPPASTTypeIdInitializerExpression(
+                fTypeId == null ? null : fTypeId.copy(style),
+                fInitializer == null ? null : fInitializer.copy(style));
+        return copy(copy, style);
+    }
 
-	@Override
-	public ICPPEvaluation getEvaluation() {
-		if (fEvaluation == null) 
-			fEvaluation= computeEvaluation();
-		
-		return fEvaluation;
-	}
+    @Override
+    public ICPPEvaluation getEvaluation()
+    {
+        if (fEvaluation == null) {
+            fEvaluation = computeEvaluation();
+        }
 
-	private ICPPEvaluation computeEvaluation() {
-		final IASTInitializer initializer = getInitializer();
-		if (!(initializer instanceof ICPPASTInitializerClause))
-			return EvalFixed.INCOMPLETE;
-		
-		IType type= CPPVisitor.createType(getTypeId());
-		if (type == null || type instanceof IProblemType)
-			return EvalFixed.INCOMPLETE;
-		
-		return new EvalTypeId(type, this, ((ICPPASTInitializerClause) initializer).getEvaluation());
-	}
+        return fEvaluation;
+    }
 
-	@Override
-	public IType getExpressionType() {
-		return getEvaluation().getTypeOrFunctionSet(this);
-	}
+    private ICPPEvaluation computeEvaluation()
+    {
+        final IASTInitializer initializer = getInitializer();
+        if (!(initializer instanceof ICPPASTInitializerClause)) {
+            return EvalFixed.INCOMPLETE;
+        }
 
-	@Override
-	public ValueCategory getValueCategory() {
-		return getEvaluation().getValueCategory(this);
-	}
+        IType type = CPPVisitor.createType(getTypeId());
+        if (type == null || type instanceof IProblemType) {
+            return EvalFixed.INCOMPLETE;
+        }
+
+        return new EvalTypeId(type, this, ((ICPPASTInitializerClause) initializer).getEvaluation());
+    }
+
+    @Override
+    public IType getExpressionType()
+    {
+        return getEvaluation().getTypeOrFunctionSet(this);
+    }
+
+    @Override
+    public ValueCategory getValueCategory()
+    {
+        return getEvaluation().getValueCategory(this);
+    }
 }

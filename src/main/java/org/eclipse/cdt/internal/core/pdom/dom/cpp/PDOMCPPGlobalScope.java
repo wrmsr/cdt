@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
@@ -17,23 +17,29 @@ import org.eclipse.cdt.internal.core.pdom.dom.PDOMGlobalScope;
 /**
  * Represents the global C++ index scope.
  */
-public class PDOMCPPGlobalScope extends PDOMGlobalScope implements ICPPNamespaceScope {
-	public static final PDOMCPPGlobalScope INSTANCE = new PDOMCPPGlobalScope();
-	
-	private PDOMCPPGlobalScope() {}
+public class PDOMCPPGlobalScope
+        extends PDOMGlobalScope
+        implements ICPPNamespaceScope
+{
+    public static final PDOMCPPGlobalScope INSTANCE = new PDOMCPPGlobalScope();
 
-	@Override
-	public void addUsingDirective(ICPPUsingDirective usingDirective) {
-		throw new UnsupportedOperationException();
-	}
+    private PDOMCPPGlobalScope() {}
 
-	@Override
-	public ICPPUsingDirective[] getUsingDirectives() {
-		return ICPPUsingDirective.EMPTY_ARRAY;
-	}
+    @Override
+    public void addUsingDirective(ICPPUsingDirective usingDirective)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public ICPPNamespaceScope[] getInlineNamespaces() {
-		return ICPPNamespaceScope.EMPTY_NAMESPACE_SCOPE_ARRAY;
-	}
+    @Override
+    public ICPPUsingDirective[] getUsingDirectives()
+    {
+        return ICPPUsingDirective.EMPTY_ARRAY;
+    }
+
+    @Override
+    public ICPPNamespaceScope[] getInlineNamespaces()
+    {
+        return ICPPNamespaceScope.EMPTY_NAMESPACE_SCOPE_ARRAY;
+    }
 }

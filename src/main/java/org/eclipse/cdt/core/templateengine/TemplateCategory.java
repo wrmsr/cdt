@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer - initial API and implementation
+ * Doug Schaefer - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.core.templateengine;
@@ -17,28 +17,32 @@ import java.util.List;
  * @author Doug Schaefer
  * @since 5.4
  */
-public class TemplateCategory {
+public class TemplateCategory
+{
 
-	private final String id;
-	private String label;
-	private List<String> parentCategoryIds;
-	
-	public TemplateCategory(String id, String label, List<String> parentCategoryIds) {
-		this.id = id;
-		this.label = label;
-		this.parentCategoryIds = parentCategoryIds;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-	
-	public List<String> getParentCategoryIds() {
-		return parentCategoryIds;
-	}
-	
+    private final String id;
+    private String label;
+    private List<String> parentCategoryIds;
+
+    public TemplateCategory(String id, String label, List<String> parentCategoryIds)
+    {
+        this.id = id;
+        this.label = label;
+        this.parentCategoryIds = parentCategoryIds;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public String getLabel()
+    {
+        return label;
+    }
+
+    public List<String> getParentCategoryIds()
+    {
+        return parentCategoryIds;
+    }
 }

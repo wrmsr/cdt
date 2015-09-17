@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * QNX - Initial API and implementation
  * IBM Corporation
@@ -25,57 +25,71 @@ import org.eclipse.core.runtime.CoreException;
  * @author Doug Schaefer
  *
  */
-class PDOMCField extends PDOMCVariable implements IField {
+class PDOMCField
+        extends PDOMCVariable
+        implements IField
+{
 
-	public PDOMCField(PDOMLinkage linkage, IPDOMMemberOwner parent, IField field) throws CoreException {
-		super(linkage, (PDOMNode) parent, field);
-	}
+    public PDOMCField(PDOMLinkage linkage, IPDOMMemberOwner parent, IField field)
+            throws CoreException
+    {
+        super(linkage, (PDOMNode) parent, field);
+    }
 
-	public PDOMCField(PDOMLinkage linkage, long record) {
-		super(linkage, record);
-	}
-
-	@Override
-	protected int getRecordSize() {
-		return RECORD_SIZE;
-	}
-
-	@Override
-	public int getNodeType() {
-		return IIndexCBindingConstants.CFIELD;
-	}
+    public PDOMCField(PDOMLinkage linkage, long record)
+    {
+        super(linkage, record);
+    }
 
     @Override
-	public boolean isStatic() {
-		// ISO/IEC 9899:TC1 6.7.2.1
-		return false;
-	}
+    protected int getRecordSize()
+    {
+        return RECORD_SIZE;
+    }
 
-	@Override
-	public boolean isExtern() {
-		// ISO/IEC 9899:TC1 6.7.2.1
-		return false;
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCBindingConstants.CFIELD;
+    }
 
-	@Override
-	public boolean isAuto() {
-		// ISO/IEC 9899:TC1 6.7.2.1
-		return false;
-	}
+    @Override
+    public boolean isStatic()
+    {
+        // ISO/IEC 9899:TC1 6.7.2.1
+        return false;
+    }
 
-	@Override
-	public boolean isRegister() {
-		// ISO/IEC 9899:TC1 6.7.2.1
-		return false;
-	}
+    @Override
+    public boolean isExtern()
+    {
+        // ISO/IEC 9899:TC1 6.7.2.1
+        return false;
+    }
 
-	@Override
-	public ICompositeType getCompositeTypeOwner() {
-		try {
-			return (ICompositeType)getParentNode();
-		} catch (CoreException e) {
-			CCorePlugin.log(e);
-			return null;
-		}
-	}
+    @Override
+    public boolean isAuto()
+    {
+        // ISO/IEC 9899:TC1 6.7.2.1
+        return false;
+    }
+
+    @Override
+    public boolean isRegister()
+    {
+        // ISO/IEC 9899:TC1 6.7.2.1
+        return false;
+    }
+
+    @Override
+    public ICompositeType getCompositeTypeOwner()
+    {
+        try {
+            return (ICompositeType) getParentNode();
+        }
+        catch (CoreException e) {
+            CCorePlugin.log(e);
+            return null;
+        }
+    }
 }

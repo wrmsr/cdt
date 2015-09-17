@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Anton Leherbauer (Wind River Systems)
+ * IBM - Initial API and implementation
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
 
@@ -20,39 +20,48 @@ import org.eclipse.cdt.core.model.ICModelStatusConstants;
  * It does not delete resources which do not belong to the C Model
  * (eg GIF files).
  */
-public class DeleteResourceElementsOperation extends MultiOperation {
-	/**
-	 * When executed, this operation will delete the given elements. The elements
-	 * to delete cannot be <code>null</code> or empty, and must have a corresponding
-	 * resource.
-	 */
-	protected DeleteResourceElementsOperation(ICElement[] elementsToProcess, boolean force) {
-		super(elementsToProcess, force);
-	}
+public class DeleteResourceElementsOperation
+        extends MultiOperation
+{
+    /**
+     * When executed, this operation will delete the given elements. The elements
+     * to delete cannot be <code>null</code> or empty, and must have a corresponding
+     * resource.
+     */
+    protected DeleteResourceElementsOperation(ICElement[] elementsToProcess, boolean force)
+    {
+        super(elementsToProcess, force);
+    }
 
-	/**
-	 * @see MultiOperation
-	 */
-	@Override
-	protected String getMainTaskName() {
-		return CoreModelMessages.getString("operation.deleteResourceProgress"); //$NON-NLS-1$
-	}
+    /**
+     * @see MultiOperation
+     */
+    @Override
+    protected String getMainTaskName()
+    {
+        return CoreModelMessages.getString("operation.deleteResourceProgress"); //$NON-NLS-1$
+    }
 
-	/**
-	 * @see MultiOperation This method delegate to <code>deleteResource</code> or
-	 * <code>deletePackageFragment</code> depending on the type of <code>element</code>.
-	 */
-	@Override
-	protected void processElement(ICElement element) throws CModelException {
-		deleteResource(element.getResource(), fForce);
-	}
+    /**
+     * @see MultiOperation This method delegate to <code>deleteResource</code> or
+     * <code>deletePackageFragment</code> depending on the type of <code>element</code>.
+     */
+    @Override
+    protected void processElement(ICElement element)
+            throws CModelException
+    {
+        deleteResource(element.getResource(), fForce);
+    }
 
-	/**
-	 * @see MultiOperation
-	 */
-	@Override
-	protected void verify(ICElement element) throws CModelException {
-		if (element == null || !element.exists())
-			error(ICModelStatusConstants.ELEMENT_DOES_NOT_EXIST, element);
-	}
+    /**
+     * @see MultiOperation
+     */
+    @Override
+    protected void verify(ICElement element)
+            throws CModelException
+    {
+        if (element == null || !element.exists()) {
+            error(ICModelStatusConstants.ELEMENT_DOES_NOT_EXIST, element);
+        }
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
@@ -16,5 +16,7 @@ import org.eclipse.cdt.internal.core.pdom.dom.IPDOMBinding;
 /**
  * Interface for a c++ enumerator stored in the index.
  */
-public interface IPDOMCPPEnumerator extends ICPPInternalEnumerator, IPDOMBinding {
+public interface IPDOMCPPEnumerator
+        extends ICPPInternalEnumerator, IPDOMBinding
+{
 }

@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * John Camelon (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -25,133 +25,166 @@ import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguityParent;
 /**
  * Switch statement in C++.
  */
-public class CPPASTSwitchStatement extends ASTAttributeOwner
-		implements ICPPASTSwitchStatement, IASTAmbiguityParent {
-	private IScope scope;
+public class CPPASTSwitchStatement
+        extends ASTAttributeOwner
+        implements ICPPASTSwitchStatement, IASTAmbiguityParent
+{
+    private IScope scope;
     private IASTExpression controllerExpression;
     private IASTDeclaration controllerDeclaration;
     private IASTStatement body;
-    
-    public CPPASTSwitchStatement() {
-	}
 
-	public CPPASTSwitchStatement(IASTDeclaration controller, IASTStatement body) {
-		setControllerDeclaration(controller);
-		setBody(body);
-	}
-    
-    public CPPASTSwitchStatement(IASTExpression controller, IASTStatement body) {
-		setControllerExpression(controller);
-		setBody(body);
-	}
-    
+    public CPPASTSwitchStatement()
+    {
+    }
+
+    public CPPASTSwitchStatement(IASTDeclaration controller, IASTStatement body)
+    {
+        setControllerDeclaration(controller);
+        setBody(body);
+    }
+
+    public CPPASTSwitchStatement(IASTExpression controller, IASTStatement body)
+    {
+        setControllerExpression(controller);
+        setBody(body);
+    }
+
     @Override
-	public CPPASTSwitchStatement copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    public CPPASTSwitchStatement copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public CPPASTSwitchStatement copy(CopyStyle style) {
-		CPPASTSwitchStatement copy = new CPPASTSwitchStatement();
-		copy.setControllerDeclaration(controllerDeclaration == null ?
-				null : controllerDeclaration.copy(style));
-		copy.setControllerExpression(controllerExpression == null ?
-				null : controllerExpression.copy(style));
-		copy.setBody(body == null ? null : body.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTSwitchStatement copy(CopyStyle style)
+    {
+        CPPASTSwitchStatement copy = new CPPASTSwitchStatement();
+        copy.setControllerDeclaration(controllerDeclaration == null ?
+                null : controllerDeclaration.copy(style));
+        copy.setControllerExpression(controllerExpression == null ?
+                null : controllerExpression.copy(style));
+        copy.setBody(body == null ? null : body.copy(style));
+        return copy(copy, style);
+    }
 
-	@Override
-	public IASTExpression getControllerExpression() {
+    @Override
+    public IASTExpression getControllerExpression()
+    {
         return controllerExpression;
     }
 
     @Override
-	public void setControllerExpression(IASTExpression controller) {
+    public void setControllerExpression(IASTExpression controller)
+    {
         assertNotFrozen();
         this.controllerExpression = controller;
         if (controller != null) {
-			controller.setParent(this);
-			controller.setPropertyInParent(CONTROLLER_EXP);
-			controllerDeclaration= null;
-		}
+            controller.setParent(this);
+            controller.setPropertyInParent(CONTROLLER_EXP);
+            controllerDeclaration = null;
+        }
     }
 
     @Override
-	public IASTStatement getBody() {
+    public IASTStatement getBody()
+    {
         return body;
     }
-    
+
     @Override
-	public void setBody(IASTStatement body) {
+    public void setBody(IASTStatement body)
+    {
         assertNotFrozen();
         this.body = body;
         if (body != null) {
-			body.setParent(this);
-			body.setPropertyInParent(BODY);
-		}
+            body.setParent(this);
+            body.setPropertyInParent(BODY);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitStatements) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-        if (!acceptByAttributeSpecifiers(action)) return false;
-        if (controllerExpression != null && !controllerExpression.accept(action)) return false;
-        if (controllerDeclaration != null && !controllerDeclaration.accept(action)) return false;
-        if (body != null && !body.accept(action)) return false;
-        
+        if (!acceptByAttributeSpecifiers(action)) {
+            return false;
+        }
+        if (controllerExpression != null && !controllerExpression.accept(action)) {
+            return false;
+        }
+        if (controllerDeclaration != null && !controllerDeclaration.accept(action)) {
+            return false;
+        }
+        if (body != null && !body.accept(action)) {
+            return false;
+        }
+
         if (action.shouldVisitStatements) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
-    
-    @Override
-	public void replace(IASTNode child, IASTNode other) {
-		if (body == child) {
-			other.setPropertyInParent(child.getPropertyInParent());
-			other.setParent(child.getParent());
-			body = (IASTStatement) other;
-		} else if (controllerDeclaration == child || controllerExpression == child) {
-			if (other instanceof IASTExpression) {
-				setControllerExpression((IASTExpression) other);
-			} else if (other instanceof IASTDeclaration) {
-				setControllerDeclaration((IASTDeclaration) other);
-			}
-		}
-	}
 
     @Override
-	public IASTDeclaration getControllerDeclaration() {
+    public void replace(IASTNode child, IASTNode other)
+    {
+        if (body == child) {
+            other.setPropertyInParent(child.getPropertyInParent());
+            other.setParent(child.getParent());
+            body = (IASTStatement) other;
+        }
+        else if (controllerDeclaration == child || controllerExpression == child) {
+            if (other instanceof IASTExpression) {
+                setControllerExpression((IASTExpression) other);
+            }
+            else if (other instanceof IASTDeclaration) {
+                setControllerDeclaration((IASTDeclaration) other);
+            }
+        }
+    }
+
+    @Override
+    public IASTDeclaration getControllerDeclaration()
+    {
         return controllerDeclaration;
     }
 
     @Override
-	public void setControllerDeclaration(IASTDeclaration d) {
+    public void setControllerDeclaration(IASTDeclaration d)
+    {
         assertNotFrozen();
         controllerDeclaration = d;
         if (d != null) {
-			d.setParent(this);
-			d.setPropertyInParent(CONTROLLER_DECLARATION);
-			controllerExpression= null;
-		}
+            d.setParent(this);
+            d.setPropertyInParent(CONTROLLER_DECLARATION);
+            controllerExpression = null;
+        }
     }
 
-	@Override
-	public IScope getScope() {
-		if (scope == null)
+    @Override
+    public IScope getScope()
+    {
+        if (scope == null) {
             scope = new CPPBlockScope(this);
-        return scope;	
+        }
+        return scope;
     }
 }

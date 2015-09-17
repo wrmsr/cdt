@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
- *     Anton Leherbauer (Wind River Systems)
+ * QNX Software Systems - Initial API and implementation
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 
 package org.eclipse.cdt.internal.core.model;
@@ -23,40 +23,47 @@ import org.eclipse.cdt.core.model.ICElement;
  * 		main type are renamed.
  * </ul>
  */
-public class RenameResourceElementsOperation extends MoveResourceElementsOperation {
-	/**
-	 * When executed, this operation will rename the specified elements with the given names in the
-	 * corresponding destinations.
-	 */
-	public RenameResourceElementsOperation(ICElement[] elements, ICElement[] destinations, String[] newNames, boolean force) {
-		//a rename is a move to the same parent with a new name specified
-		//these elements are from different parents
-		super(elements, destinations, force);
-		setRenamings(newNames);
-	}
+public class RenameResourceElementsOperation
+        extends MoveResourceElementsOperation
+{
+    /**
+     * When executed, this operation will rename the specified elements with the given names in the
+     * corresponding destinations.
+     */
+    public RenameResourceElementsOperation(ICElement[] elements, ICElement[] destinations, String[] newNames, boolean force)
+    {
+        //a rename is a move to the same parent with a new name specified
+        //these elements are from different parents
+        super(elements, destinations, force);
+        setRenamings(newNames);
+    }
 
-	/**
-	 * @see MultiOperation
-	 */
-	@Override
-	protected String getMainTaskName() {
-		return CoreModelMessages.getString("operation.renameResourceProgress"); //$NON-NLS-1$
-	}
+    /**
+     * @see MultiOperation
+     */
+    @Override
+    protected String getMainTaskName()
+    {
+        return CoreModelMessages.getString("operation.renameResourceProgress"); //$NON-NLS-1$
+    }
 
-	/**
-	 * @see CopyResourceElementsOperation#isRename()
-	 */
-	@Override
-	protected boolean isRename() {
-		return true;
-	}
+    /**
+     * @see CopyResourceElementsOperation#isRename()
+     */
+    @Override
+    protected boolean isRename()
+    {
+        return true;
+    }
 
-	/**
-	 * @see MultiOperation
-	 */
-	@Override
-	protected void verify(ICElement element) throws CModelException {
-		super.verify(element);
-		verifyRenaming(element);
-	}
+    /**
+     * @see MultiOperation
+     */
+    @Override
+    protected void verify(ICElement element)
+            throws CModelException
+    {
+        super.verify(element);
+        verifyRenaming(element);
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.lrparser.c99.bindings;
 
@@ -21,59 +21,70 @@ import org.eclipse.cdt.internal.core.dom.parser.c.CVisitor;
 import org.eclipse.core.runtime.PlatformObject;
 
 @SuppressWarnings("restriction")
-public class C99Label extends PlatformObject implements IC99Binding, ILabel {
+public class C99Label
+        extends PlatformObject
+        implements IC99Binding, ILabel
+{
 
-	private String name;
-	private IScope scope;
-	
-	public C99Label() {
-	}
-	
-	public C99Label(String name) {
-		this.name = name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String name;
+    private IScope scope;
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    public C99Label()
+    {
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return name.toCharArray();
-	}
+    public C99Label(String name)
+    {
+        this.name = name;
+    }
 
-	
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	@Override
-	public IASTLabelStatement getLabelStatement() {
-		return null;
-	}
-	
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.C_LINKAGE;
-	}
+    @Override
+    public String getName()
+    {
+        return name;
+    }
 
-	@Override
-	public IScope getScope() {
-		return scope;
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        return name.toCharArray();
+    }
 
-	@Override
-	public void setScope(IScope scope) {
-		this.scope = scope;
-	}
+    @Override
+    public IASTLabelStatement getLabelStatement()
+    {
+        return null;
+    }
 
-	@Override
-	public IBinding getOwner() {
-		if (scope != null) {
-			return CVisitor.findEnclosingFunction((IASTNode) scope.getScopeName()); // local or global
-		}
-		return null;
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.C_LINKAGE;
+    }
+
+    @Override
+    public IScope getScope()
+    {
+        return scope;
+    }
+
+    @Override
+    public void setScope(IScope scope)
+    {
+        this.scope = scope;
+    }
+
+    @Override
+    public IBinding getOwner()
+    {
+        if (scope != null) {
+            return CVisitor.findEnclosingFunction((IASTNode) scope.getScopeName()); // local or global
+        }
+        return null;
+    }
 }

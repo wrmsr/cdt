@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - initial API and implementation
+ * QNX Software Systems - initial API and implementation
  *******************************************************************************/
 /*
  * Created on Jul 5, 2004
@@ -22,13 +22,14 @@ import org.eclipse.core.runtime.IPath;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IGnuToolFactory {
+public interface IGnuToolFactory
+{
 
-	Addr2line getAddr2line(IPath path);
+    Addr2line getAddr2line(IPath path);
 
-	CPPFilt getCPPFilt();
+    CPPFilt getCPPFilt();
 
-	Objdump getObjdump(IPath path);
+    Objdump getObjdump(IPath path);
 
-	NM getNM(IPath path);
+    NM getNM(IPath path);
 }

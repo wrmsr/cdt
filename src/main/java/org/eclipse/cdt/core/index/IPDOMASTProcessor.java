@@ -10,35 +10,41 @@ import org.eclipse.core.runtime.CoreException;
  * extension-point to store their own information in the persisted index.  The intent is for
  * contributors to define their own ILinkage to avoid managing conflicts with the storage format
  * for existing Linkages.
- * <p>
+ * <p/>
  * NOTE: The existing org.eclipse.cdt.core.language extension-point, allows new pdomLinkageFactories
  * to be added.  However, the {@link IPDOMLinkageFactory} interface which must be implemented is
  * in an internal package.
  *
- * @since 5.6
  * @noimplement Clients should extend {@link IPDOMASTProcessor.Abstract}.
+ * @since 5.6
  */
-public interface IPDOMASTProcessor {
-	/**
-	 * Process the input ast by adding significant symbols to the given output map.  Return the
-	 * linkage id that should be used to store the result, or {@link ILinkage#NO_LINKAGE_ID} if
-	 * the AST contained nothing of significance to this processor.
-	 *
-	 * @param ast     The input AST to be processed.
-	 * @param symbols The output map of significant symbols.
-	 * @return        The linkage-id in which to store the symbols or {@link ILinkage#NO_LINKAGE_ID}
-	 *                if the AST contained nothing of significance.
-	 */
-	public int process(IASTTranslationUnit ast, IIndexSymbols symbols) throws CoreException;
+public interface IPDOMASTProcessor
+{
+    /**
+     * Process the input ast by adding significant symbols to the given output map.  Return the
+     * linkage id that should be used to store the result, or {@link ILinkage#NO_LINKAGE_ID} if
+     * the AST contained nothing of significance to this processor.
+     *
+     * @param ast The input AST to be processed.
+     * @param symbols The output map of significant symbols.
+     * @return The linkage-id in which to store the symbols or {@link ILinkage#NO_LINKAGE_ID}
+     * if the AST contained nothing of significance.
+     */
+    public int process(IASTTranslationUnit ast, IIndexSymbols symbols)
+            throws CoreException;
 
-	/**
-	 * An abstract class that should be extended by contributors of the extension-point.  Extending
-	 * this class means that contributors will get default implementations for future additions.
-	 */
-	public static abstract class Abstract implements IPDOMASTProcessor {
-		@Override
-		public int process(IASTTranslationUnit ast, IIndexSymbols symbols) throws CoreException {
-			return ILinkage.NO_LINKAGE_ID;
-		}
-	}
+    /**
+     * An abstract class that should be extended by contributors of the extension-point.  Extending
+     * this class means that contributors will get default implementations for future additions.
+     */
+    public static abstract class Abstract
+            implements IPDOMASTProcessor
+    {
+        @Override
+        public int process(IASTTranslationUnit ast, IIndexSymbols symbols)
+                throws CoreException
+        {
+            return ILinkage.NO_LINKAGE_ID;
+        }
+    }
 }

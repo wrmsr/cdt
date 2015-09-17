@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Rational Software) - Initial API and implementation
- *     Mike Kucera (IBM)- convert to Java 5 enum
+ * John Camelon (IBM Rational Software) - Initial API and implementation
+ * Mike Kucera (IBM)- convert to Java 5 enum
  *******************************************************************************/
 package org.eclipse.cdt.core.parser;
 
@@ -15,53 +15,56 @@ package org.eclipse.cdt.core.parser;
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class ParseError extends Error {
+public class ParseError
+        extends Error
+{
 
-	private static final long serialVersionUID= -3626877473345356953L;
-	
-	private final ParseErrorKind errorKind;
+    private static final long serialVersionUID = -3626877473345356953L;
 
-	public enum ParseErrorKind
-	{
-		// the method called is not implemented in this particular implementation
-		METHOD_NOT_IMPLEMENTED,
-		
-		// offset specified is within a section of code #if'd out by the preprocessor 
-		// semantic context cannot be provided in this case
-		OFFSETDUPLE_UNREACHABLE,
-		
-		// offset range specified is not a valid identifier or qualified name
-		// semantic context cannot be provided in this case
-		OFFSET_RANGE_NOT_NAME,
+    private final ParseErrorKind errorKind;
 
-		TIMEOUT_OR_CANCELLED,
+    public enum ParseErrorKind
+    {
+        // the method called is not implemented in this particular implementation
+        METHOD_NOT_IMPLEMENTED,
 
-		/**
-		 * The user preference for
-		 * {@link org.eclipse.cdt.core.CCorePreferenceConstants#SCALABILITY_LIMIT_TOKENS_PER_TU} is
-		 * enabled and more than
-		 * {@link org.eclipse.cdt.core.CCorePreferenceConstants#SCALABILITY_MAXIMUM_TOKENS} tokens
-		 * were created while parsing a single translation unit.
-		 * @since 5.7
-		 */
-		TOO_MANY_TOKENS
-	}
+        // offset specified is within a section of code #if'd out by the preprocessor
+        // semantic context cannot be provided in this case
+        OFFSETDUPLE_UNREACHABLE,
 
-	public ParseErrorKind getErrorKind()
-	{
-		return errorKind;
-	}
-	
-	public ParseError( ParseErrorKind kind )
-	{
-		errorKind = kind;
-	}
+        // offset range specified is not a valid identifier or qualified name
+        // semantic context cannot be provided in this case
+        OFFSET_RANGE_NOT_NAME,
 
-	/**
-	 * @since 5.7
-	 */
-	public ParseError(String message, ParseErrorKind kind) {
-		super(message);
-		errorKind = kind;
-	}
+        TIMEOUT_OR_CANCELLED,
+
+        /**
+         * The user preference for
+         * {@link org.eclipse.cdt.core.CCorePreferenceConstants#SCALABILITY_LIMIT_TOKENS_PER_TU} is
+         * enabled and more than
+         * {@link org.eclipse.cdt.core.CCorePreferenceConstants#SCALABILITY_MAXIMUM_TOKENS} tokens
+         * were created while parsing a single translation unit.
+         * @since 5.7
+         */
+        TOO_MANY_TOKENS
+    }
+
+    public ParseErrorKind getErrorKind()
+    {
+        return errorKind;
+    }
+
+    public ParseError(ParseErrorKind kind)
+    {
+        errorKind = kind;
+    }
+
+    /**
+     * @since 5.7
+     */
+    public ParseError(String message, ParseErrorKind kind)
+    {
+        super(message);
+        errorKind = kind;
+    }
 }

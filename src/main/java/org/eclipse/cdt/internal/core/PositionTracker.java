@@ -4,25 +4,27 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
+ * Markus Schorn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core;
-
-import java.io.PrintStream;
 
 import org.eclipse.cdt.core.IPositionConverter;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
+import java.io.PrintStream;
+
 /**
  * Tracks changes made to a text buffer, to afterwards recalculate positions.
  * @author markus.schorn@windriver.com
  */
-public class PositionTracker implements IPositionConverter {
+public class PositionTracker
+        implements IPositionConverter
+{
     private static final int MEMORY_SIZE = 48;
-    private static final int NODE_MEMORY_SIZE= 32;
+    private static final int NODE_MEMORY_SIZE = 32;
 
     private Node fAboveRoot = new Node(0, 0, 0);
     private PositionTracker fFollowedBy = null;
@@ -31,7 +33,8 @@ public class PositionTracker implements IPositionConverter {
     /**
      * Resets the tracker to a state reflecting no changes.
      */
-    public synchronized void clear() {
+    public synchronized void clear()
+    {
         fAboveRoot = new Node(0, 0, 0);
         fFollowedBy = null;
     }
@@ -39,7 +42,8 @@ public class PositionTracker implements IPositionConverter {
     /**
      * Undoes the retirement to make this the head of a tracker chain again.
      */
-    synchronized void revive() {
+    synchronized void revive()
+    {
         fFollowedBy = null;
     }
 
@@ -50,7 +54,8 @@ public class PositionTracker implements IPositionConverter {
      * @param offset offset of the character in front of which insertion occurs.
      * @param count amount of characters inserted.
      */
-    public synchronized void insert(int offset, int count) {
+    public synchronized void insert(int offset, int count)
+    {
         assert fFollowedBy == null;
         assert offset >= 0;
         if (count == 0 || offset < 0) {
@@ -67,12 +72,14 @@ public class PositionTracker implements IPositionConverter {
      * @param offset offset of the first character deleted.
      * @param count amount of characters deleted.
      */
-    public synchronized void delete(int offset, int count) {
+    public synchronized void delete(int offset, int count)
+    {
         assert fFollowedBy == null;
         assert offset >= 0;
         if (count < 0) {
             delete(offset + count, -count);
-        } else {
+        }
+        else {
             if (count == 0 || offset < 0) {
                 return;
             }
@@ -86,11 +93,13 @@ public class PositionTracker implements IPositionConverter {
      * @param currentOffset position in the modified text.
      * @return position in the unmodified text.
      */
-    public synchronized int historicOffset(int currentOffset) {
+    public synchronized int historicOffset(int currentOffset)
+    {
         return historicOffset(currentOffset, true);
     }
 
-    private synchronized int historicOffset(int currentOffset, boolean nextOnDelete) {
+    private synchronized int historicOffset(int currentOffset, boolean nextOnDelete)
+    {
         int orig = currentOffset;
         if (fFollowedBy != null) {
             orig = fFollowedBy.historicOffset(orig, nextOnDelete);
@@ -105,11 +114,13 @@ public class PositionTracker implements IPositionConverter {
      * @param historicOffset position in the unmodified text.
      * @return position in the modified text.
      */
-    public synchronized int currentOffset(int historicOffset) {
+    public synchronized int currentOffset(int historicOffset)
+    {
         return currentOffset(historicOffset, true);
     }
 
-    private synchronized int currentOffset(int historicOffset, boolean nextOnDelete) {
+    private synchronized int currentOffset(int historicOffset, boolean nextOnDelete)
+    {
         int current = fAboveRoot.calculateCurrentOffset(historicOffset, 0, nextOnDelete);
         if (fFollowedBy != null) {
             current = fFollowedBy.currentOffset(current, nextOnDelete);
@@ -123,7 +134,8 @@ public class PositionTracker implements IPositionConverter {
      *
      * @param inFavourOf tracker that tracks changes from now on.
      */
-    public synchronized void retire(PositionTracker inFavourOf) {
+    public synchronized void retire(PositionTracker inFavourOf)
+    {
         assert fFollowedBy == null;
         fFollowedBy = inFavourOf;
     }
@@ -131,65 +143,75 @@ public class PositionTracker implements IPositionConverter {
     /**
      * For the purpose of testing.
      */
-    public synchronized void print(PrintStream out) {
+    public synchronized void print(PrintStream out)
+    {
         fAboveRoot.print(0, out, 0);
     }
 
     /**
      * For the purpose of testing.
      */
-    public synchronized int depth() {
+    public synchronized int depth()
+    {
         return fAboveRoot.depth() - 1;
     }
 
-    public synchronized boolean isModified() {
-        return fAboveRoot.fLeft != null || fAboveRoot.fRight!=null;
+    public synchronized boolean isModified()
+    {
+        return fAboveRoot.fLeft != null || fAboveRoot.fRight != null;
     }
 
-    public synchronized long getTimeStamp() {
+    public synchronized long getTimeStamp()
+    {
         return fTimeStamp;
     }
 
-    public synchronized void setTimeStamp(long timeStamp) {
+    public synchronized void setTimeStamp(long timeStamp)
+    {
         fTimeStamp = timeStamp;
     }
 
-    public synchronized long getRetiredTimeStamp() {
+    public synchronized long getRetiredTimeStamp()
+    {
         if (fFollowedBy == null) {
             return Long.MAX_VALUE;
         }
         return fFollowedBy.getTimeStamp();
     }
 
-    public synchronized int getMemorySize() {
+    public synchronized int getMemorySize()
+    {
         return MEMORY_SIZE + NODE_MEMORY_SIZE * countNodes();
     }
 
-    private synchronized int countNodes() {
+    private synchronized int countNodes()
+    {
         return fAboveRoot.countNodes();
     }
 
     @Override
-	public synchronized IRegion actualToHistoric(IRegion actualPosition) {
-        int actual= actualPosition.getOffset();
-        int len= actualPosition.getLength();
+    public synchronized IRegion actualToHistoric(IRegion actualPosition)
+    {
+        int actual = actualPosition.getOffset();
+        int len = actualPosition.getLength();
 
-        int historic= historicOffset(actual, true);
+        int historic = historicOffset(actual, true);
         if (len > 0) {
-            len= historicOffset(actual + len - 1, false) - historic + 1;
+            len = historicOffset(actual + len - 1, false) - historic + 1;
         }
         assert len >= 0;
         return new Region(historic, len);
     }
 
     @Override
-	public synchronized IRegion historicToActual(IRegion historicPosition) {
-        int historic= historicPosition.getOffset();
-        int len= historicPosition.getLength();
+    public synchronized IRegion historicToActual(IRegion historicPosition)
+    {
+        int historic = historicPosition.getOffset();
+        int len = historicPosition.getLength();
 
-        int actual= currentOffset(historic, true);
+        int actual = currentOffset(historic, true);
         if (len > 0) {
-            len= currentOffset(historic + len - 1, false) - actual + 1;
+            len = currentOffset(historic + len - 1, false) - actual + 1;
         }
         assert len >= 0;
         return new Region(actual, len);
@@ -200,7 +222,8 @@ public class PositionTracker implements IPositionConverter {
      *
      * @author markus.schorn@windriver.com
      */
-    private static class Node {
+    private static class Node
+    {
         private static final boolean RED = true;
         private static final boolean BLACK = false;
 
@@ -213,7 +236,8 @@ public class PositionTracker implements IPositionConverter {
         private Node fRight;
         private Node fParent;
 
-        Node(int pos1, int deltaPos2, int change) {
+        Node(int pos1, int deltaPos2, int change)
+        {
             fDeltaPos2 = deltaPos2;
             fPos1 = pos1;
             fChange = change;
@@ -221,7 +245,8 @@ public class PositionTracker implements IPositionConverter {
             fColor = RED;
         }
 
-        int depth() {
+        int depth()
+        {
             if (fLeft == null) {
                 if (fRight == null) {
                     return 1;
@@ -235,7 +260,8 @@ public class PositionTracker implements IPositionConverter {
         }
 
         // Forward calculation.
-        int calculateCurrentOffset(int value1, int parentPos2, boolean nextOnDelete) {
+        int calculateCurrentOffset(int value1, int parentPos2, boolean nextOnDelete)
+        {
             int fPos2 = parentPos2 + fDeltaPos2;
             int rel1 = value1 - fPos1;
 
@@ -264,7 +290,8 @@ public class PositionTracker implements IPositionConverter {
         }
 
         // Backward calculation.
-        int calculateOriginalOffset(int value2, int parentPos2, boolean nextOnDelete) {
+        int calculateOriginalOffset(int value2, int parentPos2, boolean nextOnDelete)
+        {
             int fPos2 = parentPos2 + fDeltaPos2;
             int rel2 = value2 - fPos2;
 
@@ -292,7 +319,8 @@ public class PositionTracker implements IPositionConverter {
             return rel2 + fPos1 - fChange;
         }
 
-        void addChars(int value2, int add, int fPos2) {
+        void addChars(int value2, int add, int fPos2)
+        {
             int rel2 = value2 - fPos2;
 
             if (fParent != null) {
@@ -324,7 +352,8 @@ public class PositionTracker implements IPositionConverter {
                     if (fLeft != null) {
                         fLeft.fDeltaPos2 -= add;
                     }
-                } else if (fRight != null) {
+                }
+                else if (fRight != null) {
                     fRight.fDeltaPos2 += add; // advance right branch
                 }
                 return;
@@ -340,7 +369,8 @@ public class PositionTracker implements IPositionConverter {
             addRight(rel2 + fPos1 - fChange, rel2, add);
         }
 
-        boolean removeChars(int firstChar2, int remove, int fPos2, boolean mustRemove) {
+        boolean removeChars(int firstChar2, int remove, int fPos2, boolean mustRemove)
+        {
             int relFirstChar2 = firstChar2 - fPos2;
             int relAfterLastChar2 = relFirstChar2 + remove;
 
@@ -420,7 +450,8 @@ public class PositionTracker implements IPositionConverter {
             return true;
         }
 
-        private void balance() {
+        private void balance()
+        {
             if (fParent == null) {
                 if (fRight != null) {
                     fRight.fColor = BLACK;
@@ -443,20 +474,24 @@ public class PositionTracker implements IPositionConverter {
             }
         }
 
-        private void rotateAround(Node grandParent) {
+        private void rotateAround(Node grandParent)
+        {
             if (grandParent.fLeft == fParent) {
                 rotateRightAround(grandParent);
-            } else {
+            }
+            else {
                 rotateLeftAround(grandParent);
             }
         }
 
-        private void rotateRightAround(Node grandParent) {
+        private void rotateRightAround(Node grandParent)
+        {
             if (fParent.fLeft == this) {
                 grandParent.rotateRight();
                 fParent.fColor = BLACK;
                 fParent.fRight.fColor = RED;
-            } else {
+            }
+            else {
                 fParent.rotateLeft();
                 grandParent.rotateRight();
                 fColor = BLACK;
@@ -464,12 +499,14 @@ public class PositionTracker implements IPositionConverter {
             }
         }
 
-        private void rotateLeftAround(Node grandParent) {
+        private void rotateLeftAround(Node grandParent)
+        {
             if (fParent.fRight == this) {
                 grandParent.rotateLeft();
                 fParent.fColor = BLACK;
                 fParent.fLeft.fColor = RED;
-            } else {
+            }
+            else {
                 fParent.rotateRight();
                 grandParent.rotateLeft();
                 fColor = BLACK;
@@ -477,7 +514,8 @@ public class PositionTracker implements IPositionConverter {
             }
         }
 
-        private void rotateRight() {
+        private void rotateRight()
+        {
             assert fLeft != null;
 
             Node root = this;
@@ -491,7 +529,8 @@ public class PositionTracker implements IPositionConverter {
             // Put under old parent.
             if (fParent.fLeft == this) {
                 fParent.putLeft(left);
-            } else {
+            }
+            else {
                 fParent.putRight(left);
             }
             left.fDeltaPos2 += rootAbove;
@@ -507,7 +546,8 @@ public class PositionTracker implements IPositionConverter {
             }
         }
 
-        private void rotateLeft() {
+        private void rotateLeft()
+        {
             assert fRight != null;
 
             Node root = this;
@@ -521,7 +561,8 @@ public class PositionTracker implements IPositionConverter {
             // Put under old parent.
             if (fParent.fRight == this) {
                 fParent.putRight(right);
-            } else {
+            }
+            else {
                 fParent.putLeft(right);
             }
             right.fDeltaPos2 += rootAbove;
@@ -537,63 +578,74 @@ public class PositionTracker implements IPositionConverter {
             }
         }
 
-        private boolean isRed() {
+        private boolean isRed()
+        {
             return fColor == RED;
         }
 
-        private void putLeft(Node add) {
+        private void putLeft(Node add)
+        {
             fLeft = add;
             if (fLeft != null) {
                 fLeft.fParent = this;
             }
         }
 
-        private void putRight(Node add) {
+        private void putRight(Node add)
+        {
             fRight = add;
             if (fRight != null) {
                 fRight.fParent = this;
             }
         }
 
-        private void addLeft(int pos1, int pos2, int change) {
+        private void addLeft(int pos1, int pos2, int change)
+        {
             fLeft = new Node(pos1, pos2, change);
             fLeft.fParent = this;
             if (isHolder()) {
                 assert false;
-            } else if (isRed()) {
+            }
+            else if (isRed()) {
                 fLeft.rotateAround(fParent);
             }
         }
 
-        private boolean isHolder() {
+        private boolean isHolder()
+        {
             return fParent == null;
         }
 
-        private void addRight(int pos1, int pos2, int change) {
+        private void addRight(int pos1, int pos2, int change)
+        {
             fRight = new Node(pos1, pos2, change);
             fRight.fParent = this;
             if (isHolder()) {
                 fRight.fColor = BLACK;
-            } else if (isRed()) {
+            }
+            else if (isRed()) {
                 fRight.rotateAround(fParent);
             }
         }
 
-        public void print(int i, PrintStream out, int parentOffset) {
+        public void print(int i, PrintStream out, int parentOffset)
+        {
             parentOffset += fDeltaPos2;
             if (fRight != null) {
                 fRight.print(i + 1, out, parentOffset);
             }
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < i; j++) {
                 out.print("  "); //$NON-NLS-1$
+            }
             out.println(fPos1 + "<->" + parentOffset + " : " + fChange + (fColor ? " // red" : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             if (fLeft != null) {
                 fLeft.print(i + 1, out, parentOffset);
             }
         }
 
-        public int countNodes() {
-            int count= 1;
+        public int countNodes()
+        {
+            int count = 1;
             if (fLeft != null) {
                 count += fLeft.countNodes();
             }

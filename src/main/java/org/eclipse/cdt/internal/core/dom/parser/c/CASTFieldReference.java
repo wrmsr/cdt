@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Rational Software) - Initial API and implementation
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Bryan Wilkinson (QNX)
- *     Markus Schorn (Wind River Systems)
+ * John Camelon (IBM Rational Software) - Initial API and implementation
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Bryan Wilkinson (QNX)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -30,143 +30,175 @@ import org.eclipse.cdt.internal.core.dom.parser.ProblemType;
 /**
  * Field reference in C.
  */
-public class CASTFieldReference extends ASTNode
-		implements IASTFieldReference, IASTAmbiguityParent, IASTCompletionContext {
+public class CASTFieldReference
+        extends ASTNode
+        implements IASTFieldReference, IASTAmbiguityParent, IASTCompletionContext
+{
     private IASTExpression owner;
     private IASTName name;
     private boolean ptr;
 
-    public CASTFieldReference() {
-	}
-    
-	public CASTFieldReference(IASTName name, IASTExpression owner) {
-		this(name, owner, false);
-	}
+    public CASTFieldReference()
+    {
+    }
 
-	public CASTFieldReference(IASTName name, IASTExpression owner, boolean ptr) {
-		setFieldOwner(owner);
-		setFieldName(name);
-		this.ptr = ptr;
-	}
-	
-	@Override
-	public CASTFieldReference copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    public CASTFieldReference(IASTName name, IASTExpression owner)
+    {
+        this(name, owner, false);
+    }
 
-	@Override
-	public CASTFieldReference copy(CopyStyle style) {
-		CASTFieldReference copy = new CASTFieldReference();
-		copy.setFieldOwner(owner == null ? null : owner.copy(style));
-		copy.setFieldName(name == null ? null : name.copy(style));
-		copy.ptr = ptr;
-		return copy(copy, style);
-	}
+    public CASTFieldReference(IASTName name, IASTExpression owner, boolean ptr)
+    {
+        setFieldOwner(owner);
+        setFieldName(name);
+        this.ptr = ptr;
+    }
 
-	@Override
-	public IASTExpression getFieldOwner() {
+    @Override
+    public CASTFieldReference copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
+
+    @Override
+    public CASTFieldReference copy(CopyStyle style)
+    {
+        CASTFieldReference copy = new CASTFieldReference();
+        copy.setFieldOwner(owner == null ? null : owner.copy(style));
+        copy.setFieldName(name == null ? null : name.copy(style));
+        copy.ptr = ptr;
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTExpression getFieldOwner()
+    {
         return owner;
     }
 
     @Override
-	public void setFieldOwner(IASTExpression expression) {
+    public void setFieldOwner(IASTExpression expression)
+    {
         assertNotFrozen();
         this.owner = expression;
         if (expression != null) {
-			expression.setParent(this);
-			expression.setPropertyInParent(FIELD_OWNER);
-		}
+            expression.setParent(this);
+            expression.setPropertyInParent(FIELD_OWNER);
+        }
     }
 
     @Override
-	public IASTName getFieldName() {
+    public IASTName getFieldName()
+    {
         return name;
     }
 
     @Override
-	public void setFieldName(IASTName name) {
+    public void setFieldName(IASTName name)
+    {
         assertNotFrozen();
         this.name = name;
         if (name != null) {
-			name.setParent(this);
-			name.setPropertyInParent(FIELD_NAME);
-		}
+            name.setParent(this);
+            name.setPropertyInParent(FIELD_NAME);
+        }
     }
 
     @Override
-	public boolean isPointerDereference() {
+    public boolean isPointerDereference()
+    {
         return ptr;
     }
 
     @Override
-	public void setIsPointerDereference(boolean value) {
+    public void setIsPointerDereference(boolean value)
+    {
         assertNotFrozen();
         ptr = value;
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitExpressions) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
-      
-        if (owner != null && !owner.accept(action)) return false;
-        if (name != null && !name.accept(action)) return false;
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
+
+        if (owner != null && !owner.accept(action)) {
+            return false;
+        }
+        if (name != null && !name.accept(action)) {
+            return false;
+        }
 
         if (action.shouldVisitExpressions) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
-	@Override
-	public int getRoleForName(IASTName n) {
-		if (n  == this.name)
-			return r_reference;
-		return r_unclear;
-	}
+    @Override
+    public int getRoleForName(IASTName n)
+    {
+        if (n == this.name) {
+            return r_reference;
+        }
+        return r_unclear;
+    }
 
     @Override
-	public void replace(IASTNode child, IASTNode other) {
+    public void replace(IASTNode child, IASTNode other)
+    {
         if (child == owner) {
             other.setPropertyInParent(child.getPropertyInParent());
             other.setParent(child.getParent());
             owner = (IASTExpression) other;
         }
     }
-    
+
     @Override
-	public IType getExpressionType() {
+    public IType getExpressionType()
+    {
         IBinding binding = getFieldName().resolveBinding();
-		if (binding instanceof IVariable) {
-			return ((IVariable)binding).getType();
-		}
-    	return new ProblemType(ISemanticProblem.TYPE_UNKNOWN_FOR_EXPRESSION);
+        if (binding instanceof IVariable) {
+            return ((IVariable) binding).getType();
+        }
+        return new ProblemType(ISemanticProblem.TYPE_UNKNOWN_FOR_EXPRESSION);
     }
 
-	@Override
-	public boolean isLValue() {
-		if (isPointerDereference())
-			return true;
+    @Override
+    public boolean isLValue()
+    {
+        if (isPointerDereference()) {
+            return true;
+        }
 
-		return getFieldOwner().isLValue();
-	}
+        return getFieldOwner().isLValue();
+    }
 
-	@Override
-	public final ValueCategory getValueCategory() {
-		return isLValue() ? ValueCategory.LVALUE : ValueCategory.PRVALUE;
-	}
+    @Override
+    public final ValueCategory getValueCategory()
+    {
+        return isLValue() ? ValueCategory.LVALUE : ValueCategory.PRVALUE;
+    }
 
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix) {
-		return CVisitor.findBindingsForContentAssist(n, isPrefix);
-	}
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix)
+    {
+        return CVisitor.findBindingsForContentAssist(n, isPrefix);
+    }
 }

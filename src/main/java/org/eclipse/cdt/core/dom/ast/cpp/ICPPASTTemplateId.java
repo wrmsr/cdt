@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
- *     Andrew Ferguson (Symbian)
+ * John Camelon (IBM) - Initial API and implementation
+ * Andrew Ferguson (Symbian)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
@@ -22,75 +22,77 @@ import org.eclipse.cdt.core.dom.ast.IASTTypeId;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICPPASTTemplateId extends ICPPASTName, IASTNameOwner {
-	/**
-	 * TEMPLATE_NAME is the IASTName.
-	 */
-	public static final ASTNodeProperty TEMPLATE_NAME = new ASTNodeProperty(
-			"ICPPASTTemplateId.TEMPLATE_NAME - TemplateId Name"); //$NON-NLS-1$
+public interface ICPPASTTemplateId
+        extends ICPPASTName, IASTNameOwner
+{
+    /**
+     * TEMPLATE_NAME is the IASTName.
+     */
+    public static final ASTNodeProperty TEMPLATE_NAME = new ASTNodeProperty(
+            "ICPPASTTemplateId.TEMPLATE_NAME - TemplateId Name"); //$NON-NLS-1$
 
-	/**
-	 * Get the name.
-	 * 
-	 * @return {@code IASTName}
-	 */
-	public IASTName getTemplateName();
+    /**
+     * Get the name.
+     *
+     * @return {@code IASTName}
+     */
+    public IASTName getTemplateName();
 
-	/**
-	 * Set the name.
-	 * 
-	 * @param name {@code IASTName}
-	 */
-	public void setTemplateName(IASTName name);
+    /**
+     * Set the name.
+     *
+     * @param name {@code IASTName}
+     */
+    public void setTemplateName(IASTName name);
 
-	/**
-	 * TEMPLATE_ID_ARGUMENT = template id argument.
-	 */
-	public static final ASTNodeProperty TEMPLATE_ID_ARGUMENT = new ASTNodeProperty(
-			"ICPPASTTemplateId.TEMPLATE_ID_ARGUMENT - TemplateId Argument"); //$NON-NLS-1$
+    /**
+     * TEMPLATE_ID_ARGUMENT = template id argument.
+     */
+    public static final ASTNodeProperty TEMPLATE_ID_ARGUMENT = new ASTNodeProperty(
+            "ICPPASTTemplateId.TEMPLATE_ID_ARGUMENT - TemplateId Argument"); //$NON-NLS-1$
 
-	/**
-	 * Constant.
-	 */
-	public static final IASTNode[] EMPTY_ARG_ARRAY = {};
+    /**
+     * Constant.
+     */
+    public static final IASTNode[] EMPTY_ARG_ARRAY = {};
 
-	/**
-	 * Adds template argument.
-	 * 
-	 * @param typeId {@code IASTTypeId}
-	 */
-	public void addTemplateArgument(IASTTypeId typeId);
+    /**
+     * Adds template argument.
+     *
+     * @param typeId {@code IASTTypeId}
+     */
+    public void addTemplateArgument(IASTTypeId typeId);
 
-	/**
-	 * Adds a template argument.
-	 * 
-	 * @param expression {@code IASTExpression}
-	 */
-	public void addTemplateArgument(IASTExpression expression);
+    /**
+     * Adds a template argument.
+     *
+     * @param expression {@code IASTExpression}
+     */
+    public void addTemplateArgument(IASTExpression expression);
 
-	/**
-	 * Adds an ambiguity node for later resolution.
-	 * 
-	 * @param ambiguity
-	 */
-	public void addTemplateArgument(ICPPASTAmbiguousTemplateArgument ambiguity);
-	
-	/**
-	 * Returns all template arguments as nodes.
-	 * 
-	 * @return nodes representing the template arguments
-	 */
-	public IASTNode[] getTemplateArguments();
-	
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public ICPPASTTemplateId copy();
+    /**
+     * Adds an ambiguity node for later resolution.
+     *
+     * @param ambiguity
+     */
+    public void addTemplateArgument(ICPPASTAmbiguousTemplateArgument ambiguity);
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	public ICPPASTTemplateId copy(CopyStyle style);
+    /**
+     * Returns all template arguments as nodes.
+     *
+     * @return nodes representing the template arguments
+     */
+    public IASTNode[] getTemplateArguments();
+
+    /**
+     * @since 5.1
+     */
+    @Override
+    public ICPPASTTemplateId copy();
+
+    /**
+     * @since 5.3
+     */
+    @Override
+    public ICPPASTTemplateId copy(CopyStyle style);
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - initial API and implementation
+ * QNX Software Systems - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.browser;
 
@@ -16,9 +16,10 @@ package org.eclipse.cdt.core.browser;
  * @noextend This interface is not intended to be extended by clients.
  */
 @Deprecated
-public interface ITypeInfoVisitor {
-	
-	public boolean visit(ITypeInfo info);
+public interface ITypeInfoVisitor
+{
 
-	public boolean shouldContinue();
+    public boolean visit(ITypeInfo info);
+
+    public boolean shouldContinue();
 }

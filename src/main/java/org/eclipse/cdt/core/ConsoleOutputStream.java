@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.core;
@@ -14,35 +14,42 @@ package org.eclipse.cdt.core;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 /**
  * Output stream which storing the console output
- * 
+ *
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class ConsoleOutputStream extends OutputStream {
-	
-	protected StringBuffer fBuffer;
-		
-	public ConsoleOutputStream() {
-		fBuffer= new StringBuffer();
-	}
+public class ConsoleOutputStream
+        extends OutputStream
+{
 
-	public synchronized String readBuffer() {
-		String buf = fBuffer.toString();
-		fBuffer.setLength(0);
-		return buf;
-	}
+    protected StringBuffer fBuffer;
 
-	@Override
-	public synchronized void write(int c) throws IOException {
-		byte ascii[] = new byte[1];
-		ascii[0] = (byte) c;
-		fBuffer.append(new String(ascii));
-	}
-	    
+    public ConsoleOutputStream()
+    {
+        fBuffer = new StringBuffer();
+    }
+
+    public synchronized String readBuffer()
+    {
+        String buf = fBuffer.toString();
+        fBuffer.setLength(0);
+        return buf;
+    }
+
     @Override
-	public synchronized void write(byte[] b, int off, int len) throws IOException {
+    public synchronized void write(int c)
+            throws IOException
+    {
+        byte ascii[] = new byte[1];
+        ascii[0] = (byte) c;
+        fBuffer.append(new String(ascii));
+    }
+
+    @Override
+    public synchronized void write(byte[] b, int off, int len)
+            throws IOException
+    {
         fBuffer.append(new String(b, off, len));
     }
 }

@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -17,21 +17,23 @@ package org.eclipse.cdt.core.dom.ast;
  * @noimplement This interface is not intended to be implemented by clients.
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IProblemBinding extends IBinding, IScope, IType, ISemanticProblem {
+public interface IProblemBinding
+        extends IBinding, IScope, IType, ISemanticProblem
+{
     /**
      * Returns the AST node that this problem was created for
      */
     public IASTNode getASTNode();
 
-	/**
-	 * Returns the file name this problem occurred in, or {@code null} if it is unknown.
-	 */
-	public String getFileName();
+    /**
+     * Returns the file name this problem occurred in, or {@code null} if it is unknown.
+     */
+    public String getFileName();
 
-	/**
-	 * Returns the line number for this problem, or -1 if it is unknown.
-	 */
-	public int getLineNumber();
+    /**
+     * Returns the line number for this problem, or -1 if it is unknown.
+     */
+    public int getLineNumber();
 
     /**
      * Returns bindings that were considered when resolving the node corresponding
@@ -40,9 +42,9 @@ public interface IProblemBinding extends IBinding, IScope, IType, ISemanticProbl
      *
      * @since 5.1
      */
-	public IBinding[] getCandidateBindings();
+    public IBinding[] getCandidateBindings();
 
-	/*
+    /*
      * Parser Semantic Problems
      * All semantic problems take a char[] as an argument.
      */
@@ -59,13 +61,13 @@ public interface IProblemBinding extends IBinding, IScope, IType, ISemanticProbl
     public static final int SEMANTIC_INVALID_REDEFINITION = BINDING_INVALID_REDEFINITION;
     public static final int SEMANTIC_INVALID_REDECLARATION = BINDING_INVALID_REDECLARATION;
     public static final int SEMANTIC_MEMBER_DECLARATION_NOT_FOUND = BINDING_MEMBER_DECLARATION_NOT_FOUND;
-	public static final int SEMANTIC_RECURSION_IN_LOOKUP = BINDING_RECURSION_IN_LOOKUP;
-	/** @since 5.1 */
-	public static final int SEMANTIC_INVALID_TEMPLATE_ARGUMENTS = BINDING_INVALID_TEMPLATE_ARGUMENTS;
+    public static final int SEMANTIC_RECURSION_IN_LOOKUP = BINDING_RECURSION_IN_LOOKUP;
+    /** @since 5.1 */
+    public static final int SEMANTIC_INVALID_TEMPLATE_ARGUMENTS = BINDING_INVALID_TEMPLATE_ARGUMENTS;
 
-	/**
-	 * @deprecated, there may be additional problems.
-	 */
-	@Deprecated
-	public static final int LAST_PROBLEM = 0x00E;
+    /**
+     * @deprecated, there may be additional problems.
+     */
+    @Deprecated
+    public static final int LAST_PROBLEM = 0x00E;
 }

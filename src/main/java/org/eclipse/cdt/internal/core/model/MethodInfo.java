@@ -4,85 +4,97 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Rational Software - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.model;
 
-
 import org.eclipse.cdt.core.parser.ast.ASTAccessVisibility;
 
-public class MethodInfo extends FunctionInfo {
+public class MethodInfo
+        extends FunctionInfo
+{
 
-	boolean isPureVirtual = false;
-	boolean isInline = false;
-	boolean isVirtual = false;
-	boolean isFriend = false;
-	ASTAccessVisibility visibility = null;
-		
-	MethodInfo(CElement element) {
-		super(element);
-		visibility = ASTAccessVisibility.PRIVATE;
-	}
-	
-	public boolean isPureVirtual(){
-		return isPureVirtual;
-	}
+    boolean isPureVirtual = false;
+    boolean isInline = false;
+    boolean isVirtual = false;
+    boolean isFriend = false;
+    ASTAccessVisibility visibility = null;
 
-	public void setPureVirtual(boolean isPureVirtual){
-		this.isPureVirtual = isPureVirtual;
-	}
+    MethodInfo(CElement element)
+    {
+        super(element);
+        visibility = ASTAccessVisibility.PRIVATE;
+    }
 
-	public boolean isInline(){
-		return isInline;
-	}
+    public boolean isPureVirtual()
+    {
+        return isPureVirtual;
+    }
 
-	public void setInline(boolean isInline){
-		this.isInline = isInline;
-	}
+    public void setPureVirtual(boolean isPureVirtual)
+    {
+        this.isPureVirtual = isPureVirtual;
+    }
 
-	public boolean isVirtual(){
-		return isVirtual;
-	}
+    public boolean isInline()
+    {
+        return isInline;
+    }
 
-	public void setVirtual(boolean isVirtual){
-		this.isVirtual = isVirtual;
-	}
+    public void setInline(boolean isInline)
+    {
+        this.isInline = isInline;
+    }
 
-	public boolean isFriend(){
-		return isFriend;
-	}
+    public boolean isVirtual()
+    {
+        return isVirtual;
+    }
 
-	public void setFriend(boolean isFriend){
-		this.isFriend = isFriend;
-	}
-	
-	/**
-	 * Returns the visibility.
-	 * @return int
-	 */
-	public ASTAccessVisibility getVisibility() {
-		return visibility;
-	}
+    public void setVirtual(boolean isVirtual)
+    {
+        this.isVirtual = isVirtual;
+    }
 
-	/**
-	 * Sets the visibility.
-	 * @param visibility The visibility to set
-	 */
-	public void setVisibility(ASTAccessVisibility visibility) {
-		this.visibility = visibility;
-	}
+    public boolean isFriend()
+    {
+        return isFriend;
+    }
 
-	@Override
-	public boolean hasSameContentsAs(SourceManipulationInfo otherInfo) {
-		return (super.hasSameContentsAs(otherInfo)
-		&&  (isPureVirtual == ((MethodInfo)otherInfo).isPureVirtual())
-		&& 	(isInline == ((MethodInfo)otherInfo).isInline())
-		&& 	(isVirtual == ((MethodInfo)otherInfo).isVirtual())
-		&& 	(isFriend == ((MethodInfo)otherInfo).isFriend())
-		&& 	(visibility == ((MethodInfo)otherInfo).getVisibility())
-		);
-	}
+    public void setFriend(boolean isFriend)
+    {
+        this.isFriend = isFriend;
+    }
 
+    /**
+     * Returns the visibility.
+     * @return int
+     */
+    public ASTAccessVisibility getVisibility()
+    {
+        return visibility;
+    }
+
+    /**
+     * Sets the visibility.
+     * @param visibility The visibility to set
+     */
+    public void setVisibility(ASTAccessVisibility visibility)
+    {
+        this.visibility = visibility;
+    }
+
+    @Override
+    public boolean hasSameContentsAs(SourceManipulationInfo otherInfo)
+    {
+        return (super.hasSameContentsAs(otherInfo)
+                && (isPureVirtual == ((MethodInfo) otherInfo).isPureVirtual())
+                && (isInline == ((MethodInfo) otherInfo).isInline())
+                && (isVirtual == ((MethodInfo) otherInfo).isVirtual())
+                && (isFriend == ((MethodInfo) otherInfo).isFriend())
+                && (visibility == ((MethodInfo) otherInfo).getVisibility())
+        );
+    }
 }

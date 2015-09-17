@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
@@ -19,7 +19,9 @@ import org.eclipse.cdt.core.dom.ast.IScope;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICPPASTSwitchStatement extends IASTSwitchStatement {
+public interface ICPPASTSwitchStatement
+        extends IASTSwitchStatement
+{
 
     /**
      * <code>CONTROLLER_DECLARATION</code> represents the relationship between an
@@ -31,34 +33,34 @@ public interface ICPPASTSwitchStatement extends IASTSwitchStatement {
 
     /**
      * In C++, a switch statement can be contorller by a declaration.
-     * 
+     *
      * @return <code>IASTDeclaration</code>
      */
     public IASTDeclaration getControllerDeclaration();
 
     /**
      * In C++, a switch statement can be contorller by a declaration.
-     * 
+     *
      * @param d <code>IASTDeclaration</code>
      */
-    public void setControllerDeclaration( IASTDeclaration d );
-    
-	/**
-	 * Get the <code>IScope</code> represented by this switch.
-	 * 
-	 * @return <code>IScope</code>
-	 */
-	public IScope getScope();
-    
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public ICPPASTSwitchStatement copy();
+    public void setControllerDeclaration(IASTDeclaration d);
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	public ICPPASTSwitchStatement copy(CopyStyle style);
+    /**
+     * Get the <code>IScope</code> represented by this switch.
+     *
+     * @return <code>IScope</code>
+     */
+    public IScope getScope();
+
+    /**
+     * @since 5.1
+     */
+    @Override
+    public ICPPASTSwitchStatement copy();
+
+    /**
+     * @since 5.3
+     */
+    @Override
+    public ICPPASTSwitchStatement copy(CopyStyle style);
 }

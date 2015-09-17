@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -16,52 +16,60 @@ import org.eclipse.cdt.core.settings.model.ICSourceEntry;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
+public abstract class CConfigurationData
+        extends CDataObject
+{
 
-public abstract class CConfigurationData extends CDataObject {
+    protected CConfigurationData()
+    {
+    }
 
-	protected CConfigurationData() {
-	}
+    @Override
+    public final int getType()
+    {
+        return SETTING_CONFIGURATION;
+    }
 
-	@Override
-	public final int getType(){
-		return SETTING_CONFIGURATION;
-	}
-	
-	public abstract CFolderData getRootFolderData();
+    public abstract CFolderData getRootFolderData();
 
-	public abstract CResourceData[] getResourceDatas();
+    public abstract CResourceData[] getResourceDatas();
 
 //	public abstract CResourceData getResourceData(IPath path);
-	
-	public abstract String getDescription();
 
-	public abstract void setDescription(String description);
+    public abstract String getDescription();
 
-	public abstract void removeResourceData(CResourceData data) throws CoreException;
+    public abstract void setDescription(String description);
 
-	public abstract CFolderData createFolderData(IPath path, CFolderData base) throws CoreException;
+    public abstract void removeResourceData(CResourceData data)
+            throws CoreException;
 
-	public abstract CFileData createFileData(IPath path, CFileData base) throws CoreException;
+    public abstract CFolderData createFolderData(IPath path, CFolderData base)
+            throws CoreException;
 
-	public abstract CFileData createFileData(IPath path, CFolderData base, CLanguageData langData) throws CoreException;
+    public abstract CFileData createFileData(IPath path, CFileData base)
+            throws CoreException;
+
+    public abstract CFileData createFileData(IPath path, CFolderData base, CLanguageData langData)
+            throws CoreException;
 
 //	public abstract CDataObject[] getChildrenOfKind(int kind);
 
 //	public abstract CDataObject getChildById(String id);
-	
-	public abstract CTargetPlatformData getTargetPlatformData();
-	
-	public abstract ICSourceEntry[] getSourceEntries();
 
-	public abstract void setSourceEntries(ICSourceEntry[] entries);
-	
-	public abstract CBuildData getBuildData();
-	
-	public abstract ICdtVariablesContributor getBuildVariablesContributor();
-	
-	public abstract void setName(String name);
-	
-	public CConfigurationStatus getStatus(){
-		return CConfigurationStatus.CFG_STATUS_OK;
-	}
+    public abstract CTargetPlatformData getTargetPlatformData();
+
+    public abstract ICSourceEntry[] getSourceEntries();
+
+    public abstract void setSourceEntries(ICSourceEntry[] entries);
+
+    public abstract CBuildData getBuildData();
+
+    public abstract ICdtVariablesContributor getBuildVariablesContributor();
+
+    public abstract void setName(String name);
+
+    public CConfigurationStatus getStatus()
+    {
+        return CConfigurationStatus.CFG_STATUS_OK;
+    }
 }

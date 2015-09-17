@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Nathan Ridge
+ * Nathan Ridge
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -36,132 +36,162 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateTemplateParameter;
  *
  * This class can represent a specialization of either an AST or a PDOM template parameter.
  */
-public class CPPTemplateTemplateParameterSpecialization extends CPPTemplateParameterSpecialization
-		implements ICPPTemplateTemplateParameter {
+public class CPPTemplateTemplateParameterSpecialization
+        extends CPPTemplateParameterSpecialization
+        implements ICPPTemplateTemplateParameter
+{
 
-	public CPPTemplateTemplateParameterSpecialization(ICPPSpecialization owner, ICPPScope scope,
-			ICPPTemplateTemplateParameter specialized, ICPPTemplateArgument defaultValue) {
-		super(owner, scope, specialized, defaultValue);
-	}
+    public CPPTemplateTemplateParameterSpecialization(ICPPSpecialization owner, ICPPScope scope,
+            ICPPTemplateTemplateParameter specialized, ICPPTemplateArgument defaultValue)
+    {
+        super(owner, scope, specialized, defaultValue);
+    }
 
-	@Override
-	public ICPPTemplateTemplateParameter getSpecializedBinding() {
-		return (ICPPTemplateTemplateParameter) super.getSpecializedBinding();
-	}
+    @Override
+    public ICPPTemplateTemplateParameter getSpecializedBinding()
+    {
+        return (ICPPTemplateTemplateParameter) super.getSpecializedBinding();
+    }
 
-	@Override
-	public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations() {
-		return ICPPClassTemplatePartialSpecialization.EMPTY_PARTIAL_SPECIALIZATION_ARRAY;
-	}
+    @Override
+    public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations()
+    {
+        return ICPPClassTemplatePartialSpecialization.EMPTY_PARTIAL_SPECIALIZATION_ARRAY;
+    }
 
-	@Override
-	public ICPPTemplateInstance asDeferredInstance() {
-		return null;
-	}
+    @Override
+    public ICPPTemplateInstance asDeferredInstance()
+    {
+        return null;
+    }
 
-	@Override
-	public ICPPBase[] getBases() {
-		return ICPPBase.EMPTY_BASE_ARRAY;
-	}
+    @Override
+    public ICPPBase[] getBases()
+    {
+        return ICPPBase.EMPTY_BASE_ARRAY;
+    }
 
-	@Override
-	public IField[] getFields() {
-		return IField.EMPTY_FIELD_ARRAY;
-	}
+    @Override
+    public IField[] getFields()
+    {
+        return IField.EMPTY_FIELD_ARRAY;
+    }
 
-	@Override
-	public IField findField(String name) {
-		return null;
-	}
+    @Override
+    public IField findField(String name)
+    {
+        return null;
+    }
 
-	@Override
-	public ICPPField[] getDeclaredFields() {
-		return ICPPField.EMPTY_CPPFIELD_ARRAY;
-	}
+    @Override
+    public ICPPField[] getDeclaredFields()
+    {
+        return ICPPField.EMPTY_CPPFIELD_ARRAY;
+    }
 
-	@Override
-	public ICPPMethod[] getMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public ICPPMethod[] getMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public ICPPMethod[] getAllDeclaredMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public ICPPMethod[] getAllDeclaredMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public ICPPMethod[] getDeclaredMethods() {
-		return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
-	}
+    @Override
+    public ICPPMethod[] getDeclaredMethods()
+    {
+        return ICPPMethod.EMPTY_CPPMETHOD_ARRAY;
+    }
 
-	@Override
-	public ICPPConstructor[] getConstructors() {
-		return ICPPConstructor.EMPTY_CONSTRUCTOR_ARRAY;
-	}
+    @Override
+    public ICPPConstructor[] getConstructors()
+    {
+        return ICPPConstructor.EMPTY_CONSTRUCTOR_ARRAY;
+    }
 
-	@Override
-	public IBinding[] getFriends() {
-		return IBinding.EMPTY_BINDING_ARRAY;
-	}
+    @Override
+    public IBinding[] getFriends()
+    {
+        return IBinding.EMPTY_BINDING_ARRAY;
+    }
 
-	@Override
-	public ICPPClassType[] getNestedClasses() {
-		return ICPPClassType.EMPTY_CLASS_ARRAY;
-	}
+    @Override
+    public ICPPClassType[] getNestedClasses()
+    {
+        return ICPPClassType.EMPTY_CLASS_ARRAY;
+    }
 
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
+    @Override
+    public boolean isFinal()
+    {
+        return false;
+    }
 
-	@Override
-	public int getVisibility(IBinding member) {
-		return getSpecializedBinding().getVisibility(member);
-	}
+    @Override
+    public int getVisibility(IBinding member)
+    {
+        return getSpecializedBinding().getVisibility(member);
+    }
 
-	@Override
-	public int getKey() {
-		return 0;
-	}
+    @Override
+    public int getKey()
+    {
+        return 0;
+    }
 
-	@Override
-	public boolean isAnonymous() {
-		return false;
-	}
+    @Override
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	@Override
-	public IScope getCompositeScope() {
-		return null;
-	}
+    @Override
+    public IScope getCompositeScope()
+    {
+        return null;
+    }
 
-	@Override
-	public ICPPTemplateParameter[] getTemplateParameters() {
-		return getSpecializedBinding().getTemplateParameters();
-	}
+    @Override
+    public ICPPTemplateParameter[] getTemplateParameters()
+    {
+        return getSpecializedBinding().getTemplateParameters();
+    }
 
-	@Override
-	public IType getDefault() throws DOMException {
-		return getDefaultValue().getTypeValue();
-	}
+    @Override
+    public IType getDefault()
+            throws DOMException
+    {
+        return getDefaultValue().getTypeValue();
+    }
 
-	@Override
-	public boolean isSameType(IType type) {
-		if (type == this)
-			return true;
-		if (type instanceof ITypedef)
-			return type.isSameType(this);
-		if (!(type instanceof ICPPTemplateTemplateParameter))
-			return false;
+    @Override
+    public boolean isSameType(IType type)
+    {
+        if (type == this) {
+            return true;
+        }
+        if (type instanceof ITypedef) {
+            return type.isSameType(this);
+        }
+        if (!(type instanceof ICPPTemplateTemplateParameter)) {
+            return false;
+        }
 
-		return getParameterID() == ((ICPPTemplateParameter) type).getParameterID();
-	}
+        return getParameterID() == ((ICPPTemplateParameter) type).getParameterID();
+    }
 
-	@Override
-	public Object clone() {
+    @Override
+    public Object clone()
+    {
         Object o = null;
-   		try {
+        try {
             o = super.clone();
-        } catch (CloneNotSupportedException e) {
+        }
+        catch (CloneNotSupportedException e) {
             //not going to happen
         }
         return o;

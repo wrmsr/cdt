@@ -4,25 +4,27 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (IBM) - Initial API and implementation
+ * Doug Schaefer (IBM) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
 /**
  * Represents the mapping between goto statements and the label statements
  * the go to.
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ILabel extends IBinding {
+public interface ILabel
+        extends IBinding
+{
     /** @since 5.4 */
     public static final IBinding[] EMPTY_LABEL_ARRAY = {};
 
     /**
-	 * Returns the label statement for this label.
-	 */
-	public IASTLabelStatement getLabelStatement();
+     * Returns the label statement for this label.
+     */
+    public IASTLabelStatement getLabelStatement();
 }

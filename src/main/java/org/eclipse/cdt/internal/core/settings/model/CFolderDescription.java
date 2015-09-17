@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -23,209 +23,239 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
-public class CFolderDescription extends CDataProxyContainer implements
-		ICFolderDescription, IProxyFactory, IInternalResourceDescription {
-	private ResourceDescriptionHolder fRcHolder;
-	private PathSettingsContainer fCache;
+public class CFolderDescription
+        extends CDataProxyContainer
+        implements
+        ICFolderDescription, IProxyFactory, IInternalResourceDescription
+{
+    private ResourceDescriptionHolder fRcHolder;
+    private PathSettingsContainer fCache;
 
-	CFolderDescription(CFolderData data, CConfigurationDescription cfg) {
-		super(data, cfg, cfg);
-	}
+    CFolderDescription(CFolderData data, CConfigurationDescription cfg)
+    {
+        super(data, cfg, cfg);
+    }
 
+    @Override
+    public IPath getPath()
+    {
+        CResourceData data = (CResourceData) getData(false);
+        return ResourceDescriptionHolder.normalizePath(data.getPath());
+    }
 
-	@Override
-	public IPath getPath() {
-		CResourceData data = (CResourceData)getData(false);
-		return ResourceDescriptionHolder.normalizePath(data.getPath());
-	}
+    @Override
+    public boolean isExcluded()
+    {
+        CConfigurationDescription cfg = (CConfigurationDescription) getConfiguration();
+        return cfg.isExcluded(getPath());
+    }
 
-	@Override
-	public boolean isExcluded() {
-		CConfigurationDescription cfg = (CConfigurationDescription)getConfiguration();
-		return cfg.isExcluded(getPath());
-	}
+    @Override
+    public void setExcluded(boolean excluded)
+    {
+        CConfigurationDescription cfg = (CConfigurationDescription) getConfiguration();
+        cfg.setExcluded(getPath(), true, excluded);
+    }
 
-	@Override
-	public void setExcluded(boolean excluded) {
-		CConfigurationDescription cfg = (CConfigurationDescription)getConfiguration();
-		cfg.setExcluded(getPath(), true, excluded);
-	}
+    @Override
+    public void setPath(IPath path)
+    {
+        path = ResourceDescriptionHolder.normalizePath(path);
+        if (getPath().equals(path)) {
+            return;
+        }
 
-	@Override
-	public void setPath(IPath path) {
-		path = ResourceDescriptionHolder.normalizePath(path);
-		if(getPath().equals(path))
-			return;
+        CResourceData data = (CResourceData) getData(true);
+        data.setPath(path);
+    }
 
-		CResourceData data = (CResourceData)getData(true);
-		data.setPath(path);
-	}
+    protected CFolderData getFolderData(boolean write)
+    {
+        return (CFolderData) getData(write);
+    }
 
-	protected CFolderData getFolderData(boolean write){
-		return (CFolderData)getData(write);
-	}
+    @Override
+    protected IProxyProvider createChildProxyProvider()
+    {
+        ICDataScope scope = new ICDataScope()
+        {
 
-	@Override
-	protected IProxyProvider createChildProxyProvider() {
-		ICDataScope scope = new ICDataScope(){
+            @Override
+            public CDataObject[] getChildren()
+            {
+                return getFolderData(false).getLanguageDatas();
+            }
 
-			@Override
-			public CDataObject[] getChildren() {
-				return getFolderData(false).getLanguageDatas();
-			}
+            @Override
+            public boolean isStatic()
+            {
+                return !containsWritableData();
+            }
+        };
+        IProxyCache cache = new MapProxyCache();
 
-			@Override
-			public boolean isStatic() {
-				return !containsWritableData();
-			}
+        return new ProxyProvider(scope, cache, this);
+    }
 
-		};
-		IProxyCache cache = new MapProxyCache();
+    @Override
+    public ICResourceDescription getNestedResourceDescription(IPath relPath, boolean exactPath)
+    {
+        return getRcHolder().getResourceDescription(relPath, exactPath);
+    }
 
-		return new ProxyProvider(scope, cache, this);
-	}
+    @Override
+    public ICResourceDescription[] getNestedResourceDescriptions(int kind)
+    {
+        return getRcHolder().getResourceDescriptions(kind);
+    }
 
+    @Override
+    public ICLanguageSetting getLanguageSettingForFile(String fileName)
+    {
+        IProject project = getConfiguration().getProjectDescription().getProject();
+        return CProjectDescriptionManager.getInstance().findLanguagSettingForFile(fileName, project, getLanguageSettings());
+    }
 
-	@Override
-	public ICResourceDescription getNestedResourceDescription(IPath relPath, boolean exactPath) {
-		return getRcHolder().getResourceDescription(relPath, exactPath);
-	}
+    @Override
+    public ICLanguageSetting[] getLanguageSettings()
+    {
+        IProxyProvider provider = getChildrenProxyProvider();
+        CFolderData data = (CFolderData) getData(false);
+        CLanguageData lDatas[] = data.getLanguageDatas();
+        ICLanguageSetting settings[] = new ICLanguageSetting[lDatas.length];
+        for (int i = 0; i < lDatas.length; i++) {
+            settings[i] = (ICLanguageSetting) provider.getProxy(lDatas[i]);
+        }
+        return settings;
+    }
 
+    @Override
+    public CDataProxy createProxy(CDataObject data)
+    {
+        if (data instanceof CLanguageData) {
+            return new CLanguageSetting((CLanguageData) data, this, (CConfigurationDescription) getConfiguration());
+        }
+        return null;
+    }
 
-	@Override
-	public ICResourceDescription[] getNestedResourceDescriptions(int kind) {
-		return getRcHolder().getResourceDescriptions(kind);
-	}
+    private ResourceDescriptionHolder getRcHolder()
+    {
+        if (fRcHolder == null) {
+            fRcHolder = ((CConfigurationDescription) getConfiguration()).createHolder(this);
+        }
+        return fRcHolder;
+    }
 
+    @Override
+    void setData(CDataObject data)
+    {
+        super.setData(data);
+        IPath cachedPath = getCachedPath();
+        IPath newPath = ((CResourceData) data).getPath();
+        if (cachedPath != null && !cachedPath.equals(newPath)) {
+            fCache.setPath(newPath, true);
+        }
+    }
 
-	@Override
-	public ICLanguageSetting getLanguageSettingForFile(String fileName) {
-		IProject project = getConfiguration().getProjectDescription().getProject();
-		return CProjectDescriptionManager.getInstance().findLanguagSettingForFile(fileName, project, getLanguageSettings());
-	}
+    @Override
+    public IPath getCachedPath()
+    {
+        if (fCache != null) {
+            return fCache.getPath();
+        }
+        return null;
+    }
 
-	@Override
-	public ICLanguageSetting[] getLanguageSettings() {
-		IProxyProvider provider = getChildrenProxyProvider();
-		CFolderData data = (CFolderData)getData(false);
-		CLanguageData lDatas[] = data.getLanguageDatas();
-		ICLanguageSetting settings[] = new ICLanguageSetting[lDatas.length];
-		for(int i = 0; i < lDatas.length; i++){
-			settings[i] = (ICLanguageSetting)provider.getProxy(lDatas[i]);
-		}
-		return settings;
-	}
+    @Override
+    public final int getType()
+    {
+        return ICSettingBase.SETTING_FOLDER;
+    }
 
+    @Override
+    public void setPathContainer(PathSettingsContainer cr)
+    {
+        fCache = cr;
+    }
 
-	@Override
-	public CDataProxy createProxy(CDataObject data) {
-		if(data instanceof CLanguageData)
-			return new CLanguageSetting((CLanguageData)data, this, (CConfigurationDescription)getConfiguration());
-		return null;
-	}
+    @Override
+    public PathSettingsContainer getPathContainer()
+    {
+        return fCache;
+    }
 
-	private ResourceDescriptionHolder getRcHolder(){
-		if(fRcHolder == null){
-			fRcHolder = ((CConfigurationDescription)getConfiguration()).createHolder(this);
-		}
-		return fRcHolder;
-	}
+    @Override
+    public ICResourceDescription[] getNestedResourceDescriptions()
+    {
+        return getNestedResourceDescriptions(ICSettingBase.SETTING_FILE | ICSettingBase.SETTING_FOLDER);
+    }
 
-	@Override
-	void setData(CDataObject data) {
-		super.setData(data);
-		IPath cachedPath = getCachedPath();
-		IPath newPath = ((CResourceData)data).getPath();
-		if(cachedPath != null && !cachedPath.equals(newPath)){
-			fCache.setPath(newPath, true);
-		}
-	}
+    @Override
+    public ICFolderDescription getParentFolderDescription()
+    {
+        return getRcHolder().getParentFolderDescription();
+    }
 
-	@Override
-	public IPath getCachedPath() {
-		if(fCache != null)
-			return fCache.getPath();
-		return null;
-	}
+    @Override
+    public ICLanguageSetting createLanguageSettingForContentTypes(
+            String languageId, String[] typeIds)
+            throws CoreException
+    {
+        CFolderData data = getFolderData(true);
 
-	@Override
-	public final int getType() {
-		return ICSettingBase.SETTING_FOLDER;
-	}
+        CLanguageData lData = data.createLanguageDataForContentTypes(languageId, typeIds);
+        if (lData == null) {
+            throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.0")); //$NON-NLS-1$
+        }
 
-	@Override
-	public void setPathContainer(PathSettingsContainer cr) {
-		fCache = cr;
-	}
+        CDataProxy proxy = getChildrenProxyProvider().getProxy(lData);
+        if (!(proxy instanceof ICLanguageSetting)) {
+            throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.1") + proxy.getClass().getName()); //$NON-NLS-1$
+        }
 
-	@Override
-	public PathSettingsContainer getPathContainer(){
-		return fCache;
-	}
+        return (ICLanguageSetting) proxy;
+    }
 
+    @Override
+    public ICLanguageSetting createLanguageSettingForExtensions(
+            String languageId, String[] extensions)
+            throws CoreException
+    {
+        CFolderData data = getFolderData(true);
 
-	@Override
-	public ICResourceDescription[] getNestedResourceDescriptions() {
-		return getNestedResourceDescriptions(ICSettingBase.SETTING_FILE | ICSettingBase.SETTING_FOLDER);
-	}
+        CLanguageData lData = data.createLanguageDataForExtensions(languageId, extensions);
+        if (lData == null) {
+            throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.2")); //$NON-NLS-1$
+        }
 
+        CDataProxy proxy = getChildrenProxyProvider().getProxy(lData);
+        if (!(proxy instanceof ICLanguageSetting)) {
+            throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.3") + proxy.getClass().getName()); //$NON-NLS-1$
+        }
 
-	@Override
-	public ICFolderDescription getParentFolderDescription() {
-		return getRcHolder().getParentFolderDescription();
-	}
+        return (ICLanguageSetting) proxy;
+    }
 
+    @Override
+    public boolean isRoot()
+    {
+        return getPath().segmentCount() == 0;
+    }
 
-	@Override
-	public ICLanguageSetting createLanguageSettingForContentTypes(
-			String languageId, String[] typeIds) throws CoreException {
-		CFolderData data = getFolderData(true);
+    @Override
+    public boolean canExclude(boolean exclude)
+    {
+        CConfigurationDescription cfg = (CConfigurationDescription) getConfiguration();
+        return cfg.canExclude(getPath(), true, exclude);
+    }
 
-		CLanguageData lData = data.createLanguageDataForContentTypes(languageId, typeIds);
-		if(lData == null)
-			throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.0")); //$NON-NLS-1$
-
-		CDataProxy proxy = getChildrenProxyProvider().getProxy(lData);
-		if(!(proxy instanceof ICLanguageSetting))
-			throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.1") + proxy.getClass().getName()); //$NON-NLS-1$
-
-		return (ICLanguageSetting)proxy;
-	}
-
-
-	@Override
-	public ICLanguageSetting createLanguageSettingForExtensions(
-			String languageId, String[] extensions) throws CoreException {
-		CFolderData data = getFolderData(true);
-
-		CLanguageData lData = data.createLanguageDataForExtensions(languageId, extensions);
-		if(lData == null)
-			throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.2")); //$NON-NLS-1$
-
-		CDataProxy proxy = getChildrenProxyProvider().getProxy(lData);
-		if(!(proxy instanceof ICLanguageSetting))
-			throw ExceptionFactory.createCoreException(SettingsModelMessages.getString("CFolderDescription.3") + proxy.getClass().getName()); //$NON-NLS-1$
-
-		return (ICLanguageSetting)proxy;
-	}
-
-	@Override
-	public boolean isRoot() {
-		return getPath().segmentCount() == 0;
-	}
-
-	@Override
-	public boolean canExclude(boolean exclude) {
-		CConfigurationDescription cfg = (CConfigurationDescription)getConfiguration();
-		return cfg.canExclude(getPath(), true, exclude);
-	}
-
-	/**
-	 * For debugging purpose only
-	 */
-	@Override
-	public String toString() {
-		String str = getPath().toString();
-		return str.length()==0 ? "/" : str; //$NON-NLS-1$
-	}
+    /**
+     * For debugging purpose only
+     */
+    @Override
+    public String toString()
+    {
+        String str = getPath().toString();
+        return str.length() == 0 ? "/" : str; //$NON-NLS-1$
+    }
 }

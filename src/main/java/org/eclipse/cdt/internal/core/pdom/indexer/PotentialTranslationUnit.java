@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.indexer;
 
 import org.eclipse.cdt.core.CCorePlugin;
@@ -19,8 +19,11 @@ import org.eclipse.core.resources.IFile;
  * Used for modified files that are not below a source root. In case such a file
  * is part of the index it needs to be updated, otherwise it shall be ignored.
  */
-public class PotentialTranslationUnit extends TranslationUnit {
-	public PotentialTranslationUnit(ICElement parent, IFile file) {
-		super(parent, file, CCorePlugin.CONTENT_TYPE_CHEADER);
-	}
+public class PotentialTranslationUnit
+        extends TranslationUnit
+{
+    public PotentialTranslationUnit(ICElement parent, IFile file)
+    {
+        super(parent, file, CCorePlugin.CONTENT_TYPE_CHEADER);
+    }
 }

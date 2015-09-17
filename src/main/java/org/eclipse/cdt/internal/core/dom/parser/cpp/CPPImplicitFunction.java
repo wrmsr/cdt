@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * IBM - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -19,73 +19,86 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPParameter;
 /**
  * The CPPImplicitFunction is used to represent implicit functions that exist on the translation
  * unit but are not actually part of the physical AST created by CDT.
- * 
+ *
  * An example is GCC built-in functions.
  */
-public class CPPImplicitFunction extends CPPFunction {
-	private ICPPParameter[] params;
-	private IScope scope;
+public class CPPImplicitFunction
+        extends CPPFunction
+{
+    private ICPPParameter[] params;
+    private IScope scope;
     private ICPPFunctionType functionType;
-	private final boolean takesVarArgs;
-	private boolean isDeleted;
-	private final char[] name;
-	
-	public CPPImplicitFunction(char[] name, IScope scope, ICPPFunctionType type,
-			ICPPParameter[] params, boolean takesVarArgs) {
+    private final boolean takesVarArgs;
+    private boolean isDeleted;
+    private final char[] name;
+
+    public CPPImplicitFunction(char[] name, IScope scope, ICPPFunctionType type,
+            ICPPParameter[] params, boolean takesVarArgs)
+    {
         super(null);
-        this.name= name;
-		this.scope= scope;
-		this.functionType= type;
-		this.params= params;
-		this.takesVarArgs= takesVarArgs;
-	}
+        this.name = name;
+        this.scope = scope;
+        this.functionType = type;
+        this.params = params;
+        this.takesVarArgs = takesVarArgs;
+    }
 
     @Override
-	public ICPPParameter[] getParameters() {
+    public ICPPParameter[] getParameters()
+    {
         return params;
     }
-    
+
     @Override
-	public ICPPFunctionType getType() {
-    	return functionType;
+    public ICPPFunctionType getType()
+    {
+        return functionType;
     }
-    
+
     @Override
-	public String getName() {
+    public String getName()
+    {
         return String.valueOf(name);
     }
 
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return name;
     }
 
     @Override
-	public IScope getScope() {
+    public IScope getScope()
+    {
         return scope;
     }
-    
+
     @Override
-	public IScope getFunctionScope() {
+    public IScope getFunctionScope()
+    {
         return null;
     }
-    
+
     @Override
-	public boolean takesVarArgs() {
+    public boolean takesVarArgs()
+    {
         return takesVarArgs;
     }
-    
+
     @Override
-	public boolean isDeleted() {
-    	return isDeleted;
+    public boolean isDeleted()
+    {
+        return isDeleted;
     }
-    
+
     @Override
-	public IBinding getOwner() {
-    	return null;
+    public IBinding getOwner()
+    {
+        return null;
     }
-    
-    public void setDeleted(boolean val) {
-    	isDeleted= val;
-    }	
+
+    public void setDeleted(boolean val)
+    {
+        isDeleted = val;
+    }
 }

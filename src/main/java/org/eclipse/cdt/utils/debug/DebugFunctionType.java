@@ -4,31 +4,33 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.utils.debug;
 
-
 /**
  * DebugFunctionType
- *  
+ *
  */
-public class DebugFunctionType extends DebugType {
+public class DebugFunctionType
+        extends DebugType
+{
 
-	DebugType returnType;
+    DebugType returnType;
 
-	/**
-	 *  
-	 */
-	public DebugFunctionType(DebugType type) {
-		returnType = type;
-	}
+    /**
+     *
+     */
+    public DebugFunctionType(DebugType type)
+    {
+        returnType = type;
+    }
 
-	public DebugType getReturnType() {
-		return returnType;
-	}
-
+    public DebugType getReturnType()
+    {
+        return returnType;
+    }
 }

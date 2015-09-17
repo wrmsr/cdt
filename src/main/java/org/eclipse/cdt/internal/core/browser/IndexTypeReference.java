@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Anton Leherbauer (Wind River Systems) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Anton Leherbauer (Wind River Systems) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 
 package org.eclipse.cdt.internal.core.browser;
@@ -28,77 +28,87 @@ import org.eclipse.jface.text.Region;
 
 /**
  * A {@link IndexTypeReference} tailored for index bindings.
- * 
+ *
  * @since 4.0
  */
-public class IndexTypeReference extends TypeReference {
+public class IndexTypeReference
+        extends TypeReference
+{
 
-	private ICElement fCElement;
+    private ICElement fCElement;
 
-	public IndexTypeReference(IBinding binding, IPath path, IProject project, int offset, int length) {
-		super(path, project, offset, length);
-		fCElement= createCElement(binding);
-	}
-	
-	public IndexTypeReference(IBinding binding, IResource resource, IProject project, int offset, int length) {
-		super(resource, project, offset, length);
-		fCElement= createCElement(binding);
-	}
+    public IndexTypeReference(IBinding binding, IPath path, IProject project, int offset, int length)
+    {
+        super(path, project, offset, length);
+        fCElement = createCElement(binding);
+    }
 
-	public IndexTypeReference(IIndexMacro macro, IPath path, IProject project, int offset, int length) {
-		super(path, project, offset, length);
-		fCElement= createCElement(macro);
-	}
-	
-	public IndexTypeReference(IIndexMacro macro, IResource resource, IProject project, int offset, int length) {
-		super(resource, project, offset, length);
-		fCElement= createCElement(macro);
-	}
+    public IndexTypeReference(IBinding binding, IResource resource, IProject project, int offset, int length)
+    {
+        super(resource, project, offset, length);
+        fCElement = createCElement(binding);
+    }
 
-	/**
-	 * Compute the C element handle for the given binding.
-	 * @param binding
-	 */
-	private ICElement createCElement(IBinding binding) {
-		ITranslationUnit tu= getTranslationUnit();
-		if (tu != null) {
-			long timestamp= tu.getResource() != null ? tu.getResource().getLocalTimeStamp() : 0;
-			IRegion region= new Region(getOffset(), getLength());
-			try {
-				return CElementHandleFactory.create(tu, binding, true, region, timestamp);
-			} catch (CoreException e) {
-				CCorePlugin.log(e);
-			}
-		}
-		return null;
-	}
+    public IndexTypeReference(IIndexMacro macro, IPath path, IProject project, int offset, int length)
+    {
+        super(path, project, offset, length);
+        fCElement = createCElement(macro);
+    }
 
-	/**
-	 * Compute the C element handle for the given macro.
-	 */
-	private ICElement createCElement(IIndexMacro macro) {
-		ITranslationUnit tu= getTranslationUnit();
-		if (tu != null) {
-			long timestamp= tu.getResource() != null ? tu.getResource().getLocalTimeStamp() : 0;
-			IRegion region= new Region(getOffset(), getLength());
-			try {
-				return CElementHandleFactory.create(tu, macro, region, timestamp);
-			} catch (CoreException e) {
-				CCorePlugin.log(e);
-			}
-		}
-		return null;
-	}
+    public IndexTypeReference(IIndexMacro macro, IResource resource, IProject project, int offset, int length)
+    {
+        super(resource, project, offset, length);
+        fCElement = createCElement(macro);
+    }
 
-	/*
-	 * @see org.eclipse.cdt.core.browser.ITypeReference#getCElements()
-	 */
-	@Override
-	public ICElement[] getCElements() {
-		if (fCElement != null) {
-			return new ICElement[] { fCElement };
-		}
-		return super.getCElements();
-	}
+    /**
+     * Compute the C element handle for the given binding.
+     * @param binding
+     */
+    private ICElement createCElement(IBinding binding)
+    {
+        ITranslationUnit tu = getTranslationUnit();
+        if (tu != null) {
+            long timestamp = tu.getResource() != null ? tu.getResource().getLocalTimeStamp() : 0;
+            IRegion region = new Region(getOffset(), getLength());
+            try {
+                return CElementHandleFactory.create(tu, binding, true, region, timestamp);
+            }
+            catch (CoreException e) {
+                CCorePlugin.log(e);
+            }
+        }
+        return null;
+    }
 
+    /**
+     * Compute the C element handle for the given macro.
+     */
+    private ICElement createCElement(IIndexMacro macro)
+    {
+        ITranslationUnit tu = getTranslationUnit();
+        if (tu != null) {
+            long timestamp = tu.getResource() != null ? tu.getResource().getLocalTimeStamp() : 0;
+            IRegion region = new Region(getOffset(), getLength());
+            try {
+                return CElementHandleFactory.create(tu, macro, region, timestamp);
+            }
+            catch (CoreException e) {
+                CCorePlugin.log(e);
+            }
+        }
+        return null;
+    }
+
+    /*
+     * @see org.eclipse.cdt.core.browser.ITypeReference#getCElements()
+     */
+    @Override
+    public ICElement[] getCElements()
+    {
+        if (fCElement != null) {
+            return new ICElement[] {fCElement};
+        }
+        return super.getCElements();
+    }
 }

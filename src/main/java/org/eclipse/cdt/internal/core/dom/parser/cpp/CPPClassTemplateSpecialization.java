@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    IBM - Initial API and implementation
- *    Bryan Wilkinson (QNX)
- *    Markus Schorn (Wind River Systems)
- *    Nathan Ridge
+ * IBM - Initial API and implementation
+ * Bryan Wilkinson (QNX)
+ * Markus Schorn (Wind River Systems)
+ * Nathan Ridge
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -30,106 +30,124 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPTemplates;
 /**
  * Represents a specialization of a class-template
  */
-public class CPPClassTemplateSpecialization extends CPPClassSpecialization
-		implements ICPPClassTemplate, ICPPInternalClassTemplate {
-	private ObjectMap instances;
-	private ICPPDeferredClassInstance fDeferredInstance;
-	private ICPPClassTemplatePartialSpecialization[] fPartialSpecs;
-	private ICPPTemplateParameter[] fTemplateParameters;
+public class CPPClassTemplateSpecialization
+        extends CPPClassSpecialization
+        implements ICPPClassTemplate, ICPPInternalClassTemplate
+{
+    private ObjectMap instances;
+    private ICPPDeferredClassInstance fDeferredInstance;
+    private ICPPClassTemplatePartialSpecialization[] fPartialSpecs;
+    private ICPPTemplateParameter[] fTemplateParameters;
 
-	public CPPClassTemplateSpecialization(ICPPClassTemplate orig, ICPPClassSpecialization owner,
-			ICPPTemplateParameterMap argumentMap) {
-		super(orig, owner, argumentMap);
-	}
+    public CPPClassTemplateSpecialization(ICPPClassTemplate orig, ICPPClassSpecialization owner,
+            ICPPTemplateParameterMap argumentMap)
+    {
+        super(orig, owner, argumentMap);
+    }
 
-	public void setTemplateParameters(ICPPTemplateParameter[] templateParameters) {
-		fTemplateParameters = templateParameters;
-	}
+    public void setTemplateParameters(ICPPTemplateParameter[] templateParameters)
+    {
+        fTemplateParameters = templateParameters;
+    }
 
-	@Override
-	public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations() {
-		if (fPartialSpecs == null) {
-			IASTNode point= null; // Instantiation of dependent expressions may not work.
-			ICPPClassTemplate origTemplate= getSpecializedBinding();
-			ICPPClassTemplatePartialSpecialization[] orig = origTemplate.getPartialSpecializations();
-			ICPPClassTemplatePartialSpecialization[] spec = new ICPPClassTemplatePartialSpecialization[orig.length];
-			ICPPClassSpecialization owner = getOwner();
-			for (int i = 0; i < orig.length; i++) {
-				spec[i]= (ICPPClassTemplatePartialSpecialization) owner.specializeMember(orig[i], point);
-			}
-			fPartialSpecs = spec;
-		}
-		return fPartialSpecs;
-	}
+    @Override
+    public ICPPClassTemplatePartialSpecialization[] getPartialSpecializations()
+    {
+        if (fPartialSpecs == null) {
+            IASTNode point = null; // Instantiation of dependent expressions may not work.
+            ICPPClassTemplate origTemplate = getSpecializedBinding();
+            ICPPClassTemplatePartialSpecialization[] orig = origTemplate.getPartialSpecializations();
+            ICPPClassTemplatePartialSpecialization[] spec = new ICPPClassTemplatePartialSpecialization[orig.length];
+            ICPPClassSpecialization owner = getOwner();
+            for (int i = 0; i < orig.length; i++) {
+                spec[i] = (ICPPClassTemplatePartialSpecialization) owner.specializeMember(orig[i], point);
+            }
+            fPartialSpecs = spec;
+        }
+        return fPartialSpecs;
+    }
 
-	@Override
-	public ICPPTemplateParameter[] getTemplateParameters() {
-		return fTemplateParameters;
-	}
+    @Override
+    public ICPPTemplateParameter[] getTemplateParameters()
+    {
+        return fTemplateParameters;
+    }
 
-	@Override
-	public synchronized final void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance) {
-		if (instances == null)
-			instances = new ObjectMap(2);
-		String key= ASTTypeUtil.getArgumentListString(arguments, true);
-		instances.put(key, instance);
-	}
+    @Override
+    public synchronized final void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance)
+    {
+        if (instances == null) {
+            instances = new ObjectMap(2);
+        }
+        String key = ASTTypeUtil.getArgumentListString(arguments, true);
+        instances.put(key, instance);
+    }
 
-	@Override
-	public synchronized final ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments) {
-		if (instances != null) {
-			String key= ASTTypeUtil.getArgumentListString(arguments, true);
-			return (ICPPTemplateInstance) instances.get(key);
-		}
-		return null;
-	}
+    @Override
+    public synchronized final ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments)
+    {
+        if (instances != null) {
+            String key = ASTTypeUtil.getArgumentListString(arguments, true);
+            return (ICPPTemplateInstance) instances.get(key);
+        }
+        return null;
+    }
 
-	@Override
-	public synchronized ICPPTemplateInstance[] getAllInstances() {
-		if (instances != null) {
-			ICPPTemplateInstance[] result= new ICPPTemplateInstance[instances.size()];
-			for (int i=0; i < instances.size(); i++) {
-				result[i]= (ICPPTemplateInstance) instances.getAt(i);
-			}
-			return result;
-		}
-		return ICPPTemplateInstance.EMPTY_TEMPLATE_INSTANCE_ARRAY;
-	}
+    @Override
+    public synchronized ICPPTemplateInstance[] getAllInstances()
+    {
+        if (instances != null) {
+            ICPPTemplateInstance[] result = new ICPPTemplateInstance[instances.size()];
+            for (int i = 0; i < instances.size(); i++) {
+                result[i] = (ICPPTemplateInstance) instances.getAt(i);
+            }
+            return result;
+        }
+        return ICPPTemplateInstance.EMPTY_TEMPLATE_INSTANCE_ARRAY;
+    }
 
-	@Override
-	public void addPartialSpecialization(ICPPClassTemplatePartialSpecialization spec) {
-	}
+    @Override
+    public void addPartialSpecialization(ICPPClassTemplatePartialSpecialization spec)
+    {
+    }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 
-	@Override
-	public IBinding resolveTemplateParameter(ICPPTemplateParameter param) {
-		return param;
-	}
+    @Override
+    public IBinding resolveTemplateParameter(ICPPTemplateParameter param)
+    {
+        return param;
+    }
 
-	@Override
-	public final ICPPDeferredClassInstance asDeferredInstance() {
-		if (fDeferredInstance == null) {
-			fDeferredInstance= CPPTemplates.createDeferredInstance(this);
-		}
-		return fDeferredInstance;
-	}
+    @Override
+    public final ICPPDeferredClassInstance asDeferredInstance()
+    {
+        if (fDeferredInstance == null) {
+            fDeferredInstance = CPPTemplates.createDeferredInstance(this);
+        }
+        return fDeferredInstance;
+    }
 
-	@Override
-	public ICPPTemplateArgument getDefaultArgFromIndex(int paramPos) throws DOMException {
-		return null;
-	}
+    @Override
+    public ICPPTemplateArgument getDefaultArgFromIndex(int paramPos)
+            throws DOMException
+    {
+        return null;
+    }
 
-	@Override
-	public ICPPClassSpecialization getOwner() {
-		return (ICPPClassSpecialization) super.getOwner();
-	}
+    @Override
+    public ICPPClassSpecialization getOwner()
+    {
+        return (ICPPClassSpecialization) super.getOwner();
+    }
 
-	@Override
-	public ICPPClassTemplate getSpecializedBinding() {
-		return (ICPPClassTemplate) super.getSpecializedBinding();
-	}
+    @Override
+    public ICPPClassTemplate getSpecializedBinding()
+    {
+        return (ICPPClassTemplate) super.getSpecializedBinding();
+    }
 }

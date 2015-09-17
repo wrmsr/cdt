@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn (Wind River Systems) - Initial API and implementation
+ * Markus Schorn (Wind River Systems) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
@@ -15,48 +15,53 @@ package org.eclipse.cdt.core.dom.ast;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 5.3
  */
-public interface IASTBinaryTypeIdExpression extends IASTExpression {
-	public static final ASTNodeProperty OPERAND1 = new ASTNodeProperty("IASTBinaryTypeIdExpression.OPERAND1 [IASTTypeId]"); //$NON-NLS-1$
-	public static final ASTNodeProperty OPERAND2 = new ASTNodeProperty("IASTBinaryTypeIdExpression.OPERAND2 [IASTTypeId]"); //$NON-NLS-1$
+public interface IASTBinaryTypeIdExpression
+        extends IASTExpression
+{
+    public static final ASTNodeProperty OPERAND1 = new ASTNodeProperty("IASTBinaryTypeIdExpression.OPERAND1 [IASTTypeId]"); //$NON-NLS-1$
+    public static final ASTNodeProperty OPERAND2 = new ASTNodeProperty("IASTBinaryTypeIdExpression.OPERAND2 [IASTTypeId]"); //$NON-NLS-1$
 
-	/**
-	 * Built-in type trait of g++.
-	 */
-	public static enum Operator {__is_base_of}
-	
-	/**
-	 * Returns the operator for the expression.
-	 */
-	public Operator getOperator();
+    /**
+     * Built-in type trait of g++.
+     */
+    public static enum Operator
+    {
+        __is_base_of
+    }
 
-	/**
-	 * Returns the first operand.
-	 */
-	public IASTTypeId getOperand1();
-	
-	/**
-	 * Returns the second operand, or <code>null</code> if it was not provided (content assist).
-	 */
-	public IASTTypeId getOperand2();
-	
-	/**
-	 * Sets the operator for the expression.
-	 */
-	public void setOperator(Operator value);
+    /**
+     * Returns the operator for the expression.
+     */
+    public Operator getOperator();
 
-	/**
-	 * Sets the first operand.
-	 */
-	public void setOperand1(IASTTypeId typeId);
+    /**
+     * Returns the first operand.
+     */
+    public IASTTypeId getOperand1();
 
-	/**
-	 * Sets the second operand.
-	 */
-	public void setOperand2(IASTTypeId typeId);
+    /**
+     * Returns the second operand, or <code>null</code> if it was not provided (content assist).
+     */
+    public IASTTypeId getOperand2();
 
-	@Override
-	public IASTBinaryTypeIdExpression copy();
+    /**
+     * Sets the operator for the expression.
+     */
+    public void setOperator(Operator value);
 
-	@Override
-	public IASTBinaryTypeIdExpression copy(CopyStyle style);
+    /**
+     * Sets the first operand.
+     */
+    public void setOperand1(IASTTypeId typeId);
+
+    /**
+     * Sets the second operand.
+     */
+    public void setOperand2(IASTTypeId typeId);
+
+    @Override
+    public IASTBinaryTypeIdExpression copy();
+
+    @Override
+    public IASTBinaryTypeIdExpression copy(CopyStyle style);
 }

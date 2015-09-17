@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Andrew Ferguson (Symbian) - Initial implementation
- *    Markus Schorn (Wind River Systems)
+ * Andrew Ferguson (Symbian) - Initial implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.index.composite.cpp;
 
@@ -23,65 +23,80 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPUnknownType;
 import org.eclipse.cdt.internal.core.index.IIndexType;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-public class CompositeCPPTemplateTypeParameter extends CompositeCPPBinding 
-	implements ICPPTemplateTypeParameter, ICPPUnknownBinding, ICPPUnknownType, IIndexType {
+public class CompositeCPPTemplateTypeParameter
+        extends CompositeCPPBinding
+        implements ICPPTemplateTypeParameter, ICPPUnknownBinding, ICPPUnknownType, IIndexType
+{
 
-	private ICPPScope unknownScope;
+    private ICPPScope unknownScope;
 
-	public CompositeCPPTemplateTypeParameter(ICompositesFactory cf,	ICPPTemplateTypeParameter binding) {
-		super(cf, binding);
-	}
+    public CompositeCPPTemplateTypeParameter(ICompositesFactory cf, ICPPTemplateTypeParameter binding)
+    {
+        super(cf, binding);
+    }
 
-	@Override
-	public IType getDefault() throws DOMException {
-		IType preresult= ((ICPPTemplateTypeParameter)rbinding).getDefault();
-		return cf.getCompositeType(preresult);
-	}
+    @Override
+    public IType getDefault()
+            throws DOMException
+    {
+        IType preresult = ((ICPPTemplateTypeParameter) rbinding).getDefault();
+        return cf.getCompositeType(preresult);
+    }
 
-	@Override
-	public short getParameterPosition() {
-		return ((ICPPTemplateParameter)rbinding).getParameterPosition();
-	}
+    @Override
+    public short getParameterPosition()
+    {
+        return ((ICPPTemplateParameter) rbinding).getParameterPosition();
+    }
 
-	@Override
-	public short getTemplateNestingLevel() {
-		return ((ICPPTemplateParameter)rbinding).getTemplateNestingLevel();
-	}
-	
-	@Override
-	public int getParameterID() {
-		return ((ICPPTemplateParameter)rbinding).getParameterID();
-	}
+    @Override
+    public short getTemplateNestingLevel()
+    {
+        return ((ICPPTemplateParameter) rbinding).getTemplateNestingLevel();
+    }
 
-	@Override
-	public boolean isParameterPack() {
-		return ((ICPPTemplateParameter)rbinding).isParameterPack();
-	}
+    @Override
+    public int getParameterID()
+    {
+        return ((ICPPTemplateParameter) rbinding).getParameterID();
+    }
 
-	@Override
-	public boolean isSameType(IType type) {
-		return ((IType)rbinding).isSameType(type);
-	}
-	
-	@Override
-	public Object clone() {
-		fail(); return null; 
-	}
+    @Override
+    public boolean isParameterPack()
+    {
+        return ((ICPPTemplateParameter) rbinding).isParameterPack();
+    }
 
-	@Override
-	public ICPPScope asScope() {
-		if (unknownScope == null) {
-			unknownScope= new CompositeCPPUnknownScope(this, new CPPASTName(getNameCharArray()));
-		}
-		return unknownScope;
-	}
+    @Override
+    public boolean isSameType(IType type)
+    {
+        return ((IType) rbinding).isSameType(type);
+    }
 
-	@Override
-	public ICPPTemplateArgument getDefaultValue() {
-		try {
-			return TemplateInstanceUtil.convert(cf, ((ICPPTemplateTypeParameter)rbinding).getDefaultValue());
-		} catch (DOMException e) {
-			return null;
-		}
-	}
+    @Override
+    public Object clone()
+    {
+        fail();
+        return null;
+    }
+
+    @Override
+    public ICPPScope asScope()
+    {
+        if (unknownScope == null) {
+            unknownScope = new CompositeCPPUnknownScope(this, new CPPASTName(getNameCharArray()));
+        }
+        return unknownScope;
+    }
+
+    @Override
+    public ICPPTemplateArgument getDefaultValue()
+    {
+        try {
+            return TemplateInstanceUtil.convert(cf, ((ICPPTemplateTypeParameter) rbinding).getDefaultValue());
+        }
+        catch (DOMException e) {
+            return null;
+        }
+    }
 }

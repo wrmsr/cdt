@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * John Camelon (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -18,23 +18,29 @@ import org.eclipse.cdt.internal.core.dom.parser.ASTEnumerator;
 /**
  * C++-specific enumerator.
  */
-public class CPPASTEnumerator extends ASTEnumerator {
-	
-    public CPPASTEnumerator() {
-    	super();
-	}
+public class CPPASTEnumerator
+        extends ASTEnumerator
+{
 
-	public CPPASTEnumerator(IASTName name, IASTExpression value) {
-		super(name, value);
-	}
-	
-	@Override
-	public CPPASTEnumerator copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    public CPPASTEnumerator()
+    {
+        super();
+    }
 
-	@Override
-	public CPPASTEnumerator copy(CopyStyle style) {
-		return copy(new CPPASTEnumerator(), style);
-	}
+    public CPPASTEnumerator(IASTName name, IASTExpression value)
+    {
+        super(name, value);
+    }
+
+    @Override
+    public CPPASTEnumerator copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
+
+    @Override
+    public CPPASTEnumerator copy(CopyStyle style)
+    {
+        return copy(new CPPASTEnumerator(), style);
+    }
 }

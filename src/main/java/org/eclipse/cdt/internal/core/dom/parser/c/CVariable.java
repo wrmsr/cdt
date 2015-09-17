@@ -4,15 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Rational Software - Initial API and implementation
- *     Markus Schorn (Wind River Systems) 
+ * IBM Rational Software - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.cdt.core.dom.ILinkage;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
@@ -36,175 +33,212 @@ import org.eclipse.cdt.internal.core.dom.parser.ASTQueries;
 import org.eclipse.cdt.internal.core.dom.parser.Value;
 import org.eclipse.core.runtime.PlatformObject;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Binding for a global or a local variable, serves as base class for fields.
  */
-public class CVariable extends PlatformObject implements ICInternalBinding, IVariable {
-	private IASTName[] declarations = null;
-	private IType type = null;
-	
-	/**
-	 * The set of CVariable objects for which initial value computation is in progress on each thread.
-	 * This is used to guard against recursion during initial value computation.
-	 */
-	private static final ThreadLocal<Set<CVariable>> fInitialValueInProgress = new ThreadLocal<Set<CVariable>>() {
-		@Override
-		protected Set<CVariable> initialValue() {
-			return new HashSet<>();
-		}	
-	};
+public class CVariable
+        extends PlatformObject
+        implements ICInternalBinding, IVariable
+{
+    private IASTName[] declarations = null;
+    private IType type = null;
 
-	public CVariable(IASTName name) {
-		declarations = new IASTName[] { name };
-	}
+    /**
+     * The set of CVariable objects for which initial value computation is in progress on each thread.
+     * This is used to guard against recursion during initial value computation.
+     */
+    private static final ThreadLocal<Set<CVariable>> fInitialValueInProgress = new ThreadLocal<Set<CVariable>>()
+    {
+        @Override
+        protected Set<CVariable> initialValue()
+        {
+            return new HashSet<>();
+        }
+    };
 
-	@Override
-	public IASTNode getPhysicalNode() {
-		return declarations[0];
-	}
+    public CVariable(IASTName name)
+    {
+        declarations = new IASTName[] {name};
+    }
 
-	public void addDeclaration(IASTName name) {
-		if (name != null && name.isActive()) {
-			declarations = ArrayUtil.append(IASTName.class, declarations, name);
-		}
-	}
+    @Override
+    public IASTNode getPhysicalNode()
+    {
+        return declarations[0];
+    }
 
-	@Override
-	public IType getType() {
-		if (type == null && declarations[0].getParent() instanceof IASTDeclarator)
-			type = CVisitor.createType((IASTDeclarator) declarations[0].getParent());
-		return type;
-	}
+    public void addDeclaration(IASTName name)
+    {
+        if (name != null && name.isActive()) {
+            declarations = ArrayUtil.append(IASTName.class, declarations, name);
+        }
+    }
 
-	@Override
-	public String getName() {
-		return declarations[0].toString();
-	}
+    @Override
+    public IType getType()
+    {
+        if (type == null && declarations[0].getParent() instanceof IASTDeclarator) {
+            type = CVisitor.createType((IASTDeclarator) declarations[0].getParent());
+        }
+        return type;
+    }
 
-	@Override
-	public char[] getNameCharArray() {
-		return declarations[0].toCharArray();
-	}
+    @Override
+    public String getName()
+    {
+        return declarations[0].toString();
+    }
 
-	@Override
-	public IScope getScope() {
-		IASTDeclarator declarator = (IASTDeclarator) declarations[0].getParent();
-		return CVisitor.getContainingScope(declarator.getParent());
-	}
+    @Override
+    public char[] getNameCharArray()
+    {
+        return declarations[0].toCharArray();
+    }
 
-	@Override
-	public boolean isStatic() {
-		return hasStorageClass(IASTDeclSpecifier.sc_static);
-	}
+    @Override
+    public IScope getScope()
+    {
+        IASTDeclarator declarator = (IASTDeclarator) declarations[0].getParent();
+        return CVisitor.getContainingScope(declarator.getParent());
+    }
 
-	public boolean hasStorageClass(int storage) {
-		if (declarations == null)
-			return false;
+    @Override
+    public boolean isStatic()
+    {
+        return hasStorageClass(IASTDeclSpecifier.sc_static);
+    }
 
-		for (int i = 0; i < declarations.length && declarations[i] != null; i++) {
-			final IASTName name = declarations[i];
+    public boolean hasStorageClass(int storage)
+    {
+        if (declarations == null) {
+            return false;
+        }
 
-			IASTNode parent = name.getParent();
-			while (!(parent instanceof IASTDeclaration))
-				parent = parent.getParent();
+        for (int i = 0; i < declarations.length && declarations[i] != null; i++) {
+            final IASTName name = declarations[i];
 
-			if (parent instanceof IASTSimpleDeclaration) {
-				IASTDeclSpecifier declSpec = ((IASTSimpleDeclaration) parent).getDeclSpecifier();
-				if (declSpec.getStorageClass() == storage) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+            IASTNode parent = name.getParent();
+            while (!(parent instanceof IASTDeclaration)) {
+                parent = parent.getParent();
+            }
 
-	@Override
-	public boolean isExtern() {
-		return hasStorageClass(IASTDeclSpecifier.sc_extern);
-	}
+            if (parent instanceof IASTSimpleDeclaration) {
+                IASTDeclSpecifier declSpec = ((IASTSimpleDeclaration) parent).getDeclSpecifier();
+                if (declSpec.getStorageClass() == storage) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public boolean isAuto() {
-		return hasStorageClass(IASTDeclSpecifier.sc_auto);
-	}
+    @Override
+    public boolean isExtern()
+    {
+        return hasStorageClass(IASTDeclSpecifier.sc_extern);
+    }
 
-	@Override
-	public boolean isRegister() {
-		return hasStorageClass(IASTDeclSpecifier.sc_register);
-	}
+    @Override
+    public boolean isAuto()
+    {
+        return hasStorageClass(IASTDeclSpecifier.sc_auto);
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.C_LINKAGE;
-	}
+    @Override
+    public boolean isRegister()
+    {
+        return hasStorageClass(IASTDeclSpecifier.sc_register);
+    }
 
-	@Override
-	public IASTNode[] getDeclarations() {
-		return declarations;
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.C_LINKAGE;
+    }
 
-	@Override
-	public IASTNode getDefinition() {
-		return getPhysicalNode();
-	}
+    @Override
+    public IASTNode[] getDeclarations()
+    {
+        return declarations;
+    }
 
-	@Override
-	public IBinding getOwner() {
-		if (declarations == null || declarations.length == 0)
-			return null;
+    @Override
+    public IASTNode getDefinition()
+    {
+        return getPhysicalNode();
+    }
 
-		return CVisitor.findDeclarationOwner(declarations[0], true);
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        if (declarations == null || declarations.length == 0) {
+            return null;
+        }
 
-	@Override
-	public IValue getInitialValue() {
-		Set<CVariable> recursionProtectionSet = fInitialValueInProgress.get();
-		if (!recursionProtectionSet.add(this)) {
-			return Value.UNKNOWN;
-		}
-		try {
-			if (declarations != null) {
-				for (IASTName decl : declarations) {
-					if (decl == null)
-						break;
-					final IValue val = getInitialValue(decl);
-					if (val != null)
-						return val;
-				}
-			}
-		} finally {
-			recursionProtectionSet.remove(this);
-		}
-		return null;
-	}
+        return CVisitor.findDeclarationOwner(declarations[0], true);
+    }
 
-	private IValue getInitialValue(IASTName name) {
-		IASTDeclarator dtor = findDeclarator(name);
-		if (dtor != null) {
-			IASTInitializer init = dtor.getInitializer();
-			if (init instanceof IASTEqualsInitializer) {
-				final IASTInitializerClause initClause = ((IASTEqualsInitializer) init)
-						.getInitializerClause();
-				if (initClause instanceof IASTExpression) {
-					return Value.create((IASTExpression) initClause);
-				}
-			}
-			if (init != null)
-				return Value.UNKNOWN;
-		}
-		return null;
-	}
+    @Override
+    public IValue getInitialValue()
+    {
+        Set<CVariable> recursionProtectionSet = fInitialValueInProgress.get();
+        if (!recursionProtectionSet.add(this)) {
+            return Value.UNKNOWN;
+        }
+        try {
+            if (declarations != null) {
+                for (IASTName decl : declarations) {
+                    if (decl == null) {
+                        break;
+                    }
+                    final IValue val = getInitialValue(decl);
+                    if (val != null) {
+                        return val;
+                    }
+                }
+            }
+        }
+        finally {
+            recursionProtectionSet.remove(this);
+        }
+        return null;
+    }
 
-	private IASTDeclarator findDeclarator(IASTName name) {
-		IASTNode node = name.getParent();
-		if (!(node instanceof IASTDeclarator))
-			return null;
+    private IValue getInitialValue(IASTName name)
+    {
+        IASTDeclarator dtor = findDeclarator(name);
+        if (dtor != null) {
+            IASTInitializer init = dtor.getInitializer();
+            if (init instanceof IASTEqualsInitializer) {
+                final IASTInitializerClause initClause = ((IASTEqualsInitializer) init)
+                        .getInitializerClause();
+                if (initClause instanceof IASTExpression) {
+                    return Value.create((IASTExpression) initClause);
+                }
+            }
+            if (init != null) {
+                return Value.UNKNOWN;
+            }
+        }
+        return null;
+    }
 
-		return ASTQueries.findOutermostDeclarator((IASTDeclarator) node);
-	}
+    private IASTDeclarator findDeclarator(IASTName name)
+    {
+        IASTNode node = name.getParent();
+        if (!(node instanceof IASTDeclarator)) {
+            return null;
+        }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+        return ASTQueries.findOutermostDeclarator((IASTDeclarator) node);
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

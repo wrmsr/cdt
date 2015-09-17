@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser;
 
 import org.eclipse.cdt.core.dom.ast.ASTGenericVisitor;
@@ -22,52 +22,60 @@ import org.eclipse.cdt.core.dom.ast.IASTPointerOperator;
  * Visitor to search for nodes by file offsets.
  * @since 5.0
  */
-public class FindNodeForOffsetAction extends ASTGenericVisitor {
-	private final ASTNodeSpecification<?> fNodeSpec;
+public class FindNodeForOffsetAction
+        extends ASTGenericVisitor
+{
+    private final ASTNodeSpecification<?> fNodeSpec;
 
-	public FindNodeForOffsetAction(ASTNodeSpecification<?> nodeSpec) {
-		super(!nodeSpec.requiresClass(IASTName.class));
-		fNodeSpec= nodeSpec;
+    public FindNodeForOffsetAction(ASTNodeSpecification<?> nodeSpec)
+    {
+        super(!nodeSpec.requiresClass(IASTName.class));
+        fNodeSpec = nodeSpec;
 
-		shouldVisitNames = true;
-		shouldVisitDeclarations= true;
-		includeInactiveNodes= true;
-		
-		// only visit implicit names if asked
-		shouldVisitImplicitNames = 
-		shouldVisitImplicitNameAlternates = nodeSpec.requiresClass(IASTImplicitName.class);
-	}
+        shouldVisitNames = true;
+        shouldVisitDeclarations = true;
+        includeInactiveNodes = true;
 
-	@Override
-	public int genericVisit(IASTNode node) {
-		if (node instanceof ASTNode) {
-			final ASTNode astNode = (ASTNode) node;
-			if (!fNodeSpec.canContainMatches(astNode)) {
-				return PROCESS_SKIP;
-			}
-			fNodeSpec.visit(astNode);
-		}
-		return PROCESS_CONTINUE;
-	}
+        // only visit implicit names if asked
+        shouldVisitImplicitNames =
+        shouldVisitImplicitNameAlternates = nodeSpec.requiresClass(IASTImplicitName.class);
+    }
 
-	@Override
-	public int visit(IASTDeclaration declaration) {
-		// use declarations to determine if the search has gone past the
-		// offset (i.e. don't know the order the visitor visits the nodes)
-		if (declaration instanceof ASTNode && ((ASTNode) declaration).getOffset() > fNodeSpec.getSequenceEnd())
-			return PROCESS_ABORT;
+    @Override
+    public int genericVisit(IASTNode node)
+    {
+        if (node instanceof ASTNode) {
+            final ASTNode astNode = (ASTNode) node;
+            if (!fNodeSpec.canContainMatches(astNode)) {
+                return PROCESS_SKIP;
+            }
+            fNodeSpec.visit(astNode);
+        }
+        return PROCESS_CONTINUE;
+    }
 
-		return genericVisit(declaration);
-	}
+    @Override
+    public int visit(IASTDeclaration declaration)
+    {
+        // use declarations to determine if the search has gone past the
+        // offset (i.e. don't know the order the visitor visits the nodes)
+        if (declaration instanceof ASTNode && ((ASTNode) declaration).getOffset() > fNodeSpec.getSequenceEnd()) {
+            return PROCESS_ABORT;
+        }
 
-	@Override
-	public int visit(IASTDeclarator declarator) {
-		int ret = genericVisit(declarator);
+        return genericVisit(declaration);
+    }
 
-		IASTPointerOperator[] ops = declarator.getPointerOperators();
-		for (int i = 0; i < ops.length; i++)
-			genericVisit(ops[i]);
+    @Override
+    public int visit(IASTDeclarator declarator)
+    {
+        int ret = genericVisit(declarator);
 
-		return ret;
-	}
+        IASTPointerOperator[] ops = declarator.getPointerOperators();
+        for (int i = 0; i < ops.length; i++) {
+            genericVisit(ops[i]);
+        }
+
+        return ret;
+    }
 }

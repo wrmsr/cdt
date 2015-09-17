@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.formatter.align;
 
@@ -16,37 +16,42 @@ package org.eclipse.cdt.internal.formatter.align;
  *
  * @since 4.0
  */
-public class AlignmentException extends RuntimeException {
-	private static final long serialVersionUID= -1081237230006524966L;
-	public static final int LINE_TOO_LONG = 1;
-	public static final int ALIGN_TOO_SMALL = 2;
-	
-	int reason;
-	int value;
-	public int relativeDepth;
-	
-	public AlignmentException(int reason, int relativeDepth) {
-		this(reason, 0, relativeDepth);
-	}
+public class AlignmentException
+        extends RuntimeException
+{
+    private static final long serialVersionUID = -1081237230006524966L;
+    public static final int LINE_TOO_LONG = 1;
+    public static final int ALIGN_TOO_SMALL = 2;
 
-	public AlignmentException(int reason, int value, int relativeDepth) {
-		this.reason = reason;
-		this.value = value;
-		this.relativeDepth = relativeDepth;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder buffer = new StringBuilder(40);
-		switch (reason) {
-		case LINE_TOO_LONG:
-			buffer.append("LINE_TOO_LONG");	//$NON-NLS-1$
-			break;
-		case ALIGN_TOO_SMALL:
-			buffer.append("ALIGN_TOO_SMALL"); //$NON-NLS-1$
-			break;
-		}
-		buffer.append("<relativeDepth: ").append(relativeDepth).append(">\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		return buffer.toString();
-	}
+    int reason;
+    int value;
+    public int relativeDepth;
+
+    public AlignmentException(int reason, int relativeDepth)
+    {
+        this(reason, 0, relativeDepth);
+    }
+
+    public AlignmentException(int reason, int value, int relativeDepth)
+    {
+        this.reason = reason;
+        this.value = value;
+        this.relativeDepth = relativeDepth;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder buffer = new StringBuilder(40);
+        switch (reason) {
+            case LINE_TOO_LONG:
+                buffer.append("LINE_TOO_LONG");    //$NON-NLS-1$
+                break;
+            case ALIGN_TOO_SMALL:
+                buffer.append("ALIGN_TOO_SMALL"); //$NON-NLS-1$
+                break;
+        }
+        buffer.append("<relativeDepth: ").append(relativeDepth).append(">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        return buffer.toString();
+    }
 }

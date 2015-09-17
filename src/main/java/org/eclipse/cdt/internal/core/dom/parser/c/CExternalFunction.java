@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -24,58 +24,69 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPFunctionType;
 /**
  * Models functions used without declarations.
  */
-public class CExternalFunction extends CFunction implements ICExternalBinding {
-    private static final IType VOID_TYPE = 	new CBasicType(Kind.eVoid, 0);
+public class CExternalFunction
+        extends CFunction
+        implements ICExternalBinding
+{
+    private static final IType VOID_TYPE = new CBasicType(Kind.eVoid, 0);
 
-	private IASTName name;
+    private IASTName name;
     private IASTTranslationUnit tu;
-    
-    public CExternalFunction(IASTTranslationUnit tu, IASTName name) {
-    	super(null);
+
+    public CExternalFunction(IASTTranslationUnit tu, IASTName name)
+    {
+        super(null);
         this.name = name;
         this.tu = tu;
     }
 
     @Override
-	public IFunctionType getType() {
-		if (type == null) {
-			// Bug 321856: Prevent recursions
-			type = new CPPFunctionType(VOID_TYPE, IType.EMPTY_TYPE_ARRAY);
-			IFunctionType computedType = createType();
-			if (computedType != null) {
-				type = computedType;
-			}
-		}
-		return type;
-	}
-    
-    @Override
-	public IParameter[] getParameters() {
-    	return IParameter.EMPTY_PARAMETER_ARRAY;
-	}
-
-	@Override
-	protected IASTTranslationUnit getTranslationUnit() {
-		return tu;
+    public IFunctionType getType()
+    {
+        if (type == null) {
+            // Bug 321856: Prevent recursions
+            type = new CPPFunctionType(VOID_TYPE, IType.EMPTY_TYPE_ARRAY);
+            IFunctionType computedType = createType();
+            if (computedType != null) {
+                type = computedType;
+            }
+        }
+        return type;
     }
 
     @Override
-	public String getName() {
+    public IParameter[] getParameters()
+    {
+        return IParameter.EMPTY_PARAMETER_ARRAY;
+    }
+
+    @Override
+    protected IASTTranslationUnit getTranslationUnit()
+    {
+        return tu;
+    }
+
+    @Override
+    public String getName()
+    {
         return name.toString();
     }
 
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return name.toCharArray();
     }
 
     @Override
-	public IScope getScope() {
+    public IScope getScope()
+    {
         return tu.getScope();
     }
 
     @Override
-	public boolean isExtern() {
+    public boolean isExtern()
+    {
         return true;
     }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
@@ -16,40 +16,45 @@ package org.eclipse.cdt.core.model;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IStructure extends IInheritance, IParent, IStructureDeclaration {
-	/**
-	 * Returns the specific field with the given name within the structure.
-	 * @param name the name of the field
-	 * @return the field with the given name, or {@code null} if not found
-	 */
-	public IField getField(String name);
+public interface IStructure
+        extends IInheritance, IParent, IStructureDeclaration
+{
+    /**
+     * Returns the specific field with the given name within the structure.
+     * @param name the name of the field
+     * @return the field with the given name, or {@code null} if not found
+     */
+    public IField getField(String name);
 
-	/**
-	 * Returns the fields of a structure.
-	 * @return an array of IField elements
-	 * @throws CModelException
-	 */
-	public IField[] getFields() throws CModelException;
+    /**
+     * Returns the fields of a structure.
+     * @return an array of IField elements
+     * @throws CModelException
+     */
+    public IField[] getFields()
+            throws CModelException;
 
-	/**
-	 * Returns the specific method with the given name within the structure.
-	 * Returns the first occurrence more than one method has the same name.
-	 * @param name
-	 * @return IMethodDeclaration
-	 */
-	public IMethodDeclaration getMethod(String name);
+    /**
+     * Returns the specific method with the given name within the structure.
+     * Returns the first occurrence more than one method has the same name.
+     * @param name
+     * @return IMethodDeclaration
+     */
+    public IMethodDeclaration getMethod(String name);
 
-	/**
-	 * Returns all methods within the structure.
-	 * @return array of IMethodDeclaration.
-	 * @throws CModelException
-	 */
-	public IMethodDeclaration [] getMethods() throws CModelException;
+    /**
+     * Returns all methods within the structure.
+     * @return array of IMethodDeclaration.
+     * @throws CModelException
+     */
+    public IMethodDeclaration[] getMethods()
+            throws CModelException;
 
-	/**
-	 * Checks if the structure is abstract
-	 * @return boolean
-	 * @throws CModelException
-	 */
-	public boolean isAbstract() throws CModelException;
+    /**
+     * Checks if the structure is abstract
+     * @return boolean
+     * @throws CModelException
+     */
+    public boolean isAbstract()
+            throws CModelException;
 }

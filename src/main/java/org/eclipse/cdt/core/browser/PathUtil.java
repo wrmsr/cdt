@@ -4,15 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * QNX Software Systems - initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.browser;
-
-import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.model.CoreModel;
@@ -27,78 +24,91 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * @deprecated use {@link org.eclipse.cdt.utils.PathUtil}, instead.
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
 @Deprecated
-public class PathUtil {
-	
-	public static boolean isWindowsFileSystem() {
-		String os = System.getProperty("os.name"); //$NON-NLS-1$
-		return (os != null && os.startsWith("Win")); //$NON-NLS-1$
-	}
-	
-	public static IWorkspaceRoot getWorkspaceRoot() {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		if (workspace != null) {
-			return workspace.getRoot();
-		}
-		return null;
-	}
-	
-	public static IPath getCanonicalPath(IPath fullPath) {
-	    File file = fullPath.toFile();
-		try {
-			String canonPath = file.getCanonicalPath();
-			return new Path(canonPath);
-		} catch (IOException ex) {
-		}
-		return null;
-	}
+public class PathUtil
+{
 
-	public static IPath getWorkspaceRelativePath(IPath fullPath) {
-		IWorkspaceRoot workspaceRoot = getWorkspaceRoot();
-		if (workspaceRoot != null) {
-			IPath workspaceLocation = workspaceRoot.getLocation();
-			if (workspaceLocation != null && workspaceLocation.isPrefixOf(fullPath)) {
-				int segments = fullPath.matchingFirstSegments(workspaceLocation);
-				IPath relPath = fullPath.setDevice(null).removeFirstSegments(segments);
-				return new Path("").addTrailingSeparator().append(relPath); //$NON-NLS-1$
-			}
-		}
-		return fullPath;
-	}
-	
-	public static IPath getProjectRelativePath(IPath fullPath, IProject project) {
-		IPath projectPath = project.getFullPath();
-		if (projectPath.isPrefixOf(fullPath)) {
-			return fullPath.removeFirstSegments(projectPath.segmentCount());
-		}
-		projectPath = project.getLocation();
-		if (projectPath.isPrefixOf(fullPath)) {
-			return fullPath.removeFirstSegments(projectPath.segmentCount());
-		}
-		return getWorkspaceRelativePath(fullPath);
-	}
+    public static boolean isWindowsFileSystem()
+    {
+        String os = System.getProperty("os.name"); //$NON-NLS-1$
+        return (os != null && os.startsWith("Win")); //$NON-NLS-1$
+    }
 
-	public static IPath getWorkspaceRelativePath(String fullPath) {
-		return getWorkspaceRelativePath(new Path(fullPath));
-	}
+    public static IWorkspaceRoot getWorkspaceRoot()
+    {
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        if (workspace != null) {
+            return workspace.getRoot();
+        }
+        return null;
+    }
 
-	public static IPath getRawLocation(IPath wsRelativePath) {
-		IWorkspaceRoot workspaceRoot = getWorkspaceRoot();
-		if (workspaceRoot != null && wsRelativePath != null) {
-			IPath workspaceLocation = workspaceRoot.getLocation();
-			if (workspaceLocation != null && !workspaceLocation.isPrefixOf(wsRelativePath)) {
-				return workspaceLocation.append(wsRelativePath);
-			}
-		}
-		return wsRelativePath;
-	}
+    public static IPath getCanonicalPath(IPath fullPath)
+    {
+        File file = fullPath.toFile();
+        try {
+            String canonPath = file.getCanonicalPath();
+            return new Path(canonPath);
+        }
+        catch (IOException ex) {
+        }
+        return null;
+    }
 
-    public static IPath makeRelativePath(IPath path, IPath relativeTo) {
+    public static IPath getWorkspaceRelativePath(IPath fullPath)
+    {
+        IWorkspaceRoot workspaceRoot = getWorkspaceRoot();
+        if (workspaceRoot != null) {
+            IPath workspaceLocation = workspaceRoot.getLocation();
+            if (workspaceLocation != null && workspaceLocation.isPrefixOf(fullPath)) {
+                int segments = fullPath.matchingFirstSegments(workspaceLocation);
+                IPath relPath = fullPath.setDevice(null).removeFirstSegments(segments);
+                return new Path("").addTrailingSeparator().append(relPath); //$NON-NLS-1$
+            }
+        }
+        return fullPath;
+    }
+
+    public static IPath getProjectRelativePath(IPath fullPath, IProject project)
+    {
+        IPath projectPath = project.getFullPath();
+        if (projectPath.isPrefixOf(fullPath)) {
+            return fullPath.removeFirstSegments(projectPath.segmentCount());
+        }
+        projectPath = project.getLocation();
+        if (projectPath.isPrefixOf(fullPath)) {
+            return fullPath.removeFirstSegments(projectPath.segmentCount());
+        }
+        return getWorkspaceRelativePath(fullPath);
+    }
+
+    public static IPath getWorkspaceRelativePath(String fullPath)
+    {
+        return getWorkspaceRelativePath(new Path(fullPath));
+    }
+
+    public static IPath getRawLocation(IPath wsRelativePath)
+    {
+        IWorkspaceRoot workspaceRoot = getWorkspaceRoot();
+        if (workspaceRoot != null && wsRelativePath != null) {
+            IPath workspaceLocation = workspaceRoot.getLocation();
+            if (workspaceLocation != null && !workspaceLocation.isPrefixOf(wsRelativePath)) {
+                return workspaceLocation.append(wsRelativePath);
+            }
+        }
+        return wsRelativePath;
+    }
+
+    public static IPath makeRelativePath(IPath path, IPath relativeTo)
+    {
         int segments = relativeTo.matchingFirstSegments(path);
         if (segments > 0) {
             IPath prefix = relativeTo.removeFirstSegments(segments);
@@ -112,7 +122,8 @@ public class PathUtil {
         return null;
     }
 
-    public static IPath makeRelativePathToProjectIncludes(IPath fullPath, IProject project) {
+    public static IPath makeRelativePathToProjectIncludes(IPath fullPath, IProject project)
+    {
         IScannerInfoProvider provider = CCorePlugin.getDefault().getScannerInfoProvider(project);
         if (provider != null) {
             IScannerInfo info = provider.getScannerInformation(project);
@@ -122,8 +133,9 @@ public class PathUtil {
         }
         return null;
     }
-    
-    public static IPath makeRelativePathToIncludes(IPath fullPath, String[] includePaths) {
+
+    public static IPath makeRelativePathToIncludes(IPath fullPath, String[] includePaths)
+    {
         IPath relativePath = null;
         int mostSegments = 0;
         for (int i = 0; i < includePaths.length; ++i) {
@@ -142,33 +154,37 @@ public class PathUtil {
     /**
      * @noreference This method is not intended to be referenced by clients.
      */
-    public static ICProject getEnclosingProject(IPath fullPath) {
-		IWorkspaceRoot root = getWorkspaceRoot();
-		if (root != null) {
-			IPath path = getWorkspaceRelativePath(fullPath);
-			while (path.segmentCount() > 0) {
-				IResource res = root.findMember(path);
-				if (res != null)
-				    return CoreModel.getDefault().create(res.getProject());
+    public static ICProject getEnclosingProject(IPath fullPath)
+    {
+        IWorkspaceRoot root = getWorkspaceRoot();
+        if (root != null) {
+            IPath path = getWorkspaceRelativePath(fullPath);
+            while (path.segmentCount() > 0) {
+                IResource res = root.findMember(path);
+                if (res != null) {
+                    return CoreModel.getDefault().create(res.getProject());
+                }
 
-				path = path.removeLastSegments(1);
-			}
-		}
-		return null;
+                path = path.removeLastSegments(1);
+            }
+        }
+        return null;
     }
-    
-    public static IPath getValidEnclosingFolder(IPath fullPath) {
-		IWorkspaceRoot root = getWorkspaceRoot();
-		if (root != null) {
-			IPath path = getWorkspaceRelativePath(fullPath);
-			while (path.segmentCount() > 0) {
-				IResource res = root.findMember(path);
-				if (res != null && res.exists() && (res.getType() == IResource.PROJECT || res.getType() == IResource.FOLDER))
-				    return path;
 
-				path = path.removeLastSegments(1);
-			}
-		}
-		return null;
-	}
+    public static IPath getValidEnclosingFolder(IPath fullPath)
+    {
+        IWorkspaceRoot root = getWorkspaceRoot();
+        if (root != null) {
+            IPath path = getWorkspaceRelativePath(fullPath);
+            while (path.segmentCount() > 0) {
+                IResource res = root.findMember(path);
+                if (res != null && res.exists() && (res.getType() == IResource.PROJECT || res.getType() == IResource.FOLDER)) {
+                    return path;
+                }
+
+                path = path.removeLastSegments(1);
+            }
+        }
+        return null;
+    }
 }

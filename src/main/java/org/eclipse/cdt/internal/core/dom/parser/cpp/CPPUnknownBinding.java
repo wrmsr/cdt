@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * IBM Corporation - initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -28,103 +28,126 @@ import org.eclipse.core.runtime.PlatformObject;
 /**
  * Represents a binding that is unknown because it depends on template arguments.
  */
-public abstract class CPPUnknownBinding extends PlatformObject
-		implements ICPPUnknownBinding, ICPPInternalBinding, Cloneable {
+public abstract class CPPUnknownBinding
+        extends PlatformObject
+        implements ICPPUnknownBinding, ICPPInternalBinding, Cloneable
+{
     private ICPPScope unknownScope;
     protected char[] name;
 
-    public CPPUnknownBinding(char[] name) {
+    public CPPUnknownBinding(char[] name)
+    {
         super();
         this.name = name;
     }
 
     @Override
-	public IASTNode[] getDeclarations() {
+    public IASTNode[] getDeclarations()
+    {
         return null;
     }
 
     @Override
-	public IASTNode getDefinition() {
+    public IASTNode getDefinition()
+    {
         return null;
     }
 
     @Override
-	public void addDefinition(IASTNode node) {
+    public void addDefinition(IASTNode node)
+    {
     }
 
     @Override
-	public void addDeclaration(IASTNode node) {
+    public void addDeclaration(IASTNode node)
+    {
     }
 
     @Override
-	public String[] getQualifiedName() {
+    public String[] getQualifiedName()
+    {
         return CPPVisitor.getQualifiedName(this);
     }
 
     @Override
-	public char[][] getQualifiedNameCharArray() {
-    	return CPPVisitor.getQualifiedNameCharArray(this);
+    public char[][] getQualifiedNameCharArray()
+    {
+        return CPPVisitor.getQualifiedNameCharArray(this);
     }
 
     @Override
-	public boolean isGloballyQualified() {
+    public boolean isGloballyQualified()
+    {
         return false;
     }
 
     @Override
-	public String getName() {
+    public String getName()
+    {
         return new String(name);
     }
 
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return name;
     }
 
     @Override
-	public IScope getScope() throws DOMException {
-    	// Use getOwner(), it is overridden by derived classes.
-    	final IBinding owner = getOwner();
-		if (owner instanceof ICPPUnknownBinding) {
-    		return ((ICPPUnknownBinding) owner).asScope();
-    	} else if (owner instanceof ICPPClassType) {
-    		return ((ICPPClassType) owner).getCompositeScope();
-    	} else if (owner instanceof ICPPNamespace) {
-    		return ((ICPPNamespace) owner).getNamespaceScope();
-    	} else if (owner instanceof ICPPFunction) {
-    		return ((ICPPFunction) owner).getFunctionScope();
-    	}
-    	return null;
+    public IScope getScope()
+            throws DOMException
+    {
+        // Use getOwner(), it is overridden by derived classes.
+        final IBinding owner = getOwner();
+        if (owner instanceof ICPPUnknownBinding) {
+            return ((ICPPUnknownBinding) owner).asScope();
+        }
+        else if (owner instanceof ICPPClassType) {
+            return ((ICPPClassType) owner).getCompositeScope();
+        }
+        else if (owner instanceof ICPPNamespace) {
+            return ((ICPPNamespace) owner).getNamespaceScope();
+        }
+        else if (owner instanceof ICPPFunction) {
+            return ((ICPPFunction) owner).getFunctionScope();
+        }
+        return null;
     }
 
     @Override
-	public ICPPScope asScope() {
-    	if (unknownScope == null && this instanceof ICPPUnknownType) {
-    		unknownScope = createScope();
-    	}
+    public ICPPScope asScope()
+    {
+        if (unknownScope == null && this instanceof ICPPUnknownType) {
+            unknownScope = createScope();
+        }
         return unknownScope;
     }
 
-	protected CPPUnknownTypeScope createScope() {
-		return new CPPUnknownTypeScope((ICPPUnknownType) this, new CPPASTName(name));
-	}
+    protected CPPUnknownTypeScope createScope()
+    {
+        return new CPPUnknownTypeScope((ICPPUnknownType) this, new CPPASTName(name));
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
-	
-	@Override
-	public CPPUnknownBinding clone() {
-		try {
-			return (CPPUnknownBinding) super.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;  // Never happens
-		}
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+    @Override
+    public CPPUnknownBinding clone()
+    {
+        try {
+            return (CPPUnknownBinding) super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            return null;  // Never happens
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

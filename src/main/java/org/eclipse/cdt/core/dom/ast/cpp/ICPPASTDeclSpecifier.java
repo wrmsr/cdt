@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (IBM) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * Doug Schaefer (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
@@ -21,97 +21,100 @@ import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICPPASTDeclSpecifier extends IASTDeclSpecifier, IASTAttributeOwner {
-	// A declaration in C++ can be a friend declaration
-	/**
-	 * Is this a friend declaration?
-	 *
-	 * @return boolean
-	 */
-	public boolean isFriend();
+public interface ICPPASTDeclSpecifier
+        extends IASTDeclSpecifier, IASTAttributeOwner
+{
+    // A declaration in C++ can be a friend declaration
 
-	/**
-	 * Sets this to be a friend declaration true/false.
-	 *
-	 * @param value the new value
-	 */
-	public void setFriend(boolean value);
+    /**
+     * Is this a friend declaration?
+     *
+     * @return boolean
+     */
+    public boolean isFriend();
 
-	/**
-	 * Is this a virtual function?
-	 *
-	 * @return boolean
-	 */
-	public boolean isVirtual();
+    /**
+     * Sets this to be a friend declaration true/false.
+     *
+     * @param value the new value
+     */
+    public void setFriend(boolean value);
 
-	/**
-	 * Sets this declaration to be virtual.
-	 *
-	 * @param value the new value
-	 */
-	public void setVirtual(boolean value);
+    /**
+     * Is this a virtual function?
+     *
+     * @return boolean
+     */
+    public boolean isVirtual();
 
-	/**
-	 * Is this an explicit constructor?
-	 *
-	 * @return boolean
-	 */
-	public boolean isExplicit();
+    /**
+     * Sets this declaration to be virtual.
+     *
+     * @param value the new value
+     */
+    public void setVirtual(boolean value);
 
-	/**
-	 * Sets this to be an explicit constructor.
-	 *
-	 * @param value the new value
-	 */
-	public void setExplicit(boolean value);
+    /**
+     * Is this an explicit constructor?
+     *
+     * @return boolean
+     */
+    public boolean isExplicit();
 
-	/**
-	 * Is this a constexpr
-	 *
-	 * @return boolean
-	 * @since 5.4
-	 */
-	public boolean isConstexpr();
+    /**
+     * Sets this to be an explicit constructor.
+     *
+     * @param value the new value
+     */
+    public void setExplicit(boolean value);
 
-	/**
-	 * Sets this to be constexpr.
-	 *
-	 * @param value the new value
-	 * @since 5.4
-	 */
-	public void setConstexpr(boolean value);
+    /**
+     * Is this a constexpr
+     *
+     * @return boolean
+     * @since 5.4
+     */
+    public boolean isConstexpr();
 
-	/**
-	 * Is this thread_local
-	 * 
-	 * @return boolean
-	 * @since 5.4
-	 */
-	public boolean isThreadLocal();
+    /**
+     * Sets this to be constexpr.
+     *
+     * @param value the new value
+     * @since 5.4
+     */
+    public void setConstexpr(boolean value);
 
-	/**
-	 * Sets this to be thread_local.
-	 *
-	 * @param value the new value
-	 * @since 5.4
-	 */
-	public void setThreadLocal(boolean value);
+    /**
+     * Is this thread_local
+     *
+     * @return boolean
+     * @since 5.4
+     */
+    public boolean isThreadLocal();
 
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public ICPPASTDeclSpecifier copy();
+    /**
+     * Sets this to be thread_local.
+     *
+     * @param value the new value
+     * @since 5.4
+     */
+    public void setThreadLocal(boolean value);
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	public ICPPASTDeclSpecifier copy(CopyStyle style);
+    /**
+     * @since 5.1
+     */
+    @Override
+    public ICPPASTDeclSpecifier copy();
 
-	/**
-	 * @deprecated All constants must be defined in {@link IASTDeclSpecifier}
-	 */
-	@Deprecated
-	public static final int sc_last = sc_mutable;
+    /**
+     * @since 5.3
+     */
+    @Override
+    public ICPPASTDeclSpecifier copy(CopyStyle style);
+
+    /**
+     * @deprecated All constants must be defined in {@link IASTDeclSpecifier}
+     */
+    @Deprecated
+    public static final int sc_last = sc_mutable;
 }

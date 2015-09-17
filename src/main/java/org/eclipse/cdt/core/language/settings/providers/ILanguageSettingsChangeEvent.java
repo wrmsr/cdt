@@ -4,16 +4,16 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Gvozdev - initial API and implementation
+ * Andrew Gvozdev - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.language.settings.providers;
 
-import java.util.Set;
-
 import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
 import org.eclipse.core.resources.IResource;
+
+import java.util.Set;
 
 /**
  * Contains the details of changes that occurred as a result of modifying
@@ -34,19 +34,20 @@ import org.eclipse.core.resources.IResource;
  *
  * @since 5.4
  */
-public interface ILanguageSettingsChangeEvent {
-	/**
-	 * @return project name where the event occurred.
-	 */
-	public String getProjectName();
+public interface ILanguageSettingsChangeEvent
+{
+    /**
+     * @return project name where the event occurred.
+     */
+    public String getProjectName();
 
-	/**
-	 * @return configuration IDs which are affected by the language settings entries changes.
-	 */
-	public String[] getConfigurationDescriptionIds();
+    /**
+     * @return configuration IDs which are affected by the language settings entries changes.
+     */
+    public String[] getConfigurationDescriptionIds();
 
-	/**
-	 * @return list of resources affected by the language settings entries changes.
-	 */
-	public Set<IResource> getAffectedResources(String cfgId);
+    /**
+     * @return list of resources affected by the language settings entries changes.
+     */
+    public Set<IResource> getAffectedResources(String cfgId);
 }

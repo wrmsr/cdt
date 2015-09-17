@@ -7,9 +7,9 @@
  */
 package org.eclipse.cdt.internal.core.pdom.dom;
 
-import java.util.NoSuchElementException;
-
 import org.eclipse.core.runtime.CoreException;
+
+import java.util.NoSuchElementException;
 
 /**
  * A generic interface for iterating through lists that are stored in the PDOM.  The
@@ -17,19 +17,22 @@ import org.eclipse.core.runtime.CoreException;
  * one can throw a CoreException from either method.  Also, this one does not provide
  * a way to remove elements.
  */
-public interface IPDOMIterator<T> {
-	/**
-	 * Return true if the next call to #next will yield a value and false otherwise.
-	 *
-	 * @see java.util.Iterator#hasNext()
-	 */
-	public boolean hasNext() throws CoreException;
+public interface IPDOMIterator<T>
+{
+    /**
+     * Return true if the next call to #next will yield a value and false otherwise.
+     *
+     * @see java.util.Iterator#hasNext()
+     */
+    public boolean hasNext()
+            throws CoreException;
 
-	/**
-	 * Return the next element in the iteration.  Throws {@link NoSuchElementException} if
-	 * there are no elements left in the iteration.
-	 *
-	 * @see java.util.Iterator#next
-	 */
-	public T next() throws CoreException;
+    /**
+     * Return the next element in the iteration.  Throws {@link NoSuchElementException} if
+     * there are no elements left in the iteration.
+     *
+     * @see java.util.Iterator#next
+     */
+    public T next()
+            throws CoreException;
 }

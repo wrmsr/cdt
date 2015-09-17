@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
@@ -25,13 +25,14 @@ import org.eclipse.core.runtime.IConfigurationElement;
  * @see ICConfigExtensionReference
  * @see ICExtension
  * @see ICDescriptor
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  * @deprecated replaced with {@link ICConfigExtensionReference} obtained from an {@link ICConfigurationDescription}
  */
 @Deprecated
-public interface ICExtensionReference {
+public interface ICExtensionReference
+{
 
     /**
      * Return the extension point of this reference.
@@ -50,7 +51,8 @@ public interface ICExtensionReference {
     /**
      * Sets a name/value data pair on this reference in the .cdtproject file
      */
-    public void setExtensionData(String key, String value) throws CoreException;
+    public void setExtensionData(String key, String value)
+            throws CoreException;
 
     /**
      * Gets a value of the key from the .cdtproject file set by
@@ -64,27 +66,28 @@ public interface ICExtensionReference {
      */
     public ICDescriptor getCDescriptor();
 
-	/**
-	 * Creates and returns a new instance of the cextension executable
-	 * identified by the &lt;run&gt; attribute of the cextension.
-	 * <p>
-	 * The ICExtension is instantiated using its 0-argument public
-	 * constructor. If the class implements the
-	 * <code>org.eclipse.core.runtime.IExecutableExtension</code> interface, the method
-	 * <code>setInitializationData</code> is called, passing to the object
-	 * the configuration information that was used to create it.
-	 * </p>
-	 * <p>
-	 * Unlike other methods on this object, invoking this method may activate
-	 * the plug-in.
-	 * </p>
-	 *
-	 * @return the executable ICExtension instance
-	 * @exception CoreException if an instance of the executable extension
-	 *   could not be created for any reason.
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData
-	 */
-    public ICExtension createExtension() throws CoreException;
+    /**
+     * Creates and returns a new instance of the cextension executable
+     * identified by the &lt;run&gt; attribute of the cextension.
+     * <p>
+     * The ICExtension is instantiated using its 0-argument public
+     * constructor. If the class implements the
+     * <code>org.eclipse.core.runtime.IExecutableExtension</code> interface, the method
+     * <code>setInitializationData</code> is called, passing to the object
+     * the configuration information that was used to create it.
+     * </p>
+     * <p>
+     * Unlike other methods on this object, invoking this method may activate
+     * the plug-in.
+     * </p>
+     *
+     * @return the executable ICExtension instance
+     * @exception CoreException if an instance of the executable extension
+     *   could not be created for any reason.
+     * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData
+     */
+    public ICExtension createExtension()
+            throws CoreException;
 
     /**
      * Returns all configuration elements that are children of the
@@ -107,5 +110,6 @@ public interface ICExtensionReference {
      *
      * @return the child configuration elements
      */
-    public IConfigurationElement[] getExtensionElements() throws CoreException;
+    public IConfigurationElement[] getExtensionElements()
+            throws CoreException;
 }

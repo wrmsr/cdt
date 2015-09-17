@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    John Camelon (IBM) - Initial API and implementation
- *    Markus Schorn (Wind River Systems)
- *    Sergey Prigogin (Google)
+ * John Camelon (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -44,215 +44,248 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPSemantics;
  * </code><br>
  * {@code Base()} and {@code field()} are the constructor chain initializers.<br>
  */
-public class CPPASTConstructorChainInitializer extends ASTNode implements
-        ICPPASTConstructorChainInitializer, IASTImplicitNameOwner, ICPPASTCompletionContext {
+public class CPPASTConstructorChainInitializer
+        extends ASTNode
+        implements
+        ICPPASTConstructorChainInitializer, IASTImplicitNameOwner, ICPPASTCompletionContext
+{
     private IASTName name;
-	private IASTImplicitName[] implicitNames; 
+    private IASTImplicitName[] implicitNames;
     private IASTInitializer initializer;
-	private boolean fIsPackExpansion;
+    private boolean fIsPackExpansion;
 
-    public CPPASTConstructorChainInitializer() {
-	}
+    public CPPASTConstructorChainInitializer()
+    {
+    }
 
-	public CPPASTConstructorChainInitializer(IASTName id, IASTInitializer initializer) {
-		setMemberInitializerId(id);
-		setInitializer(initializer);
-	}
+    public CPPASTConstructorChainInitializer(IASTName id, IASTInitializer initializer)
+    {
+        setMemberInitializerId(id);
+        setInitializer(initializer);
+    }
 
-	@Override
-	public CPPASTConstructorChainInitializer copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public CPPASTConstructorChainInitializer copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public CPPASTConstructorChainInitializer copy(CopyStyle style) {
-		CPPASTConstructorChainInitializer copy = new CPPASTConstructorChainInitializer();
-		copy.setMemberInitializerId(name == null ? null : name.copy(style));
-		copy.setInitializer(initializer == null ? null : initializer.copy(style));
-		copy.fIsPackExpansion = fIsPackExpansion;
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTConstructorChainInitializer copy(CopyStyle style)
+    {
+        CPPASTConstructorChainInitializer copy = new CPPASTConstructorChainInitializer();
+        copy.setMemberInitializerId(name == null ? null : name.copy(style));
+        copy.setInitializer(initializer == null ? null : initializer.copy(style));
+        copy.fIsPackExpansion = fIsPackExpansion;
+        return copy(copy, style);
+    }
 
-	@Override
-	public IASTName getMemberInitializerId() {
+    @Override
+    public IASTName getMemberInitializerId()
+    {
         return name;
     }
 
     @Override
-	public void setMemberInitializerId(IASTName name) {
+    public void setMemberInitializerId(IASTName name)
+    {
         assertNotFrozen();
         this.name = name;
         if (name != null) {
-			name.setParent(this);
-			name.setPropertyInParent(MEMBER_ID);
-		}
+            name.setParent(this);
+            name.setPropertyInParent(MEMBER_ID);
+        }
     }
 
     @Override
-	public IASTInitializer getInitializer() {
+    public IASTInitializer getInitializer()
+    {
         return initializer;
     }
 
     @Override
-	public void setInitializer(IASTInitializer init) {
+    public void setInitializer(IASTInitializer init)
+    {
         assertNotFrozen();
         initializer = init;
         if (init != null) {
-        	init.setParent(this);
-        	init.setPropertyInParent(INITIALIZER);
-		}
+            init.setParent(this);
+            init.setPropertyInParent(INITIALIZER);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
-    	if (action.shouldVisitInitializers) {
-    		switch (action.visit(this)) {
-    		case ASTVisitor.PROCESS_ABORT:
-    			return false;
-    		case ASTVisitor.PROCESS_SKIP:
-    			return true;
-    		}
-    	}
-        if (name != null && !name.accept(action))
-        	return false;
-
-        if (action.shouldVisitImplicitNames) {
-        	for (IASTImplicitName implicitName : getImplicitNames()) {
-        		if (!implicitName.accept(action))
-        			return false;
-        	}
+    public boolean accept(ASTVisitor action)
+    {
+        if (action.shouldVisitInitializers) {
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+            }
+        }
+        if (name != null && !name.accept(action)) {
+            return false;
         }
 
-        if (initializer != null && !initializer.accept(action))
-        	return false;
+        if (action.shouldVisitImplicitNames) {
+            for (IASTImplicitName implicitName : getImplicitNames()) {
+                if (!implicitName.accept(action)) {
+                    return false;
+                }
+            }
+        }
 
-		if (action.shouldVisitInitializers && action.leave(this) == ASTVisitor.PROCESS_ABORT)
-			return false;
+        if (initializer != null && !initializer.accept(action)) {
+            return false;
+        }
+
+        if (action.shouldVisitInitializers && action.leave(this) == ASTVisitor.PROCESS_ABORT) {
+            return false;
+        }
 
         return true;
     }
 
     @Override
-	public int getRoleForName(IASTName n) {
-        if (name == n)
+    public int getRoleForName(IASTName n)
+    {
+        if (name == n) {
             return r_reference;
+        }
         return r_unclear;
     }
 
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix, String[] namespaces) {
-		IBinding[] bindings = CPPSemantics.findBindingsForContentAssist(n, isPrefix, namespaces);
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix, String[] namespaces)
+    {
+        IBinding[] bindings = CPPSemantics.findBindingsForContentAssist(n, isPrefix, namespaces);
 
-		CharArraySet baseClasses = null;
-		for (int i = 0; i < bindings.length; i++) {
-			final IBinding b = bindings[i];
-			if ((b instanceof ICPPField) || (b instanceof ICPPNamespace)) {
-				// OK, keep binding.
-			} else if (b instanceof ICPPConstructor || b instanceof ICPPClassType) {
-				if (baseClasses == null) 
-					baseClasses = getBaseClasses(n);
-				
-				if (!baseClasses.containsKey(b.getNameCharArray())) {
-					bindings[i] = null;
-				}
-			} else {
-				bindings[i] = null;
-			}
-		}
-		return ArrayUtil.removeNulls(IBinding.class, bindings);
-	}
+        CharArraySet baseClasses = null;
+        for (int i = 0; i < bindings.length; i++) {
+            final IBinding b = bindings[i];
+            if ((b instanceof ICPPField) || (b instanceof ICPPNamespace)) {
+                // OK, keep binding.
+            }
+            else if (b instanceof ICPPConstructor || b instanceof ICPPClassType) {
+                if (baseClasses == null) {
+                    baseClasses = getBaseClasses(n);
+                }
 
-	private CharArraySet getBaseClasses(IASTName name) {
-		CharArraySet result= new CharArraySet(2);
-		for (IASTNode parent = name.getParent(); parent != null; parent = parent.getParent()) {
-			if (parent instanceof ICPPASTFunctionDefinition) {
-				ICPPASTFunctionDefinition fdef= (ICPPASTFunctionDefinition) parent;
-				IBinding method= fdef.getDeclarator().getName().resolveBinding();
-				if (method instanceof ICPPMethod) {
-					ICPPClassType cls= ((ICPPMethod) method).getClassOwner();
-					for (ICPPBase base : ClassTypeHelper.getBases(cls, fdef)) {
-						IType baseType= base.getBaseClassType();
-						if (baseType instanceof IBinding)
-							result.put(((IBinding) baseType).getNameCharArray());
-					}
-					return result;
-				}
-			}
-		}
-		return result;
-	}
+                if (!baseClasses.containsKey(b.getNameCharArray())) {
+                    bindings[i] = null;
+                }
+            }
+            else {
+                bindings[i] = null;
+            }
+        }
+        return ArrayUtil.removeNulls(IBinding.class, bindings);
+    }
 
-	@Override
-	public boolean isPackExpansion() {
-		return fIsPackExpansion;
-	}
+    private CharArraySet getBaseClasses(IASTName name)
+    {
+        CharArraySet result = new CharArraySet(2);
+        for (IASTNode parent = name.getParent(); parent != null; parent = parent.getParent()) {
+            if (parent instanceof ICPPASTFunctionDefinition) {
+                ICPPASTFunctionDefinition fdef = (ICPPASTFunctionDefinition) parent;
+                IBinding method = fdef.getDeclarator().getName().resolveBinding();
+                if (method instanceof ICPPMethod) {
+                    ICPPClassType cls = ((ICPPMethod) method).getClassOwner();
+                    for (ICPPBase base : ClassTypeHelper.getBases(cls, fdef)) {
+                        IType baseType = base.getBaseClassType();
+                        if (baseType instanceof IBinding) {
+                            result.put(((IBinding) baseType).getNameCharArray());
+                        }
+                    }
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
 
-	@Override
-	public void setIsPackExpansion(boolean val) {
-		assertNotFrozen();
-		fIsPackExpansion= val;
-	}
+    @Override
+    public boolean isPackExpansion()
+    {
+        return fIsPackExpansion;
+    }
 
-	@Override
-	@Deprecated
-    public IASTExpression getInitializerValue() {
+    @Override
+    public void setIsPackExpansion(boolean val)
+    {
+        assertNotFrozen();
+        fIsPackExpansion = val;
+    }
+
+    @Override
+    @Deprecated
+    public IASTExpression getInitializerValue()
+    {
         if (initializer == null || initializer instanceof IASTExpression) {
-        	return (IASTExpression) initializer;
+            return (IASTExpression) initializer;
         }
         if (initializer instanceof ICPPASTConstructorInitializer) {
-       		IASTExpression expr= ((ICPPASTConstructorInitializer) initializer).getExpression();
-       		if (expr != null) {
-       			expr= expr.copy();
-       			expr.setParent(this);
-       			expr.setPropertyInParent(INITIALIZER);
-       		}
-       		return expr;
+            IASTExpression expr = ((ICPPASTConstructorInitializer) initializer).getExpression();
+            if (expr != null) {
+                expr = expr.copy();
+                expr.setParent(this);
+                expr.setPropertyInParent(INITIALIZER);
+            }
+            return expr;
         }
         return null;
     }
 
-	@Override
-	@Deprecated
-    public void setInitializerValue(IASTExpression expression) {
+    @Override
+    @Deprecated
+    public void setInitializerValue(IASTExpression expression)
+    {
         assertNotFrozen();
         //CDT_70_FIX_FROM_50-#6
-        CPPASTConstructorInitializer ctorInit= new CPPASTConstructorInitializer();
+        CPPASTConstructorInitializer ctorInit = new CPPASTConstructorInitializer();
         if (expression == null) {
-        	//add an empty initializer, fix test testBug89539 for xlc parser
-        	setInitializer(ctorInit);
-        } else if (expression instanceof IASTInitializer) {
-        	setInitializer((IASTInitializer) expression);
-        } else {
-        	
-        	ctorInit.setExpression(expression);
-        	ctorInit.setOffsetAndLength((ASTNode) expression);
-        	setInitializer(ctorInit);
+            //add an empty initializer, fix test testBug89539 for xlc parser
+            setInitializer(ctorInit);
+        }
+        else if (expression instanceof IASTInitializer) {
+            setInitializer((IASTInitializer) expression);
+        }
+        else {
+
+            ctorInit.setExpression(expression);
+            ctorInit.setOffsetAndLength((ASTNode) expression);
+            setInitializer(ctorInit);
         }
     }
 
-	/**
-	 * @see IASTImplicitNameOwner#getImplicitNames()
-	 */
-	@Override
-	public IASTImplicitName[] getImplicitNames() {
-		if (implicitNames == null) {
-			IBinding ctor = CPPSemantics.findImplicitlyCalledConstructor(this);
-			if (ctor == null) {
-				implicitNames = IASTImplicitName.EMPTY_NAME_ARRAY;
-			} else {
-				CPPASTImplicitName ctorName = new CPPASTImplicitName(ctor.getNameCharArray(), this);
-				ctorName.setBinding(ctor);
-				IASTName id = name.getLastName();
-				ctorName.setOffsetAndLength((ASTNode) id);
-				implicitNames = new IASTImplicitName[] { ctorName };
-			}
-    	}
+    /**
+     * @see IASTImplicitNameOwner#getImplicitNames()
+     */
+    @Override
+    public IASTImplicitName[] getImplicitNames()
+    {
+        if (implicitNames == null) {
+            IBinding ctor = CPPSemantics.findImplicitlyCalledConstructor(this);
+            if (ctor == null) {
+                implicitNames = IASTImplicitName.EMPTY_NAME_ARRAY;
+            }
+            else {
+                CPPASTImplicitName ctorName = new CPPASTImplicitName(ctor.getNameCharArray(), this);
+                ctorName.setBinding(ctor);
+                IASTName id = name.getLastName();
+                ctorName.setOffsetAndLength((ASTNode) id);
+                implicitNames = new IASTImplicitName[] {ctorName};
+            }
+        }
 
-    	return implicitNames;  
-	}
-	
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix) {
-		return findBindings(n, isPrefix, null);
-	}
+        return implicitNames;
+    }
+
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix)
+    {
+        return findBindings(n, isPrefix, null);
+    }
 }

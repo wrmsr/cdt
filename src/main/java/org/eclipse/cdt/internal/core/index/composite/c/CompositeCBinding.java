@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Andrew Ferguson (Symbian) - Initial implementation
  *******************************************************************************/
@@ -14,8 +14,11 @@ import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
 import org.eclipse.cdt.internal.core.index.composite.CompositeIndexBinding;
 import org.eclipse.cdt.internal.core.index.composite.ICompositesFactory;
 
-abstract class CompositeCBinding extends CompositeIndexBinding {
-	public CompositeCBinding(ICompositesFactory cf, IIndexFragmentBinding rbinding) {
-		super(cf, rbinding);
-	}
+abstract class CompositeCBinding
+        extends CompositeIndexBinding
+{
+    public CompositeCBinding(ICompositesFactory cf, IIndexFragmentBinding rbinding)
+    {
+        super(cf, rbinding);
+    }
 }

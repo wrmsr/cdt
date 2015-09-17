@@ -14,10 +14,11 @@ package org.eclipse.cdt.core.model;
  *
  * @since 5.7
  */
-public interface ITranslationUnitHolder {
-	/**
-	 * Returns the translation unit that is provided by the receiver or null if there is no
-	 * such translation unit.
-	 */
-	public ITranslationUnit getTranslationUnit();
+public interface ITranslationUnitHolder
+{
+    /**
+     * Returns the translation unit that is provided by the receiver or null if there is no
+     * such translation unit.
+     */
+    public ITranslationUnit getTranslationUnit();
 }

@@ -4,36 +4,41 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Bala Torati (Symbian) - Initial API and implementation
+ * Bala Torati (Symbian) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.templateengine.process;
+
+import org.eclipse.osgi.util.NLS;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.osgi.util.NLS;
+class Messages
+        extends NLS
+{
+    private static final ResourceBundle RESOURCE_BUNDLE =
+            ResourceBundle.getBundle(Messages.class.getName());
 
-class Messages extends NLS {
-	private static final ResourceBundle RESOURCE_BUNDLE =
-			ResourceBundle.getBundle(Messages.class.getName());
+    public static String ProcessRunner_missingArg;
 
-	public static String ProcessRunner_missingArg;
+    static {
+        // Initialize resource bundle.
+        NLS.initializeMessages(Messages.class.getName(), Messages.class);
+    }
 
-	static {
-		// Initialize resource bundle.
-		NLS.initializeMessages(Messages.class.getName(), Messages.class);
-	}
+    private Messages()
+    {
+    }
 
-	private Messages() {
-	}
-
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
+    public static String getString(String key)
+    {
+        try {
+            return RESOURCE_BUNDLE.getString(key);
+        }
+        catch (MissingResourceException e) {
+            return '!' + key + '!';
+        }
+    }
 }

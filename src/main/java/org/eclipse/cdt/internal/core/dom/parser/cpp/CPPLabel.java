@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - Initial API and implementation 
- *     Markus Schorn (Wind River Systems)
+ * Andrew Niefer (IBM Corporation) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -22,92 +22,113 @@ import org.eclipse.cdt.internal.core.dom.Linkage;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
 import org.eclipse.core.runtime.PlatformObject;
 
-public class CPPLabel extends PlatformObject implements ILabel, ICPPInternalBinding {
+public class CPPLabel
+        extends PlatformObject
+        implements ILabel, ICPPInternalBinding
+{
     private IASTName name;
 
-    public CPPLabel(IASTName name) {
+    public CPPLabel(IASTName name)
+    {
         this.name = name;
         name.setBinding(this);
     }
 
     @Override
-	public IASTNode[] getDeclarations() {
+    public IASTNode[] getDeclarations()
+    {
         return null;
     }
 
     @Override
-	public IASTNode getDefinition() {
+    public IASTNode getDefinition()
+    {
         return name;
     }
 
     @Override
-	public IASTLabelStatement getLabelStatement() {
-    	IASTNode statement = name.getParent();
-        if (statement instanceof IASTLabelStatement)
+    public IASTLabelStatement getLabelStatement()
+    {
+        IASTNode statement = name.getParent();
+        if (statement instanceof IASTLabelStatement) {
             return (IASTLabelStatement) statement;
-        
+        }
+
         // TODO find label statement
         return null;
     }
 
     @Override
-	public String getName() {
+    public String getName()
+    {
         return new String(getNameCharArray());
     }
 
     @Override
-	public char[] getNameCharArray() {
+    public char[] getNameCharArray()
+    {
         return name.getSimpleID();
     }
 
     @Override
-	public IScope getScope() {
+    public IScope getScope()
+    {
         return CPPVisitor.getContainingScope(name);
     }
 
-    public IASTNode getPhysicalNode() {
+    public IASTNode getPhysicalNode()
+    {
         return name;
     }
 
-    public void setLabelStatement(IASTName labelStatement) {
+    public void setLabelStatement(IASTName labelStatement)
+    {
         name = labelStatement;
     }
 
     @Override
-	public String[] getQualifiedName() {
-        return new String[] { getName() };
+    public String[] getQualifiedName()
+    {
+        return new String[] {getName()};
     }
 
     @Override
-	public char[][] getQualifiedNameCharArray() {
-        return new char[][] { getNameCharArray() };
+    public char[][] getQualifiedNameCharArray()
+    {
+        return new char[][] {getNameCharArray()};
     }
-    
+
     @Override
-	public boolean isGloballyQualified() {
+    public boolean isGloballyQualified()
+    {
         return false;
     }
 
-	@Override
-	public void addDefinition(IASTNode node) {
-	}
+    @Override
+    public void addDefinition(IASTNode node)
+    {
+    }
 
-	@Override
-	public void addDeclaration(IASTNode node) {
-	}
+    @Override
+    public void addDeclaration(IASTNode node)
+    {
+    }
 
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
+    @Override
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
 
-	@Override
-	public IBinding getOwner() {
-		return CPPVisitor.findEnclosingFunction(name);
-	}
+    @Override
+    public IBinding getOwner()
+    {
+        return CPPVisitor.findEnclosingFunction(name);
+    }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Gvozdev - initial API and implementation
+ * Andrew Gvozdev - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.core.language.settings.providers;
@@ -20,19 +20,22 @@ import org.eclipse.core.runtime.CoreException;
  *
  * @since 5.4
  */
-public interface ICBuildOutputParser extends IConsoleParser {
-	/**
-	 * Initialize console parser.
-	 *
-	 * @param cfgDescription - configuration description for the parser.
-	 * @param cwdTracker - tracker to keep track of current working directory.
-	 * @throws CoreException if anything goes wrong.
-	 */
-	public void startup(ICConfigurationDescription cfgDescription, IWorkingDirectoryTracker cwdTracker) throws CoreException;
+public interface ICBuildOutputParser
+        extends IConsoleParser
+{
+    /**
+     * Initialize console parser.
+     *
+     * @param cfgDescription - configuration description for the parser.
+     * @param cwdTracker - tracker to keep track of current working directory.
+     * @throws CoreException if anything goes wrong.
+     */
+    public void startup(ICConfigurationDescription cfgDescription, IWorkingDirectoryTracker cwdTracker)
+            throws CoreException;
 
-	@Override
-	public boolean processLine(String line);
-	@Override
-	public void shutdown();
+    @Override
+    public boolean processLine(String line);
 
+    @Override
+    public void shutdown();
 }

@@ -5,9 +5,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Thomas Corbat (IFS) - Initial API and implementation
+ * Thomas Corbat (IFS) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser;
 
@@ -17,14 +17,19 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.ASTAttributeSpecifier;
 /**
  * Represents a GCC attribute specifier, containing attributes.
  */
-public class GCCASTAttributeSpecifier extends ASTAttributeSpecifier implements IGCCASTAttributeSpecifier {
-	@Override
-	public GCCASTAttributeSpecifier copy(CopyStyle style) {
-		return copy(new GCCASTAttributeSpecifier(), style);
-	}
+public class GCCASTAttributeSpecifier
+        extends ASTAttributeSpecifier
+        implements IGCCASTAttributeSpecifier
+{
+    @Override
+    public GCCASTAttributeSpecifier copy(CopyStyle style)
+    {
+        return copy(new GCCASTAttributeSpecifier(), style);
+    }
 
-	@Override
-	public GCCASTAttributeSpecifier copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public GCCASTAttributeSpecifier copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 }

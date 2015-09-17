@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.lrparser.c99.bindings;
 
@@ -14,143 +14,169 @@ import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.c.ICBasicType;
 
-public class C99BasicType implements ICBasicType {
+public class C99BasicType
+        implements ICBasicType
+{
 
-	/* Type flags given in IBasicType */
-	private int type; 
-	
-	private boolean isLong;
-	private boolean isShort;
-	private boolean isSigned;
-	private boolean isUnsigned;
-	private boolean isComplex;
-	private boolean isImaginary;
-	private boolean isLongLong;
+    /* Type flags given in IBasicType */
+    private int type;
 
+    private boolean isLong;
+    private boolean isShort;
+    private boolean isSigned;
+    private boolean isUnsigned;
+    private boolean isComplex;
+    private boolean isImaginary;
+    private boolean isLongLong;
 
-	public C99BasicType() {
-	}
-	
-	public C99BasicType(int type) {
-		this.type = type;
-	}
-	
-	@Override
-	public int getType() {
-		return type;
-	}
+    public C99BasicType()
+    {
+    }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    public C99BasicType(int type)
+    {
+        this.type = type;
+    }
 
-	@Override
-	public boolean isLong() {
-		return isLong;
-	}
+    @Override
+    public int getType()
+    {
+        return type;
+    }
 
-	public void setLong(boolean isLong) {
-		this.isLong = isLong;
-	}
+    public void setType(int type)
+    {
+        this.type = type;
+    }
 
-	@Override
-	public boolean isShort() {
-		return isShort;
-	}
+    @Override
+    public boolean isLong()
+    {
+        return isLong;
+    }
 
-	public void setShort(boolean isShort) {
-		this.isShort = isShort;
-	}
+    public void setLong(boolean isLong)
+    {
+        this.isLong = isLong;
+    }
 
-	@Override
-	public boolean isSigned() {
-		return isSigned;
-	}
+    @Override
+    public boolean isShort()
+    {
+        return isShort;
+    }
 
-	public void setSigned(boolean isSigned) {
-		this.isSigned = isSigned;
-	}
+    public void setShort(boolean isShort)
+    {
+        this.isShort = isShort;
+    }
 
-	@Override
-	public boolean isUnsigned() {
-		return isUnsigned;
-	}
+    @Override
+    public boolean isSigned()
+    {
+        return isSigned;
+    }
 
-	public void setUnsigned(boolean isUnsigned) {
-		this.isUnsigned = isUnsigned;
-	}
+    public void setSigned(boolean isSigned)
+    {
+        this.isSigned = isSigned;
+    }
 
-	@Override
-	public boolean isComplex() {
-		return isComplex;
-	}
+    @Override
+    public boolean isUnsigned()
+    {
+        return isUnsigned;
+    }
 
-	public void setComplex(boolean isComplex) {
-		this.isComplex = isComplex;
-	}
+    public void setUnsigned(boolean isUnsigned)
+    {
+        this.isUnsigned = isUnsigned;
+    }
 
-	@Override
-	public boolean isImaginary() {
-		return isImaginary;
-	}
+    @Override
+    public boolean isComplex()
+    {
+        return isComplex;
+    }
 
-	public void setImaginary(boolean isImaginary) {
-		this.isImaginary = isImaginary;
-	}
+    public void setComplex(boolean isComplex)
+    {
+        this.isComplex = isComplex;
+    }
 
-	@Override
-	public boolean isLongLong() {
-		return isLongLong;
-	}
+    @Override
+    public boolean isImaginary()
+    {
+        return isImaginary;
+    }
 
-	public void setLongLong(boolean isLongLong) {
-		this.isLongLong = isLongLong;
-	}
+    public void setImaginary(boolean isImaginary)
+    {
+        this.isImaginary = isImaginary;
+    }
 
-	@Override
-	@Deprecated
-	public IASTExpression getValue() {
-		return null;
-	}
-	
-	@Override
-	public boolean isSameType(IType t) {
-		if(t == this)
-			return true;
-		if(!(t instanceof C99BasicType))
-			return false;
-		
-		C99BasicType bt = (C99BasicType) t;
-		return bt.type == this.type &&
-		       bt.isLong == this.isLong &&
-		       bt.isShort == this.isShort &&
-		       bt.isSigned == this.isSigned &&
-		       bt.isUnsigned == this.isUnsigned &&
-		       bt.isComplex == this.isComplex &&
-		       bt.isImaginary == this.isImaginary &&
-		       bt.isLongLong == this.isLongLong;
-	}
-	
-	@Override
-	public C99BasicType clone() {
-		try {
-			return (C99BasicType) super.clone();
-		} catch (CloneNotSupportedException e) {
-			assert false;
-			return null;
-		}
-	}
+    @Override
+    public boolean isLongLong()
+    {
+        return isLongLong;
+    }
 
-	@Override
-	public Kind getKind() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setLongLong(boolean isLongLong)
+    {
+        this.isLongLong = isLongLong;
+    }
 
-	@Override
-	public int getModifiers() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    @Deprecated
+    public IASTExpression getValue()
+    {
+        return null;
+    }
 
+    @Override
+    public boolean isSameType(IType t)
+    {
+        if (t == this) {
+            return true;
+        }
+        if (!(t instanceof C99BasicType)) {
+            return false;
+        }
+
+        C99BasicType bt = (C99BasicType) t;
+        return bt.type == this.type &&
+                bt.isLong == this.isLong &&
+                bt.isShort == this.isShort &&
+                bt.isSigned == this.isSigned &&
+                bt.isUnsigned == this.isUnsigned &&
+                bt.isComplex == this.isComplex &&
+                bt.isImaginary == this.isImaginary &&
+                bt.isLongLong == this.isLongLong;
+    }
+
+    @Override
+    public C99BasicType clone()
+    {
+        try {
+            return (C99BasicType) super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            assert false;
+            return null;
+        }
+    }
+
+    @Override
+    public Kind getKind()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getModifiers()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

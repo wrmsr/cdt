@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -18,69 +18,82 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
  *
  * @since 3.0
  */
-public class DefaultEnvironmentContextInfo implements IEnvironmentContextInfo{
-	private Object fContextObject;
-	private ICoreEnvironmentVariableSupplier fContextSuppliers[];
+public class DefaultEnvironmentContextInfo
+        implements IEnvironmentContextInfo
+{
+    private Object fContextObject;
+    private ICoreEnvironmentVariableSupplier fContextSuppliers[];
 
-	/**
-	 * This constructor is used to create the default context info given a context object
-	 *
-	 * @param context
-	 */
-	public DefaultEnvironmentContextInfo(Object context){
-		fContextObject = context;
-	}
+    /**
+     * This constructor is used to create the default context info given a context object
+     *
+     * @param context
+     */
+    public DefaultEnvironmentContextInfo(Object context)
+    {
+        fContextObject = context;
+    }
 
-	protected DefaultEnvironmentContextInfo(Object context, ICoreEnvironmentVariableSupplier suppliers[]){
-		fContextSuppliers = suppliers;
-		fContextObject = context;
-	}
+    protected DefaultEnvironmentContextInfo(Object context, ICoreEnvironmentVariableSupplier suppliers[])
+    {
+        fContextSuppliers = suppliers;
+        fContextObject = context;
+    }
 
-	/*
-	 * answers the list of suppliers that should be used for the given context
-	 */
-	protected ICoreEnvironmentVariableSupplier[] getSuppliers(Object context){
-		ICoreEnvironmentVariableSupplier suppliers[];
-		if(context instanceof ICConfigurationDescription)
-			suppliers = new ICoreEnvironmentVariableSupplier[]{EnvironmentVariableManager.fUserSupplier,EnvironmentVariableManager.fExternalSupplier};
-		else
-			suppliers = new ICoreEnvironmentVariableSupplier[]{EnvironmentVariableManager.fUserSupplier, EnvironmentVariableManager.fEclipseSupplier};
-		return suppliers;
-	}
+    /*
+     * answers the list of suppliers that should be used for the given context
+     */
+    protected ICoreEnvironmentVariableSupplier[] getSuppliers(Object context)
+    {
+        ICoreEnvironmentVariableSupplier suppliers[];
+        if (context instanceof ICConfigurationDescription) {
+            suppliers = new ICoreEnvironmentVariableSupplier[] {EnvironmentVariableManager.fUserSupplier, EnvironmentVariableManager.fExternalSupplier};
+        }
+        else {
+            suppliers = new ICoreEnvironmentVariableSupplier[] {EnvironmentVariableManager.fUserSupplier, EnvironmentVariableManager.fEclipseSupplier};
+        }
+        return suppliers;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getNext()
-	 */
-	@Override
-	public IEnvironmentContextInfo getNext(){
-		DefaultEnvironmentContextInfo next = null;
-		if(fContextObject instanceof ICConfigurationDescription) {
-			next = new DefaultEnvironmentContextInfo(null);
-			if (next.getSuppliers() == null)
-				next = null;
-		}
-		return next;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getNext()
+     */
+    @Override
+    public IEnvironmentContextInfo getNext()
+    {
+        DefaultEnvironmentContextInfo next = null;
+        if (fContextObject instanceof ICConfigurationDescription) {
+            next = new DefaultEnvironmentContextInfo(null);
+            if (next.getSuppliers() == null) {
+                next = null;
+            }
+        }
+        return next;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getSuppliers()
-	 */
-	@Override
-	public ICoreEnvironmentVariableSupplier[] getSuppliers(){
-		if(fContextSuppliers == null)
-			fContextSuppliers = getSuppliers(fContextObject);
-		return fContextSuppliers;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getSuppliers()
+     */
+    @Override
+    public ICoreEnvironmentVariableSupplier[] getSuppliers()
+    {
+        if (fContextSuppliers == null) {
+            fContextSuppliers = getSuppliers(fContextObject);
+        }
+        return fContextSuppliers;
+    }
 
-	protected void setSuppliers(ICoreEnvironmentVariableSupplier suppliers[]){
-		fContextSuppliers = suppliers;
-	}
+    protected void setSuppliers(ICoreEnvironmentVariableSupplier suppliers[])
+    {
+        fContextSuppliers = suppliers;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getContext()
-	 */
-	@Override
-	public Object getContext(){
-		return fContextObject;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.managedbuilder.internal.envvar.IContextInfo#getContext()
+     */
+    @Override
+    public Object getContext()
+    {
+        return fContextObject;
+    }
 }

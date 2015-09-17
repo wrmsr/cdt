@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -21,23 +21,25 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
-public class CExtensionUtil {
-	public static IConfigurationElement getFirstConfigurationElement(ICConfigExtensionReference ref, String name, boolean caseSensitive) throws CoreException {
-		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(ref.getExtensionPoint());
-		IExtension extension = extensionPoint.getExtension(ref.getID());
-		if (extension == null) {
-			throw new CoreException(new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, -1,
-					CCorePlugin.getResourceString("CDescriptor.exception.providerNotFound"), null)); //$NON-NLS-1$
-		}
-		IConfigurationElement element[] = extension.getConfigurationElements();
-		for (int i = 0; i < element.length; i++) {
-			if (caseSensitive ? element[i].getName().equals(name) :
-				element[i].getName().equalsIgnoreCase(name)) {
-				return element[i];
-			}
-		}
-		return null;
-	}
-
+public class CExtensionUtil
+{
+    public static IConfigurationElement getFirstConfigurationElement(ICConfigExtensionReference ref, String name, boolean caseSensitive)
+            throws CoreException
+    {
+        IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(ref.getExtensionPoint());
+        IExtension extension = extensionPoint.getExtension(ref.getID());
+        if (extension == null) {
+            throw new CoreException(new Status(IStatus.ERROR, CCorePlugin.PLUGIN_ID, -1,
+                    CCorePlugin.getResourceString("CDescriptor.exception.providerNotFound"), null)); //$NON-NLS-1$
+        }
+        IConfigurationElement element[] = extension.getConfigurationElements();
+        for (int i = 0; i < element.length; i++) {
+            if (caseSensitive ? element[i].getName().equals(name) :
+                    element[i].getName().equalsIgnoreCase(name)) {
+                return element[i];
+            }
+        }
+        return null;
+    }
 }

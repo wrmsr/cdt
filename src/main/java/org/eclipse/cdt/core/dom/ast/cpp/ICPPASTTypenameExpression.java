@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    John Camelon (IBM) - Initial API and implementation
- *    Markus Schorn (Wind River Systems)
+ * John Camelon (IBM) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
@@ -22,70 +22,71 @@ import org.eclipse.cdt.core.dom.ast.IASTNameOwner;
  * @deprecated Unified with {@link ICPPASTSimpleTypeConstructorExpression}.
  */
 @Deprecated
-public interface ICPPASTTypenameExpression extends ICPPASTSimpleTypeConstructorExpression, IASTNameOwner {
+public interface ICPPASTTypenameExpression
+        extends ICPPASTSimpleTypeConstructorExpression, IASTNameOwner
+{
 
-	/**
-	 * Was template token consumed?
-	 * 
-	 * @param templateTokenConsumed
-	 *            boolean
-	 */
-	public void setIsTemplate(boolean templateTokenConsumed);
+    /**
+     * Was template token consumed?
+     *
+     * @param templateTokenConsumed
+     *            boolean
+     */
+    public void setIsTemplate(boolean templateTokenConsumed);
 
-	/**
-	 * Was template token consumed?
-	 * 
-	 * @return boolean
-	 */
-	public boolean isTemplate();
+    /**
+     * Was template token consumed?
+     *
+     * @return boolean
+     */
+    public boolean isTemplate();
 
-	/**
-	 * <code>TYPENAME</code> is the name of the type.
-	 */
-	public static final ASTNodeProperty TYPENAME = new ASTNodeProperty(
-			"ICPPASTTypenameExpression.TYPENAME - The name of the type"); //$NON-NLS-1$
+    /**
+     * <code>TYPENAME</code> is the name of the type.
+     */
+    public static final ASTNodeProperty TYPENAME = new ASTNodeProperty(
+            "ICPPASTTypenameExpression.TYPENAME - The name of the type"); //$NON-NLS-1$
 
-	/**
-	 * Set the name.
-	 * 
-	 * @param name
-	 *            <code>IASTName</code>
-	 */
-	public void setName(IASTName name);
+    /**
+     * Set the name.
+     *
+     * @param name
+     *            <code>IASTName</code>
+     */
+    public void setName(IASTName name);
 
-	/**
-	 * Get the name.
-	 * 
-	 * @return <code>IASTName</code>
-	 */
-	public IASTName getName();
+    /**
+     * Get the name.
+     *
+     * @return <code>IASTName</code>
+     */
+    public IASTName getName();
 
-	/**
-	 * <code>INITIAL_VALUE</code> is an expression.
-	 */
-	public static final ASTNodeProperty INITIAL_VALUE = INITIALIZER;
+    /**
+     * <code>INITIAL_VALUE</code> is an expression.
+     */
+    public static final ASTNodeProperty INITIAL_VALUE = INITIALIZER;
 
-	/**
-	 * Set initial value.
-	 * 
-	 * @param expressionList
-	 *            <code>IASTExpression</code>
-	 */
-	@Override
-	public void setInitialValue(IASTExpression expressionList);
+    /**
+     * Set initial value.
+     *
+     * @param expressionList
+     *            <code>IASTExpression</code>
+     */
+    @Override
+    public void setInitialValue(IASTExpression expressionList);
 
-	/**
-	 * Get initial value.
-	 * 
-	 * @return <code>IASTExpression</code>
-	 */
-	@Override
-	public IASTExpression getInitialValue();
-	
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public ICPPASTTypenameExpression copy();
+    /**
+     * Get initial value.
+     *
+     * @return <code>IASTExpression</code>
+     */
+    @Override
+    public IASTExpression getInitialValue();
 
+    /**
+     * @since 5.1
+     */
+    @Override
+    public ICPPASTTypenameExpression copy();
 }

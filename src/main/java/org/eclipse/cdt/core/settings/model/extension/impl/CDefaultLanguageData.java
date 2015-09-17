@@ -4,13 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Intel Corporation - Initial API and implementation
+ * Intel Corporation - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.settings.model.extension.impl;
-
-import java.util.Arrays;
 
 import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
 import org.eclipse.cdt.core.settings.model.extension.CLanguageData;
@@ -19,27 +17,30 @@ import org.eclipse.cdt.core.settings.model.util.EntryStore;
 import org.eclipse.cdt.core.settings.model.util.KindBasedStore;
 import org.eclipse.cdt.internal.core.settings.model.CLanguageSettingCache;
 
-public class CDefaultLanguageData extends CLanguageData {
-	@Deprecated /** not used anymore */
-	protected final static int OP_COPY = 1;
-	@Deprecated /** not used anymore */
-	protected final static int OP_SET = 2;
+import java.util.Arrays;
 
-	protected String fName;
-	protected String fId;
-	protected String fLanguageId;
-	protected int fSupportedKinds;
-	protected String fSourceContentTypeIds[];
-	protected String fSourceExts[];
-//	protected IContentType fHeaderContentType;
+public class CDefaultLanguageData
+        extends CLanguageData
+{
+    @Deprecated /** not used anymore */
+    protected final static int OP_COPY = 1;
+    @Deprecated /** not used anymore */
+    protected final static int OP_SET = 2;
+
+    protected String fName;
+    protected String fId;
+    protected String fLanguageId;
+    protected int fSupportedKinds;
+    protected String fSourceContentTypeIds[];
+    protected String fSourceExts[];
+    //	protected IContentType fHeaderContentType;
 //	protected String fHeaderExts[];
-	protected EntryStore fStore;
-	public final static String[] EMPTY_STRING_ARRAY = new String[0];
-//	protected CConfigurationData fCfg;
+    protected EntryStore fStore;
+    public final static String[] EMPTY_STRING_ARRAY = new String[0];
+    //	protected CConfigurationData fCfg;
 //	protected CResourceData fRcData;
 //	private CDataFacroty fFactory;
-	protected boolean fIsModified;
-
+    protected boolean fIsModified;
 
 //	public CDefaultLanguageData(CConfigurationData cfg, CResourceData rcData, CDataFacroty factory) {
 //		fCfg = cfg;
@@ -49,98 +50,112 @@ public class CDefaultLanguageData extends CLanguageData {
 //		fFactory = factory;
 //	}
 
-	protected CDefaultLanguageData(){
-		fStore = createStore();
-	}
+    protected CDefaultLanguageData()
+    {
+        fStore = createStore();
+    }
 
-	public CDefaultLanguageData(String id,
-			String languageId,
-			String ids[],
-			boolean isContentTypes) {
-		fId = id;
-		fLanguageId = languageId;
+    public CDefaultLanguageData(String id,
+            String languageId,
+            String ids[],
+            boolean isContentTypes)
+    {
+        fId = id;
+        fLanguageId = languageId;
 
-		if(isContentTypes)
-			fSourceContentTypeIds = ids.clone();
-		else
-			fSourceExts = ids.clone();
+        if (isContentTypes) {
+            fSourceContentTypeIds = ids.clone();
+        }
+        else {
+            fSourceExts = ids.clone();
+        }
 
-		fStore = createStore();
-	}
+        fStore = createStore();
+    }
 
+    public CDefaultLanguageData(String id, CLanguageData base)
+    {
+        fId = id;
+        copySettingsFrom(base);
+    }
 
-	public CDefaultLanguageData(String id, CLanguageData base) {
-		fId = id;
-		copySettingsFrom(base);
-	}
-
-	protected void copySettingsFrom(CLanguageData data){
-		fName = data.getName();
-		fLanguageId = data.getLanguageId();
-		fSupportedKinds = data.getSupportedEntryKinds();
-		fSourceContentTypeIds = data.getSourceContentTypeIds();
-		fSourceExts = data.getSourceExtensions();
+    protected void copySettingsFrom(CLanguageData data)
+    {
+        fName = data.getName();
+        fLanguageId = data.getLanguageId();
+        fSupportedKinds = data.getSupportedEntryKinds();
+        fSourceContentTypeIds = data.getSourceContentTypeIds();
+        fSourceExts = data.getSourceExtensions();
 //		fHeaderContentType = data.getHeaderContentType();
 //		fHeaderExts = data.getHeaderExtensions();
-		fStore = createStore(data);
-	}
+        fStore = createStore(data);
+    }
 
-	protected EntryStore createStore(CLanguageData data){
-		EntryStore store = createStore();
-		int kinds[] = KindBasedStore.getLanguageEntryKinds();
-		for (int kind : kinds) {
-			ICLanguageSettingEntry entries[] = getEntriesToCopy(kind, data);
-			entries = processStoredEntries(entries, OP_COPY);
-			store.storeEntries(kind, entries);
+    protected EntryStore createStore(CLanguageData data)
+    {
+        EntryStore store = createStore();
+        int kinds[] = KindBasedStore.getLanguageEntryKinds();
+        for (int kind : kinds) {
+            ICLanguageSettingEntry entries[] = getEntriesToCopy(kind, data);
+            entries = processStoredEntries(entries, OP_COPY);
+            store.storeEntries(kind, entries);
+        }
+        return store;
+    }
 
-		}
-		return store;
-	}
+    protected ICLanguageSettingEntry[] getEntriesToCopy(int kind, CLanguageData lData)
+    {
+        return lData.getEntries(kind);
+    }
 
-	protected ICLanguageSettingEntry[] getEntriesToCopy(int kind, CLanguageData lData){
-		return lData.getEntries(kind);
-	}
+    /**
+     * This method is overridden in {@link CLanguageSettingCache} to ensure the entries are cached with {@link CDataUtil} pool.
+     */
+    protected ICLanguageSettingEntry[] processStoredEntries(ICLanguageSettingEntry[] entries, int op)
+    {
+        return entries;
+    }
 
-	/**
-	 * This method is overridden in {@link CLanguageSettingCache} to ensure the entries are cached with {@link CDataUtil} pool.
-	 */
-	protected ICLanguageSettingEntry[] processStoredEntries(ICLanguageSettingEntry[] entries, int op){
-		return entries;
-	}
+    protected EntryStore createStore()
+    {
+        return new EntryStore(true);
+    }
 
-	protected EntryStore createStore(){
-		return new EntryStore(true);
-	}
+    @Override
+    public String getName()
+    {
+        return fName;
+    }
 
-	@Override
-	public String getName() {
-		return fName;
-	}
+    @Override
+    public String getId()
+    {
+        return fId;
+    }
 
-	@Override
-	public String getId() {
-		return fId;
-	}
+    @Override
+    public boolean isValid()
+    {
+        return getId() != null;
+    }
 
-	@Override
-	public boolean isValid() {
-		return getId() != null;
-	}
+    @Override
+    public String getLanguageId()
+    {
+        return fLanguageId;
+    }
 
-	@Override
-	public String getLanguageId() {
-		return fLanguageId;
-	}
+    @Override
+    public void setLanguageId(String id)
+    {
+        if (CDataUtil.objectsEqual(id, fLanguageId)) {
+            return;
+        }
 
-	@Override
-	public void setLanguageId(String id) {
-		if(CDataUtil.objectsEqual(id, fLanguageId))
-			return;
+        fLanguageId = id;
 
-		fLanguageId = id;
-
-		setModified(true);
-	}
+        setModified(true);
+    }
 
 //	public IContentType getHeaderContentType() {
 //		return fHeaderContentType;
@@ -150,7 +165,7 @@ public class CDefaultLanguageData extends CLanguageData {
 //		return fHeaderExts;
 //	}
 /*
-	public ICLanguageSettingEntry[] getSettingEntries(int kind) {
+    public ICLanguageSettingEntry[] getSettingEntries(int kind) {
 		return fStore.getEntries(kind);
 		List list = new ArrayList();
 
@@ -181,66 +196,78 @@ public class CDefaultLanguageData extends CLanguageData {
 	}
 */
 
-	@Override
-	public String[] getSourceContentTypeIds() {
-		if(fSourceContentTypeIds != null)
-			return fSourceContentTypeIds;
-		return EMPTY_STRING_ARRAY;
-	}
+    @Override
+    public String[] getSourceContentTypeIds()
+    {
+        if (fSourceContentTypeIds != null) {
+            return fSourceContentTypeIds;
+        }
+        return EMPTY_STRING_ARRAY;
+    }
 
-	@Override
-	public String[] getSourceExtensions() {
-		if(fSourceExts != null)
-			return fSourceExts;
-		return EMPTY_STRING_ARRAY;
-	}
+    @Override
+    public String[] getSourceExtensions()
+    {
+        if (fSourceExts != null) {
+            return fSourceExts;
+        }
+        return EMPTY_STRING_ARRAY;
+    }
 
-	@Override
-	public int getSupportedEntryKinds() {
-		return fSupportedKinds;
-	}
+    @Override
+    public int getSupportedEntryKinds()
+    {
+        return fSupportedKinds;
+    }
 
-	@Override
-	public void setEntries(int kind, ICLanguageSettingEntry entries[]) {
-		entries = processStoredEntries(entries, OP_SET);
-		fStore.storeEntries(kind, entries);
+    @Override
+    public void setEntries(int kind, ICLanguageSettingEntry entries[])
+    {
+        entries = processStoredEntries(entries, OP_SET);
+        fStore.storeEntries(kind, entries);
 
-		setModified(true);
-	}
+        setModified(true);
+    }
 
-	@Override
-	public ICLanguageSettingEntry[] getEntries(int kind) {
-		return fStore.getEntries(kind);
-	}
+    @Override
+    public ICLanguageSettingEntry[] getEntries(int kind)
+    {
+        return fStore.getEntries(kind);
+    }
 
-	@Override
-	public void setSourceContentTypeIds(String[] ids) {
-		if(Arrays.equals(ids, fSourceContentTypeIds))
-			return;
+    @Override
+    public void setSourceContentTypeIds(String[] ids)
+    {
+        if (Arrays.equals(ids, fSourceContentTypeIds)) {
+            return;
+        }
 
-		fSourceContentTypeIds = ids != null ?
-				(String[])ids.clone() : null;
+        fSourceContentTypeIds = ids != null ?
+                (String[]) ids.clone() : null;
 
-		setModified(true);
-	}
+        setModified(true);
+    }
 
-	@Override
-	public void setSourceExtensions(String[] exts) {
-		if(Arrays.equals(exts, fSourceExts))
-			return;
+    @Override
+    public void setSourceExtensions(String[] exts)
+    {
+        if (Arrays.equals(exts, fSourceExts)) {
+            return;
+        }
 
-		fSourceExts = exts != null ?
-				(String[])exts.clone() : null;
+        fSourceExts = exts != null ?
+                (String[]) exts.clone() : null;
 
-		setModified(true);
-	}
+        setModified(true);
+    }
 
-	public boolean isModified(){
-		return fIsModified;
-	}
+    public boolean isModified()
+    {
+        return fIsModified;
+    }
 
-	public void setModified(boolean modified){
-		fIsModified = modified;
-	}
-
+    public void setModified(boolean modified)
+    {
+        fIsModified = modified;
+    }
 }

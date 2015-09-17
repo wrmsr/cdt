@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * IBM Rational Software - Initial API and implementation
  *******************************************************************************/
@@ -19,22 +19,23 @@ import org.eclipse.cdt.core.parser.ParseError;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ISourceCodeParser {
+public interface ISourceCodeParser
+{
 
     /**
      * Compute an abstract syntax tree (AST).
-     * 
+     *
      * The returned AST is frozen, any attempt modify any of the nodes in
      * the AST will result in an IllegalStateException.
-     * 
+     *
      * @return the AST, should not return <code>null</code>
      * @throws ParseError  if parsing has been cancelled or for other reasons
      */
     public IASTTranslationUnit parse();
 
-	/**
-	 * Cancel the parsing.
-	 */
+    /**
+     * Cancel the parsing.
+     */
     public void cancel();
 
     /**
@@ -46,9 +47,8 @@ public interface ISourceCodeParser {
     /**
      * Compute an {@link IASTCompletionNode} for code completion.
      * @return a completion node or <code>null</code> if none could be computed
-     * 
+     *
      * @throws ParseError  if parsing has been cancelled or for other reasons
      */
     public IASTCompletionNode getCompletionNode();
-    
 }

@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  * Raphael Zulliger (Indel AG) - bug 284699: fixing issues when using same
- *                               macro names with different values
+ * macro names with different values
  *******************************************************************************/
 package org.eclipse.cdt.core.settings.model.util;
 
@@ -23,16 +23,24 @@ import org.eclipse.core.runtime.IPath;
  * @deprecated Since CDT 9.0. Use corresponding {@link CDataUtil} methods instead.
  */
 @Deprecated
-public class CSettingEntryFactory {
-	public ICSettingEntry getEntry(ICSettingEntry entry) {
-		return CDataUtil.getPooledEntry(entry);
-	}
-	public ICLanguageSettingEntry getLanguageSettingEntry(ICLanguageSettingEntry entry) {
-		return CDataUtil.getPooledEntry(entry);
-	}
-	public ICSettingEntry getEntry(int kind, String name, String value, IPath[] exclusionPatterns, int flags, boolean create) {
-		return CDataUtil.createEntry(kind, name, value, exclusionPatterns, flags);
-	}
-	public void clear() {
-	}
+public class CSettingEntryFactory
+{
+    public ICSettingEntry getEntry(ICSettingEntry entry)
+    {
+        return CDataUtil.getPooledEntry(entry);
+    }
+
+    public ICLanguageSettingEntry getLanguageSettingEntry(ICLanguageSettingEntry entry)
+    {
+        return CDataUtil.getPooledEntry(entry);
+    }
+
+    public ICSettingEntry getEntry(int kind, String name, String value, IPath[] exclusionPatterns, int flags, boolean create)
+    {
+        return CDataUtil.createEntry(kind, name, value, exclusionPatterns, flags);
+    }
+
+    public void clear()
+    {
+    }
 }

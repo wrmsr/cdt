@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Gvozdev - initial API and implementation
+ * Andrew Gvozdev - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.language.settings.providers;
 
@@ -20,11 +20,12 @@ import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
  *
  * @since 5.4
  */
-public interface ILanguageSettingsChangeListener {
-	/**
-	 * Indicates that language settings have been changed.
-	 *
-	 * @param event - details of the event.
-	 */
-	public void handleEvent(ILanguageSettingsChangeEvent event);
+public interface ILanguageSettingsChangeListener
+{
+    /**
+     * Indicates that language settings have been changed.
+     *
+     * @param event - details of the event.
+     */
+    public void handleEvent(ILanguageSettingsChangeEvent event);
 }

@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom;
 
 import org.eclipse.cdt.internal.core.index.IIndexFragment;
@@ -16,11 +16,13 @@ import org.eclipse.cdt.internal.core.pdom.dom.PDOMLinkage;
 /**
  * Interface for the IndexView to bridge between PDOM and PDOMProxy
  */
-public interface IPDOM extends IIndexFragment {
+public interface IPDOM
+        extends IIndexFragment
+{
 
-	PDOMLinkage[] getLinkageImpls();
+    PDOMLinkage[] getLinkageImpls();
 
-	void addListener(PDOM.IListener listener);
+    void addListener(PDOM.IListener listener);
 
-	void removeListener(PDOM.IListener indexView);
+    void removeListener(PDOM.IListener indexView);
 }

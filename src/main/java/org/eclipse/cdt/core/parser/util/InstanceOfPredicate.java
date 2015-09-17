@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.parser.util;
 
@@ -15,15 +15,19 @@ package org.eclipse.cdt.core.parser.util;
  * or interface.
  * @since 5.7
  */
-public class InstanceOfPredicate<T> implements IUnaryPredicate<T> {
-	private Class<?> type;
+public class InstanceOfPredicate<T>
+        implements IUnaryPredicate<T>
+{
+    private Class<?> type;
 
-	public InstanceOfPredicate(Class<?> type) {
-		this.type = type;
-	}
+    public InstanceOfPredicate(Class<?> type)
+    {
+        this.type = type;
+    }
 
-	@Override
-	public boolean apply(T obj) {
-		return type.isInstance(obj);
-	}
+    @Override
+    public boolean apply(T obj)
+    {
+        return type.isInstance(obj);
+    }
 }

@@ -4,13 +4,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     IBM Corporation
- *     Anton Leherbauer (Wind River Systems)
- *     Mike Kucera - IBM
+ * QNX - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * IBM Corporation
+ * Anton Leherbauer (Wind River Systems)
+ * Mike Kucera - IBM
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.gnu.cpp;
 
@@ -36,88 +36,100 @@ import org.eclipse.cdt.internal.core.pdom.dom.cpp.PDOMCPPLinkageFactory;
 /**
  * Concrete ILanguage implementation for the DOM C++ parser.
  */
-public class GPPLanguage extends AbstractCLikeLanguage {
-	protected static final GPPScannerExtensionConfiguration CPP_GNU_SCANNER_EXTENSION= GPPScannerExtensionConfiguration.getInstance();
-	protected static final GPPParserExtensionConfiguration CPP_GNU_PARSER_EXTENSION= GPPParserExtensionConfiguration.getInstance();
-	public static final String ID = CCorePlugin.PLUGIN_ID + ".g++"; //$NON-NLS-1$
+public class GPPLanguage
+        extends AbstractCLikeLanguage
+{
+    protected static final GPPScannerExtensionConfiguration CPP_GNU_SCANNER_EXTENSION = GPPScannerExtensionConfiguration.getInstance();
+    protected static final GPPParserExtensionConfiguration CPP_GNU_PARSER_EXTENSION = GPPParserExtensionConfiguration.getInstance();
+    public static final String ID = CCorePlugin.PLUGIN_ID + ".g++"; //$NON-NLS-1$
 
-	/** @since 5.6 */
-	public static final int GNU_LATEST_VERSION_MAJOR = 4;
-	/** @since 5.6 */
-	public static final int GNU_LATEST_VERSION_MINOR = 7;
+    /** @since 5.6 */
+    public static final int GNU_LATEST_VERSION_MAJOR = 4;
+    /** @since 5.6 */
+    public static final int GNU_LATEST_VERSION_MINOR = 7;
 
-	private static final GPPLanguage DEFAULT_INSTANCE = new GPPLanguage();
-	
-	public static GPPLanguage getDefault() {
-		return DEFAULT_INSTANCE;
-	}
-	
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPDOMLinkageFactory.class) {
-			return new PDOMCPPLinkageFactory();
-		}
-		return super.getAdapter(adapter);
-	}
-	
-	@Override
-	public String getId() {
-		return ID;
-	}
-	
-	@Override
-	public int getLinkageID() {
-		return ILinkage.CPP_LINKAGE_ID;
-	}
+    private static final GPPLanguage DEFAULT_INSTANCE = new GPPLanguage();
 
-	/**
-	 * @nooverride This method is not intended to be re-implemented or extended by clients.
-	 * @deprecated Since 5.4 not called by the framework. Override
-	 *     {@link #getScannerExtensionConfiguration(IScannerInfo)} instead.
-	 */
-	@Deprecated
-	@Override
-	protected IScannerExtensionConfiguration getScannerExtensionConfiguration() {
-		return CPP_GNU_SCANNER_EXTENSION;
-	}
+    public static GPPLanguage getDefault()
+    {
+        return DEFAULT_INSTANCE;
+    }
 
-	/**
-	 * @since 5.4
-	 */
-	@Override
-	protected IScannerExtensionConfiguration getScannerExtensionConfiguration(IScannerInfo info) {
-		return GPPScannerExtensionConfiguration.getInstance(info);
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(Class adapter)
+    {
+        if (adapter == IPDOMLinkageFactory.class) {
+            return new PDOMCPPLinkageFactory();
+        }
+        return super.getAdapter(adapter);
+    }
 
-	/**
-	 * Returns the extension configuration used for creating the parser.
-	 * @since 5.1
-	 */
-	protected ICPPParserExtensionConfiguration getParserExtensionConfiguration() {
-		return CPP_GNU_PARSER_EXTENSION;
-	}
+    @Override
+    public String getId()
+    {
+        return ID;
+    }
 
-	@Override
-	protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index) {
-		return new GNUCPPSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
-	}
+    @Override
+    public int getLinkageID()
+    {
+        return ILinkage.CPP_LINKAGE_ID;
+    }
 
-	@Override
-	protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index,
-			int options, IParserSettings settings) {
-		GNUCPPSourceParser parser = new GNUCPPSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
-		if (settings != null) {
-			int maximumTrivialExpressions = settings.getMaximumTrivialExpressionsInAggregateInitializers();
-			if (maximumTrivialExpressions >= 0 && (options & OPTION_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS) != 0) {
-					parser.setMaximumTrivialExpressionsInAggregateInitializers(maximumTrivialExpressions);
-			}
-		}
-		return parser;
-	}
+    /**
+     * @nooverride This method is not intended to be re-implemented or extended by clients.
+     * @deprecated Since 5.4 not called by the framework. Override
+     *     {@link #getScannerExtensionConfiguration(IScannerInfo)} instead.
+     */
+    @Deprecated
+    @Override
+    protected IScannerExtensionConfiguration getScannerExtensionConfiguration()
+    {
+        return CPP_GNU_SCANNER_EXTENSION;
+    }
 
-	@Override
-	protected ParserLanguage getParserLanguage() {
-		return ParserLanguage.CPP;
-	}
+    /**
+     * @since 5.4
+     */
+    @Override
+    protected IScannerExtensionConfiguration getScannerExtensionConfiguration(IScannerInfo info)
+    {
+        return GPPScannerExtensionConfiguration.getInstance(info);
+    }
+
+    /**
+     * Returns the extension configuration used for creating the parser.
+     * @since 5.1
+     */
+    protected ICPPParserExtensionConfiguration getParserExtensionConfiguration()
+    {
+        return CPP_GNU_PARSER_EXTENSION;
+    }
+
+    @Override
+    protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index)
+    {
+        return new GNUCPPSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
+    }
+
+    @Override
+    protected ISourceCodeParser createParser(IScanner scanner, ParserMode parserMode, IParserLogService logService, IIndex index,
+            int options, IParserSettings settings)
+    {
+        GNUCPPSourceParser parser = new GNUCPPSourceParser(scanner, parserMode, logService, getParserExtensionConfiguration(), index);
+        if (settings != null) {
+            int maximumTrivialExpressions = settings.getMaximumTrivialExpressionsInAggregateInitializers();
+            if (maximumTrivialExpressions >= 0 && (options & OPTION_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS) != 0) {
+                parser.setMaximumTrivialExpressionsInAggregateInitializers(maximumTrivialExpressions);
+            }
+        }
+        return parser;
+    }
+
+    @Override
+    protected ParserLanguage getParserLanguage()
+    {
+        return ParserLanguage.CPP;
+    }
 }

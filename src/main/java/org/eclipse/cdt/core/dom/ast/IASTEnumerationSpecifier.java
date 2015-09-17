@@ -4,135 +4,139 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Rational Software) - Initial API and implementation
+ * John Camelon (IBM Rational Software) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
 /**
  * This interface represents enumerations in C and C++.
- * 
+ *
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IASTEnumerationSpecifier extends IASTDeclSpecifier, IASTNameOwner {
-	/**
-	 * This interface represents an enumerator member of an enum specifier.
-	 * 
-	 * @noimplement This interface is not intended to be implemented by clients.
-	 */
-	public interface IASTEnumerator extends IASTNode, IASTNameOwner {
-		/**
-		 * Empty array (constant).
-		 */
-		public static final IASTEnumerator[] EMPTY_ENUMERATOR_ARRAY = {};
+public interface IASTEnumerationSpecifier
+        extends IASTDeclSpecifier, IASTNameOwner
+{
+    /**
+     * This interface represents an enumerator member of an enum specifier.
+     *
+     * @noimplement This interface is not intended to be implemented by clients.
+     */
+    public interface IASTEnumerator
+            extends IASTNode, IASTNameOwner
+    {
+        /**
+         * Empty array (constant).
+         */
+        public static final IASTEnumerator[] EMPTY_ENUMERATOR_ARRAY = {};
 
-		/**
-		 * {@code ENUMERATOR_NAME} describes the relationship between
-		 * {@code IASTEnumerator} and {@code IASTName}.
-		 */
-		public static final ASTNodeProperty ENUMERATOR_NAME = new ASTNodeProperty(
-				"IASTEnumerator.ENUMERATOR_NAME - IASTName for IASTEnumerator"); //$NON-NLS-1$
+        /**
+         * {@code ENUMERATOR_NAME} describes the relationship between
+         * {@code IASTEnumerator} and {@code IASTName}.
+         */
+        public static final ASTNodeProperty ENUMERATOR_NAME = new ASTNodeProperty(
+                "IASTEnumerator.ENUMERATOR_NAME - IASTName for IASTEnumerator"); //$NON-NLS-1$
 
-		/**
-		 * {@code ENUMERATOR_VALUE} describes the relationship between
-		 * {@code IASTEnumerator} and {@code IASTExpression}.
-		 */
-		public static final ASTNodeProperty ENUMERATOR_VALUE = new ASTNodeProperty(
-				"IASTEnumerator.ENUMERATOR_VALUE - IASTExpression (value) for IASTEnumerator"); //$NON-NLS-1$
+        /**
+         * {@code ENUMERATOR_VALUE} describes the relationship between
+         * {@code IASTEnumerator} and {@code IASTExpression}.
+         */
+        public static final ASTNodeProperty ENUMERATOR_VALUE = new ASTNodeProperty(
+                "IASTEnumerator.ENUMERATOR_VALUE - IASTExpression (value) for IASTEnumerator"); //$NON-NLS-1$
 
-		/**
-		 * Set the enumerator's name.
-		 * 
-		 * @param name
-		 */
-		public void setName(IASTName name);
+        /**
+         * Set the enumerator's name.
+         *
+         * @param name
+         */
+        public void setName(IASTName name);
 
-		/**
-		 * Get the enumerator's name.
-		 * 
-		 * @return {@code IASTName}
-		 */
-		public IASTName getName();
+        /**
+         * Get the enumerator's name.
+         *
+         * @return {@code IASTName}
+         */
+        public IASTName getName();
 
-		/**
-		 * Sets enumerator value.
-		 * 
-		 * @param expression
-		 */
-		public void setValue(IASTExpression expression);
+        /**
+         * Sets enumerator value.
+         *
+         * @param expression
+         */
+        public void setValue(IASTExpression expression);
 
-		/**
-		 * Returns enumerator value.
-		 * 
-		 * @return {@code IASTExpression} value
-		 */
-		public IASTExpression getValue();
-		
-		/**
-		 * @since 5.1
-		 */
-		@Override
-		public IASTEnumerator copy();
+        /**
+         * Returns enumerator value.
+         *
+         * @return {@code IASTExpression} value
+         */
+        public IASTExpression getValue();
 
-		/**
-		 * @since 5.3
-		 */
-		@Override
-		public IASTEnumerator copy(CopyStyle style);
-	}
+        /**
+         * @since 5.1
+         */
+        @Override
+        public IASTEnumerator copy();
 
-	/**
-	 * {@code ENUMERATION_NAME} describes the relationship between
-	 * {@code IASTEnumerationSpecifier} and its {@link IASTName}.
-	 */
-	public static final ASTNodeProperty ENUMERATION_NAME = new ASTNodeProperty(
-			"IASTEnumerationSpecifier.ENUMERATION_NAME - IASTName for IASTEnumerationSpecifier"); //$NON-NLS-1$
+        /**
+         * @since 5.3
+         */
+        @Override
+        public IASTEnumerator copy(CopyStyle style);
+    }
 
-	/**
-	 * {@code ENUMERATOR} describes the relationship between
-	 * {@code IASTEnumerationSpecifier} and the nested
-	 * {@link IASTEnumerator}s.
-	 */
-	public static final ASTNodeProperty ENUMERATOR = new ASTNodeProperty(
-			"IASTEnumerationSpecifier.ENUMERATOR - nested IASTEnumerator for IASTEnumerationSpecifier"); //$NON-NLS-1$
+    /**
+     * {@code ENUMERATION_NAME} describes the relationship between
+     * {@code IASTEnumerationSpecifier} and its {@link IASTName}.
+     */
+    public static final ASTNodeProperty ENUMERATION_NAME = new ASTNodeProperty(
+            "IASTEnumerationSpecifier.ENUMERATION_NAME - IASTName for IASTEnumerationSpecifier"); //$NON-NLS-1$
 
-	/**
-	 * Adds an enumerator.
-	 * 
-	 * @param enumerator {@code IASTEnumerator}
-	 */
-	public void addEnumerator(IASTEnumerator enumerator);
+    /**
+     * {@code ENUMERATOR} describes the relationship between
+     * {@code IASTEnumerationSpecifier} and the nested
+     * {@link IASTEnumerator}s.
+     */
+    public static final ASTNodeProperty ENUMERATOR = new ASTNodeProperty(
+            "IASTEnumerationSpecifier.ENUMERATOR - nested IASTEnumerator for IASTEnumerationSpecifier"); //$NON-NLS-1$
 
-	/**
-	 * Returns enumerators.
-	 * 
-	 * @return {@code IASTEnumerator[]} array
-	 */
-	public IASTEnumerator[] getEnumerators();
+    /**
+     * Adds an enumerator.
+     *
+     * @param enumerator {@code IASTEnumerator}
+     */
+    public void addEnumerator(IASTEnumerator enumerator);
 
-	/**
-	 * Sets the enum's name.
-	 * 
-	 * @param name
-	 */
-	public void setName(IASTName name);
+    /**
+     * Returns enumerators.
+     *
+     * @return {@code IASTEnumerator[]} array
+     */
+    public IASTEnumerator[] getEnumerators();
 
-	/**
-	 * Returns the enum's name.
-	 */
-	public IASTName getName();
+    /**
+     * Sets the enum's name.
+     *
+     * @param name
+     */
+    public void setName(IASTName name);
 
-	/**
-	 * @since 5.1
-	 */
-	@Override
-	public IASTEnumerationSpecifier copy();
+    /**
+     * Returns the enum's name.
+     */
+    public IASTName getName();
 
-	/**
-	 * @since 5.3
-	 */
-	@Override
-	public IASTEnumerationSpecifier copy(CopyStyle style);
+    /**
+     * @since 5.1
+     */
+    @Override
+    public IASTEnumerationSpecifier copy();
+
+    /**
+     * @since 5.3
+     */
+    @Override
+    public IASTEnumerationSpecifier copy(CopyStyle style);
 }

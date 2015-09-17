@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Anton Leherbauer (Wind River Systems) - initial API and implementation
+ * Anton Leherbauer (Wind River Systems) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.parser;
 
@@ -23,14 +23,14 @@ import org.eclipse.cdt.core.parser.IToken;
  * that it will remain the same. Please do not use this API without consulting
  * with the CDT team.
  * </p>
- * 
+ *
  * @since 4.0
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IExtensionToken {
+public interface IExtensionToken
+{
 
-	int t__otherDeclSpecModifierFirst= IToken.FIRST_RESERVED_IExtensionToken;
-	int t__otherDeclSpecModifierLast= IToken.FIRST_RESERVED_IExtensionToken + 10;
-
+    int t__otherDeclSpecModifierFirst = IToken.FIRST_RESERVED_IExtensionToken;
+    int t__otherDeclSpecModifierLast = IToken.FIRST_RESERVED_IExtensionToken + 10;
 }

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Doug Schaefer (QNX) - Initial implementation
  *******************************************************************************/
@@ -26,32 +26,42 @@ import org.eclipse.core.runtime.IStatus;
  * @since 5.5
  *
  */
-public class AddNature extends ProcessRunner {
+public class AddNature
+        extends ProcessRunner
+{
 
-	@Override
-	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor) throws ProcessFailureException {
-		IProject project = null;
-		String natureId = null;
+    @Override
+    public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
+            throws ProcessFailureException
+    {
+        IProject project = null;
+        String natureId = null;
 
-		for (ProcessArgument arg : args) {
-			String argName = arg.getName();
-			if (argName.equals("projectName")) //$NON-NLS-1$
-				project = ResourcesPlugin.getWorkspace().getRoot().getProject(arg.getSimpleValue());
-			else if (argName.equals("natureId")) //$NON-NLS-1$
-				natureId = arg.getSimpleValue();
-		}
-		
-		if (project == null)
-			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddNature.noProject"))); //$NON-NLS-1$
+        for (ProcessArgument arg : args) {
+            String argName = arg.getName();
+            if (argName.equals("projectName")) //$NON-NLS-1$
+            {
+                project = ResourcesPlugin.getWorkspace().getRoot().getProject(arg.getSimpleValue());
+            }
+            else if (argName.equals("natureId")) //$NON-NLS-1$
+            {
+                natureId = arg.getSimpleValue();
+            }
+        }
 
-		if (natureId == null)
-			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddNature.noNature"))); //$NON-NLS-1$
-		
-		try {
-			CProjectNature.addNature(project, natureId, monitor);
-		} catch (CoreException e) {
-			throw new ProcessFailureException(e);
-		}
-	}
+        if (project == null) {
+            throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddNature.noProject"))); //$NON-NLS-1$
+        }
 
+        if (natureId == null) {
+            throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddNature.noNature"))); //$NON-NLS-1$
+        }
+
+        try {
+            CProjectNature.addNature(project, natureId, monitor);
+        }
+        catch (CoreException e) {
+            throw new ProcessFailureException(e);
+        }
+    }
 }

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * <p/>
  * Contributors:
- *     Nathan Ridge - Initial API and implementation
+ * Nathan Ridge - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
@@ -17,5 +17,7 @@ package org.eclipse.cdt.core.dom.ast.cpp;
  * @noextend This interface is not intended to be extended by clients.
  * @since 5.8
  */
-public interface ICPPFunctionInstance extends ICPPTemplateInstance, ICPPFunction {
+public interface ICPPFunctionInstance
+        extends ICPPTemplateInstance, ICPPFunction
+{
 }

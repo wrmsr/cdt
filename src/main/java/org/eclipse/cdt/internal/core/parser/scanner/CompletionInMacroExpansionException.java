@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    Markus Schorn - initial API and implementation
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser.scanner;
 
 import org.eclipse.cdt.core.parser.IToken;
@@ -19,16 +19,20 @@ import org.eclipse.cdt.core.parser.OffsetLimitReachedException;
  * a completion.
  * @since 5.0
  */
-public class CompletionInMacroExpansionException extends OffsetLimitReachedException {
+public class CompletionInMacroExpansionException
+        extends OffsetLimitReachedException
+{
 
-	private TokenList fParameterTokens;
+    private TokenList fParameterTokens;
 
-	public CompletionInMacroExpansionException(int origin, IToken lastToken, TokenList paramTokens) {
-		super(origin, lastToken);
-		fParameterTokens = paramTokens;
-	}
+    public CompletionInMacroExpansionException(int origin, IToken lastToken, TokenList paramTokens)
+    {
+        super(origin, lastToken);
+        fParameterTokens = paramTokens;
+    }
 
-	public TokenList getParameterTokens() {
-		return fParameterTokens;
-	}
+    public TokenList getParameterTokens()
+    {
+        return fParameterTokens;
+    }
 }

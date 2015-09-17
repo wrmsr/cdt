@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * QNX Software Systems - Initial API and implementation
  * Anton Leherbauer (Wind River Systems) - Fixed bug 141484
@@ -20,69 +20,76 @@ import org.eclipse.cdt.core.model.ITranslationUnit;
 /**
  * CreateSourceReferenceOperation
  */
-public class CreateSourceReferenceOperation extends CreateElementInTUOperation {
+public class CreateSourceReferenceOperation
+        extends CreateElementInTUOperation
+{
 
-	/**
-	 * Element Name
-	 */
-	String fName;
+    /**
+     * Element Name
+     */
+    String fName;
 
-	/**
-	 * Element Type
-	 */
-	int fElementType;
+    /**
+     * Element Type
+     */
+    int fElementType;
 
-	/**
-	 * Source Reference element to copy to parent
-	 */
-	String fSource;
+    /**
+     * Source Reference element to copy to parent
+     */
+    String fSource;
 
-	/**
-	 * @param parentElement
-	 */
-	public CreateSourceReferenceOperation(ICElement parentElement, String name, int elementType, String source) {
-		super(parentElement);
-		fName = name;
-		fElementType = elementType;
-		fSource = source;
-	}
+    /**
+     * @param parentElement
+     */
+    public CreateSourceReferenceOperation(ICElement parentElement, String name, int elementType, String source)
+    {
+        super(parentElement);
+        fName = name;
+        fElementType = elementType;
+        fSource = source;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#generateElement(org.eclipse.cdt.core.model.ITranslationUnit)
-	 */
-	@Override
-	protected String generateElement(ITranslationUnit unit) throws CModelException {
-		return fSource;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#generateElement(org.eclipse.cdt.core.model.ITranslationUnit)
+     */
+    @Override
+    protected String generateElement(ITranslationUnit unit)
+            throws CModelException
+    {
+        return fSource;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#generateResultHandle()
-	 */
-	@Override
-	protected ICElement generateResultHandle() {
-		IParent parent = (IParent)getParentElement();
-		try {
-			ICElement[] celements = parent.getChildren();
-			for (int i = 0; i < celements.length; ++i) {
-				if (celements[i].getElementType() == fElementType) {
-					String name = celements[i].getElementName();
-					if (name.equals(fName)) {
-						return celements[i];
-					}
-				}
-			}
-		} catch (CModelException e) {
-			//
-		}
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#generateResultHandle()
+     */
+    @Override
+    protected ICElement generateResultHandle()
+    {
+        IParent parent = (IParent) getParentElement();
+        try {
+            ICElement[] celements = parent.getChildren();
+            for (int i = 0; i < celements.length; ++i) {
+                if (celements[i].getElementType() == fElementType) {
+                    String name = celements[i].getElementName();
+                    if (name.equals(fName)) {
+                        return celements[i];
+                    }
+                }
+            }
+        }
+        catch (CModelException e) {
+            //
+        }
+        return null;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#getMainTaskName()
-	 */
-	@Override
-	protected String getMainTaskName() {
-		return "operation.createsourceReference"; //$NON-NLS-1$
-	}
-
+    /* (non-Javadoc)
+     * @see org.eclipse.cdt.internal.core.model.CreateElementInTUOperation#getMainTaskName()
+     */
+    @Override
+    protected String getMainTaskName()
+    {
+        return "operation.createsourceReference"; //$NON-NLS-1$
+    }
 }

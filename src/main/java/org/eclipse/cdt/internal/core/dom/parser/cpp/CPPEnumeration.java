@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Andrew Niefer (IBM Corporation) - initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
- *     Nathan Ridge
+ * Andrew Niefer (IBM Corporation) - initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
+ * Nathan Ridge
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
@@ -49,247 +49,309 @@ import org.eclipse.core.runtime.PlatformObject;
 /**
  * Enumeration in C++
  */
-public class CPPEnumeration extends PlatformObject implements ICPPEnumeration, ICPPInternalBinding {
-	private static final IASTName NOT_INITIALIZED = CPPASTName.NOT_INITIALIZED;
-	private static final IEnumerator[] EMPTY_ENUMERATORS = {};
-	
-	public static class CPPEnumerationProblem extends ProblemBinding implements ICPPEnumeration, ICPPScope {
-		public CPPEnumerationProblem(IASTNode node, int id, char[] arg) {
-			super(node, id, arg);
-		}
-		@Override
-		public IEnumerator[] getEnumerators() {
-			return EMPTY_ENUMERATORS;
-		}
-		@Override
-		public long getMinValue() {
-			return 0;
-		}
-		@Override
-		public long getMaxValue() {
-			return 0;
-		}
-		@Override
-		public boolean isScoped() {
-			return false;
-		}
-		@Override
-		public IType getFixedType() {
-			return null;
-		}
-		@Override
-		public ICPPScope asScope() {
-			return this;
-		}
-	}
+public class CPPEnumeration
+        extends PlatformObject
+        implements ICPPEnumeration, ICPPInternalBinding
+{
+    private static final IASTName NOT_INITIALIZED = CPPASTName.NOT_INITIALIZED;
+    private static final IEnumerator[] EMPTY_ENUMERATORS = {};
 
-	private final boolean fIsScoped;
-	private final IType fFixedType;
-	private IASTName fDefinition= NOT_INITIALIZED;
-    private IASTName[] fDeclarations= IASTName.EMPTY_NAME_ARRAY;
-	private Long fMaxValue;
-	private Long fMinValue;
-
-	private ICPPEnumeration fIndexBinding;
-	private boolean fSearchedIndex;
-
-    public CPPEnumeration(ICPPASTEnumerationSpecifier spec, IType fixedType) {
-        final IASTName name = spec.getName();
-        fIsScoped= spec.isScoped();
-        fFixedType= fixedType;
-        if (spec.isOpaque()) {
-        	addDeclaration(name);
-        } else {
-        	addDefinition(name);
+    public static class CPPEnumerationProblem
+            extends ProblemBinding
+            implements ICPPEnumeration, ICPPScope
+    {
+        public CPPEnumerationProblem(IASTNode node, int id, char[] arg)
+        {
+            super(node, id, arg);
         }
-		name.setBinding(this);
+
+        @Override
+        public IEnumerator[] getEnumerators()
+        {
+            return EMPTY_ENUMERATORS;
+        }
+
+        @Override
+        public long getMinValue()
+        {
+            return 0;
+        }
+
+        @Override
+        public long getMaxValue()
+        {
+            return 0;
+        }
+
+        @Override
+        public boolean isScoped()
+        {
+            return false;
+        }
+
+        @Override
+        public IType getFixedType()
+        {
+            return null;
+        }
+
+        @Override
+        public ICPPScope asScope()
+        {
+            return this;
+        }
+    }
+
+    private final boolean fIsScoped;
+    private final IType fFixedType;
+    private IASTName fDefinition = NOT_INITIALIZED;
+    private IASTName[] fDeclarations = IASTName.EMPTY_NAME_ARRAY;
+    private Long fMaxValue;
+    private Long fMinValue;
+
+    private ICPPEnumeration fIndexBinding;
+    private boolean fSearchedIndex;
+
+    public CPPEnumeration(ICPPASTEnumerationSpecifier spec, IType fixedType)
+    {
+        final IASTName name = spec.getName();
+        fIsScoped = spec.isScoped();
+        fFixedType = fixedType;
+        if (spec.isOpaque()) {
+            addDeclaration(name);
+        }
+        else {
+            addDefinition(name);
+        }
+        name.setBinding(this);
     }
 
     @Override
-	public IASTNode[] getDeclarations() {
-    	fDeclarations= ArrayUtil.trim(fDeclarations);
-    	return fDeclarations;
+    public IASTNode[] getDeclarations()
+    {
+        fDeclarations = ArrayUtil.trim(fDeclarations);
+        return fDeclarations;
     }
 
-    private class FindDefinitionAction extends ASTVisitor {
-		private char[] nameArray = CPPEnumeration.this.getNameCharArray();
-		{
-			shouldVisitNames          = true;
-			shouldVisitDeclarations   = true;
-			shouldVisitDeclSpecifiers = true;
-			shouldVisitDeclarators    = true;
-		}
+    private class FindDefinitionAction
+            extends ASTVisitor
+    {
+        private char[] nameArray = CPPEnumeration.this.getNameCharArray();
 
-		@Override
-		public int visit(IASTName name) {
-			if (name instanceof ICPPASTTemplateId || name instanceof ICPPASTQualifiedName)
-				return PROCESS_SKIP;
-			char[] c = name.getLookupKey();
-			final IASTNode parent = name.getParent();
-			if (parent instanceof ICPPASTEnumerationSpecifier &&
-					!((ICPPASTEnumerationSpecifier) parent).isOpaque() && 
-					CharArrayUtils.equals(c, nameArray)) {
-				IBinding binding = name.resolveBinding();
-				if (binding == CPPEnumeration.this && getDefinition() == name) {
-					return PROCESS_ABORT;
-				}
-			}
-			return PROCESS_CONTINUE; 
-		}
+        {
+            shouldVisitNames = true;
+            shouldVisitDeclarations = true;
+            shouldVisitDeclSpecifiers = true;
+            shouldVisitDeclarators = true;
+        }
 
-		@Override
-		public int visit(IASTDeclaration declaration) { 
-			if (declaration instanceof IASTSimpleDeclaration)
-				return PROCESS_CONTINUE;
-			return PROCESS_SKIP; 
-		}
-		@Override
-		public int visit(IASTDeclSpecifier declSpec) {
-			return (declSpec instanceof ICPPASTEnumerationSpecifier) ? PROCESS_CONTINUE : PROCESS_SKIP; 
-		}
-		@Override
-		public int visit(IASTDeclarator declarator) {
-			return PROCESS_SKIP;
-		}
-	}
+        @Override
+        public int visit(IASTName name)
+        {
+            if (name instanceof ICPPASTTemplateId || name instanceof ICPPASTQualifiedName) {
+                return PROCESS_SKIP;
+            }
+            char[] c = name.getLookupKey();
+            final IASTNode parent = name.getParent();
+            if (parent instanceof ICPPASTEnumerationSpecifier &&
+                    !((ICPPASTEnumerationSpecifier) parent).isOpaque() &&
+                    CharArrayUtils.equals(c, nameArray)) {
+                IBinding binding = name.resolveBinding();
+                if (binding == CPPEnumeration.this && getDefinition() == name) {
+                    return PROCESS_ABORT;
+                }
+            }
+            return PROCESS_CONTINUE;
+        }
+
+        @Override
+        public int visit(IASTDeclaration declaration)
+        {
+            if (declaration instanceof IASTSimpleDeclaration) {
+                return PROCESS_CONTINUE;
+            }
+            return PROCESS_SKIP;
+        }
+
+        @Override
+        public int visit(IASTDeclSpecifier declSpec)
+        {
+            return (declSpec instanceof ICPPASTEnumerationSpecifier) ? PROCESS_CONTINUE : PROCESS_SKIP;
+        }
+
+        @Override
+        public int visit(IASTDeclarator declarator)
+        {
+            return PROCESS_SKIP;
+        }
+    }
 
     @Override
-	public IASTName getDefinition() {
-    	if (fDefinition == NOT_INITIALIZED)
-    		return null;
+    public IASTName getDefinition()
+    {
+        if (fDefinition == NOT_INITIALIZED) {
+            return null;
+        }
         return fDefinition;
     }
 
     @Override
-	public String getName() {
+    public String getName()
+    {
         return new String(getNameCharArray());
     }
 
     @Override
-	public char[] getNameCharArray() {
-    	return getADeclaration().getSimpleID();
+    public char[] getNameCharArray()
+    {
+        return getADeclaration().getSimpleID();
     }
 
-	private IASTName getADeclaration() {
-    	if (fDefinition != null && fDefinition != NOT_INITIALIZED)
-    		return fDefinition;
-    	return fDeclarations[0];
-	}
+    private IASTName getADeclaration()
+    {
+        if (fDefinition != null && fDefinition != NOT_INITIALIZED) {
+            return fDefinition;
+        }
+        return fDeclarations[0];
+    }
 
-	@Override
-	public IScope getScope() {
+    @Override
+    public IScope getScope()
+    {
         return CPPVisitor.getContainingScope(getADeclaration());
     }
 
     @Override
-	public Object clone() {
-    	throw new IllegalArgumentException("Enums must not be cloned"); //$NON-NLS-1$
+    public Object clone()
+    {
+        throw new IllegalArgumentException("Enums must not be cloned"); //$NON-NLS-1$
     }
 
     @Override
-	public String[] getQualifiedName() {
+    public String[] getQualifiedName()
+    {
         return CPPVisitor.getQualifiedName(this);
     }
 
     @Override
-	public char[][] getQualifiedNameCharArray() {
+    public char[][] getQualifiedNameCharArray()
+    {
         return CPPVisitor.getQualifiedNameCharArray(this);
     }
 
     @Override
-	public boolean isGloballyQualified() throws DOMException {
+    public boolean isGloballyQualified()
+            throws DOMException
+    {
         IScope scope = getScope();
         while (scope != null) {
-            if (scope instanceof ICPPBlockScope)
+            if (scope instanceof ICPPBlockScope) {
                 return false;
+            }
             scope = scope.getParent();
         }
         return true;
     }
 
-	@Override
-	public void addDefinition(IASTNode node) {
-		assert fDefinition == null || fDefinition == NOT_INITIALIZED;
-		fDefinition= (IASTName) node;
-	}
-
-	@Override
-	public void addDeclaration(IASTNode node) {
-		assert node instanceof IASTName;
-		if (fDeclarations == null) {
-			fDeclarations= new IASTName[] {(IASTName) node};
-		} else {
-			fDeclarations= ArrayUtil.append(fDeclarations, (IASTName) node);
-		}
-	}
-	
     @Override
-	public boolean isSameType(IType type) {
-        if (type == this)
+    public void addDefinition(IASTNode node)
+    {
+        assert fDefinition == null || fDefinition == NOT_INITIALIZED;
+        fDefinition = (IASTName) node;
+    }
+
+    @Override
+    public void addDeclaration(IASTNode node)
+    {
+        assert node instanceof IASTName;
+        if (fDeclarations == null) {
+            fDeclarations = new IASTName[] {(IASTName) node};
+        }
+        else {
+            fDeclarations = ArrayUtil.append(fDeclarations, (IASTName) node);
+        }
+    }
+
+    @Override
+    public boolean isSameType(IType type)
+    {
+        if (type == this) {
             return true;
-        if (type instanceof ITypedef || type instanceof IIndexBinding)
+        }
+        if (type instanceof ITypedef || type instanceof IIndexBinding) {
             return type.isSameType(this);
+        }
         return false;
     }
-    
-	@Override
-	public ILinkage getLinkage() {
-		return Linkage.CPP_LINKAGE;
-	}
-
-	@Override
-	public IBinding getOwner() {
-		return CPPVisitor.findDeclarationOwner(getADeclaration(), true);
-	}
-
-	@Override
-	public String toString() {
-		return getName();
-	}
-	
-	@Override
-	public long getMinValue() {
-		if (fMinValue != null)
-			return fMinValue.longValue();
-
-		long minValue = SemanticUtil.computeMinValue(this);
-		fMinValue= minValue;
-		return minValue;
-	}
-
-	@Override
-	public long getMaxValue() {
-		if (fMaxValue != null)
-			return fMaxValue.longValue();
-
-		long maxValue = SemanticUtil.computeMaxValue(this);
-		fMaxValue= maxValue;
-		return maxValue;
-	}
-
-	@Override
-	public boolean isScoped() {
-		return fIsScoped;
-	}
-
-	@Override
-	public IType getFixedType() {
-		return fFixedType;
-	}
 
     @Override
-	public IEnumerator[] getEnumerators() {
-    	findDefinition();
-    	final IASTName definition = getDefinition();
-		if (definition == null) {
-			ICPPEnumeration typeInIndex= getIndexBinding();
-			if (typeInIndex != null) {
-				return typeInIndex.getEnumerators();
-			}
-    		return EMPTY_ENUMERATORS;
-    	}
+    public ILinkage getLinkage()
+    {
+        return Linkage.CPP_LINKAGE;
+    }
 
-		IASTEnumerator[] enums = ((IASTEnumerationSpecifier) definition.getParent()).getEnumerators();
+    @Override
+    public IBinding getOwner()
+    {
+        return CPPVisitor.findDeclarationOwner(getADeclaration(), true);
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
+    @Override
+    public long getMinValue()
+    {
+        if (fMinValue != null) {
+            return fMinValue.longValue();
+        }
+
+        long minValue = SemanticUtil.computeMinValue(this);
+        fMinValue = minValue;
+        return minValue;
+    }
+
+    @Override
+    public long getMaxValue()
+    {
+        if (fMaxValue != null) {
+            return fMaxValue.longValue();
+        }
+
+        long maxValue = SemanticUtil.computeMaxValue(this);
+        fMaxValue = maxValue;
+        return maxValue;
+    }
+
+    @Override
+    public boolean isScoped()
+    {
+        return fIsScoped;
+    }
+
+    @Override
+    public IType getFixedType()
+    {
+        return fFixedType;
+    }
+
+    @Override
+    public IEnumerator[] getEnumerators()
+    {
+        findDefinition();
+        final IASTName definition = getDefinition();
+        if (definition == null) {
+            ICPPEnumeration typeInIndex = getIndexBinding();
+            if (typeInIndex != null) {
+                return typeInIndex.getEnumerators();
+            }
+            return EMPTY_ENUMERATORS;
+        }
+
+        IASTEnumerator[] enums = ((IASTEnumerationSpecifier) definition.getParent()).getEnumerators();
         IEnumerator[] bindings = new IEnumerator[enums.length];
         for (int i = 0; i < enums.length; i++) {
             bindings[i] = (IEnumerator) enums[i].getName().resolveBinding();
@@ -297,36 +359,39 @@ public class CPPEnumeration extends PlatformObject implements ICPPEnumeration, I
         return bindings;
     }
 
-	private ICPPEnumeration getIndexBinding() {
-		if (!fSearchedIndex) {
-			final IASTTranslationUnit translationUnit = getADeclaration().getTranslationUnit();
-			IIndex index= translationUnit.getIndex();
-			if (index != null) {
-				fIndexBinding= (ICPPEnumeration) index.adaptBinding(this);
-			}
-		}
-		return fIndexBinding;
-	}
+    private ICPPEnumeration getIndexBinding()
+    {
+        if (!fSearchedIndex) {
+            final IASTTranslationUnit translationUnit = getADeclaration().getTranslationUnit();
+            IIndex index = translationUnit.getIndex();
+            if (index != null) {
+                fIndexBinding = (ICPPEnumeration) index.adaptBinding(this);
+            }
+        }
+        return fIndexBinding;
+    }
 
-	@Override
-	public ICPPScope asScope() {
-		findDefinition();
-		IASTName def = getDefinition();
-		if (def == null) {
-			ICPPEnumeration indexBinding= getIndexBinding();
-			if (indexBinding != null) {
-				return indexBinding.asScope();
-			}
-			def= getADeclaration();
-		}
-		return ((ICPPASTEnumerationSpecifier) def.getParent()).getScope();
-	}
+    @Override
+    public ICPPScope asScope()
+    {
+        findDefinition();
+        IASTName def = getDefinition();
+        if (def == null) {
+            ICPPEnumeration indexBinding = getIndexBinding();
+            if (indexBinding != null) {
+                return indexBinding.asScope();
+            }
+            def = getADeclaration();
+        }
+        return ((ICPPASTEnumerationSpecifier) def.getParent()).getScope();
+    }
 
-	private void findDefinition() {
-    	if (fDefinition == NOT_INITIALIZED) {
-    		FindDefinitionAction action = new FindDefinitionAction();
-    		IASTNode node = CPPVisitor.getContainingBlockItem(getADeclaration()).getParent();
-    		node.accept(action);
-    	}
-	}
+    private void findDefinition()
+    {
+        if (fDefinition == NOT_INITIALIZED) {
+            FindDefinitionAction action = new FindDefinitionAction();
+            IASTNode node = CPPVisitor.getContainingBlockItem(getADeclaration()).getParent();
+            node.accept(action);
+        }
+    }
 }

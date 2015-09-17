@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * QNX - Initial API and implementation
  *******************************************************************************/
@@ -18,10 +18,11 @@ import org.eclipse.core.runtime.CoreException;
  * @author Doug Schaefer
  *
  */
-public interface IPDOMLinkageFactory {
+public interface IPDOMLinkageFactory
+{
 
-	public PDOMLinkage getLinkage(PDOM pdom, long record);
-	
-	public PDOMLinkage createLinkage(PDOM pdom) throws CoreException;
-	
+    public PDOMLinkage getLinkage(PDOM pdom, long record);
+
+    public PDOMLinkage createLinkage(PDOM pdom)
+            throws CoreException;
 }

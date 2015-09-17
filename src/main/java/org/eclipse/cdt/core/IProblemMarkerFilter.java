@@ -13,13 +13,14 @@ package org.eclipse.cdt.core;
  *
  * @since 5.6
  */
-public interface IProblemMarkerFilter {
+public interface IProblemMarkerFilter
+{
 
-	/**
-	 * Decide if a problem marker should be reported or ignored.
-	 * 
-	 * @param markerInfo description of the problem marker that is going to be reported
-	 * @return true if markers should be reported, false if should be ignored
-	 */
-	boolean acceptMarker(ProblemMarkerInfo markerInfo);
+    /**
+     * Decide if a problem marker should be reported or ignored.
+     *
+     * @param markerInfo description of the problem marker that is going to be reported
+     * @return true if markers should be reported, false if should be ignored
+     */
+    boolean acceptMarker(ProblemMarkerInfo markerInfo);
 }

@@ -5,9 +5,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Thomas Corbat (IFS) - initial API and implementation
+ * Thomas Corbat (IFS) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.parser;
 
@@ -16,19 +16,23 @@ package org.eclipse.cdt.core.parser;
  * the parser with additional settings.
  * @since 5.6
  */
-public class ParserSettings implements IParserSettings {
-	private int maximumTrivialExpressionsInAggregateInitializers = -1;
+public class ParserSettings
+        implements IParserSettings
+{
+    private int maximumTrivialExpressionsInAggregateInitializers = -1;
 
-	@Override
-	public int getMaximumTrivialExpressionsInAggregateInitializers() {
-		return maximumTrivialExpressionsInAggregateInitializers;
-	}
+    @Override
+    public int getMaximumTrivialExpressionsInAggregateInitializers()
+    {
+        return maximumTrivialExpressionsInAggregateInitializers;
+    }
 
-	/**
-	 * Sets the maximum number of trivial expressions in aggregate initializers.
-	 * @param value The new maximum number of trivial expressions in aggregate initializers.
-	 */
-	public void setMaximumTrivialExpressionsInAggregateInitializers(int value) {
-		maximumTrivialExpressionsInAggregateInitializers = value;
-	}
+    /**
+     * Sets the maximum number of trivial expressions in aggregate initializers.
+     * @param value The new maximum number of trivial expressions in aggregate initializers.
+     */
+    public void setMaximumTrivialExpressionsInAggregateInitializers(int value)
+    {
+        maximumTrivialExpressionsInAggregateInitializers = value;
+    }
 }

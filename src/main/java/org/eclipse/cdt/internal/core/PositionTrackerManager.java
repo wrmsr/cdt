@@ -4,19 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
+ * Markus Schorn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.eclipse.cdt.core.IPositionConverter;
 import org.eclipse.cdt.core.IPositionTrackerManager;
@@ -30,18 +22,30 @@ import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 
-public class PositionTrackerManager implements IPositionTrackerManager, IFileBufferListener {
-    private static final int HASHMAP_ENTRY_SIZE = 56;
-    private static final int MAX_MEMORY= 1024*512; // 512 kbytes
-    private static final int MAX_MEMORY_AFTER_CLEANUP= (MAX_MEMORY * 7) / 10; // 70% of MAX_MEMORY
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-    private static PositionTrackerManager sManager= new PositionTrackerManager();
-    public  static PositionTrackerManager getInstance() {
+public class PositionTrackerManager
+        implements IPositionTrackerManager, IFileBufferListener
+{
+    private static final int HASHMAP_ENTRY_SIZE = 56;
+    private static final int MAX_MEMORY = 1024 * 512; // 512 kbytes
+    private static final int MAX_MEMORY_AFTER_CLEANUP = (MAX_MEMORY * 7) / 10; // 70% of MAX_MEMORY
+
+    private static PositionTrackerManager sManager = new PositionTrackerManager();
+
+    public static PositionTrackerManager getInstance()
+    {
         return sManager;
     }
 
-    private int fMemoryCounter= 0;
-    private int fInstalled= 0;
+    private int fMemoryCounter = 0;
+    private int fInstalled = 0;
     /**
      * as the key in the map we use:
      * the full path for resources,
@@ -50,81 +54,90 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
      */
     private HashMap<Object, PositionTrackerChain> fPositionTrackerMap;
 
-    private PositionTrackerManager() {
-        fPositionTrackerMap= new HashMap<Object, PositionTrackerChain>();
+    private PositionTrackerManager()
+    {
+        fPositionTrackerMap = new HashMap<Object, PositionTrackerChain>();
     }
 
-    public synchronized void install() {
+    public synchronized void install()
+    {
         if (++fInstalled == 1) {
-            ITextFileBufferManager mgr= FileBuffers.getTextFileBufferManager();
+            ITextFileBufferManager mgr = FileBuffers.getTextFileBufferManager();
             mgr.addFileBufferListener(this);
         }
     }
 
-    public synchronized void uninstall() {
+    public synchronized void uninstall()
+    {
         if (--fInstalled == 0) {
             FileBuffers.getTextFileBufferManager().removeFileBufferListener(this);
             fPositionTrackerMap.clear();
-            fMemoryCounter= 0;
+            fMemoryCounter = 0;
         }
     }
 
     @Override
-	public void bufferCreated(IFileBuffer buffer) {
+    public void bufferCreated(IFileBuffer buffer)
+    {
         if (buffer instanceof ITextFileBuffer) {
             createCheckpoint((ITextFileBuffer) buffer);
         }
     }
 
     @Override
-	public void bufferDisposed(IFileBuffer buffer) {
+    public void bufferDisposed(IFileBuffer buffer)
+    {
         if (buffer instanceof ITextFileBuffer) {
             resetToLastCheckpoint((ITextFileBuffer) buffer);
         }
     }
 
     @Override
-	public void dirtyStateChanged(IFileBuffer buffer, boolean isDirty) {
+    public void dirtyStateChanged(IFileBuffer buffer, boolean isDirty)
+    {
         if (!isDirty && buffer instanceof ITextFileBuffer) {
             createCheckpoint((ITextFileBuffer) buffer);
         }
     }
 
     @Override
-	public void stateValidationChanged(IFileBuffer buffer, boolean isStateValidated) {
+    public void stateValidationChanged(IFileBuffer buffer, boolean isStateValidated)
+    {
         if (isStateValidated && !buffer.isDirty()) {
             bufferCreated(buffer);
         }
     }
 
     @Override
-	public void bufferContentAboutToBeReplaced(IFileBuffer buffer) {}
+    public void bufferContentAboutToBeReplaced(IFileBuffer buffer) {}
 
     @Override
-	public void bufferContentReplaced(IFileBuffer buffer) {}
+    public void bufferContentReplaced(IFileBuffer buffer) {}
 
     @Override
-	public void underlyingFileMoved(IFileBuffer buffer, IPath path) {}
+    public void underlyingFileMoved(IFileBuffer buffer, IPath path) {}
 
     @Override
-	public void underlyingFileDeleted(IFileBuffer buffer) {}
+    public void underlyingFileDeleted(IFileBuffer buffer) {}
 
     @Override
-	public void stateChangeFailed(IFileBuffer buffer) {}
+    public void stateChangeFailed(IFileBuffer buffer) {}
 
     @Override
-	public void stateChanging(IFileBuffer buffer) {}
+    public void stateChanging(IFileBuffer buffer) {}
 
-    private synchronized void createCheckpoint(ITextFileBuffer buffer) {
-    	final Object bufferKey= getKey(buffer);
-        PositionTrackerChain chain= fPositionTrackerMap.get(bufferKey);
+    private synchronized void createCheckpoint(ITextFileBuffer buffer)
+    {
+        final Object bufferKey = getKey(buffer);
+        PositionTrackerChain chain = fPositionTrackerMap.get(bufferKey);
         if (chain == null) {
             chain = new PositionTrackerChain(buffer.getModificationStamp());
             fPositionTrackerMap.put(bufferKey, chain);
-            fMemoryCounter+= PositionTrackerChain.MEMORY_SIZE + HASHMAP_ENTRY_SIZE;
-        } else {
+            fMemoryCounter += PositionTrackerChain.MEMORY_SIZE + HASHMAP_ENTRY_SIZE;
+        }
+        else {
             chain.stopTracking();
-            fMemoryCounter+= chain.createCheckpoint(buffer.getModificationStamp());
+            fMemoryCounter += chain.createCheckpoint(buffer.getModificationStamp());
         }
         chain.startTracking(buffer.getDocument());
 
@@ -133,21 +146,23 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
         }
     }
 
-	private Object getKey(ITextFileBuffer buffer) {
-		Object key= buffer.getLocation();
-		if (key == null) {
-			URI uri= buffer.getFileStore().toURI();
-			key= URIUtil.toPath(uri);
-			if (key == null) {
-				key= uri;
-			}
-		}
-		return key;
-	}
+    private Object getKey(ITextFileBuffer buffer)
+    {
+        Object key = buffer.getLocation();
+        if (key == null) {
+            URI uri = buffer.getFileStore().toURI();
+            key = URIUtil.toPath(uri);
+            if (key == null) {
+                key = uri;
+            }
+        }
+        return key;
+    }
 
-    private synchronized void resetToLastCheckpoint(ITextFileBuffer buffer) {
-    	final Object bufferKey= getKey(buffer);
-        PositionTrackerChain chain= fPositionTrackerMap.get(bufferKey);
+    private synchronized void resetToLastCheckpoint(ITextFileBuffer buffer)
+    {
+        final Object bufferKey = getKey(buffer);
+        PositionTrackerChain chain = fPositionTrackerMap.get(bufferKey);
         if (chain != null) {
             chain.stopTracking();
             chain.getActiveTracker().clear();
@@ -159,24 +174,25 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
         }
     }
 
-    private synchronized void runCleanup() {
-        fMemoryCounter= 0;
+    private synchronized void runCleanup()
+    {
+        fMemoryCounter = 0;
         for (PositionTrackerChain chain : fPositionTrackerMap.values()) {
-            fMemoryCounter+= HASHMAP_ENTRY_SIZE;
-            fMemoryCounter+= chain.getMemorySize();
+            fMemoryCounter += HASHMAP_ENTRY_SIZE;
+            fMemoryCounter += chain.getMemorySize();
         }
         if (fMemoryCounter > MAX_MEMORY_AFTER_CLEANUP) {
-            SortedMap<Long, List<PositionTrackerChain>> map= new TreeMap<Long, List<PositionTrackerChain>>();
-            for (Iterator<PositionTrackerChain> iter = fPositionTrackerMap.values().iterator(); iter.hasNext();) {
+            SortedMap<Long, List<PositionTrackerChain>> map = new TreeMap<Long, List<PositionTrackerChain>>();
+            for (Iterator<PositionTrackerChain> iter = fPositionTrackerMap.values().iterator(); iter.hasNext(); ) {
                 PositionTrackerChain chain = iter.next();
                 addChain(map, chain);
             }
             while (!map.isEmpty()) {
-                Long key= map.firstKey();
-                List<PositionTrackerChain> list= map.remove(key);
-                for (Iterator<PositionTrackerChain> iter = list.iterator(); iter.hasNext();) {
+                Long key = map.firstKey();
+                List<PositionTrackerChain> list = map.remove(key);
+                for (Iterator<PositionTrackerChain> iter = list.iterator(); iter.hasNext(); ) {
                     PositionTrackerChain chain = iter.next();
-                    fMemoryCounter+= chain.removeOldest();
+                    fMemoryCounter += chain.removeOldest();
                     addChain(map, chain);
                 }
                 if (fMemoryCounter <= MAX_MEMORY_AFTER_CLEANUP) {
@@ -186,13 +202,14 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
         }
     }
 
-    private synchronized void addChain(SortedMap<Long, List<PositionTrackerChain>> map, PositionTrackerChain chain) {
-        long or= chain.getOldestRetirement();
+    private synchronized void addChain(SortedMap<Long, List<PositionTrackerChain>> map, PositionTrackerChain chain)
+    {
+        long or = chain.getOldestRetirement();
         if (or != Long.MAX_VALUE) {
-            Long lor= new Long(or);
-            List<PositionTrackerChain> list= map.get(lor);
+            Long lor = new Long(or);
+            List<PositionTrackerChain> list = map.get(lor);
             if (list == null) {
-                list= new LinkedList<PositionTrackerChain>();
+                list = new LinkedList<PositionTrackerChain>();
                 map.put(lor, list);
             }
             list.add(chain);
@@ -200,8 +217,9 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
     }
 
     @Override
-	public synchronized IPositionConverter findPositionConverter(IFile file, long timestamp) {
-        PositionTrackerChain chain= fPositionTrackerMap.get(file.getFullPath());
+    public synchronized IPositionConverter findPositionConverter(IFile file, long timestamp)
+    {
+        PositionTrackerChain chain = fPositionTrackerMap.get(file.getFullPath());
         if (chain != null) {
             return chain.findTrackerAt(timestamp);
         }
@@ -209,8 +227,9 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
     }
 
     @Override
-	public synchronized IPositionConverter findPositionConverter(IPath externalLocation, long timestamp) {
-        PositionTrackerChain chain= fPositionTrackerMap.get(externalLocation);
+    public synchronized IPositionConverter findPositionConverter(IPath externalLocation, long timestamp)
+    {
+        PositionTrackerChain chain = fPositionTrackerMap.get(externalLocation);
         if (chain != null) {
             return chain.findTrackerAt(timestamp);
         }
@@ -218,33 +237,35 @@ public class PositionTrackerManager implements IPositionTrackerManager, IFileBuf
     }
 
     @Override
-	public synchronized IPositionConverter findPositionConverter(ITranslationUnit tu, long timestamp) {
-    	IFile file= (IFile) tu.getResource();
-    	if (file != null) {
-    		return findPositionConverter(file, timestamp);
-    	}
-    	IPath location= tu.getLocation();
-    	if (location != null) {
-    		return findPositionConverter(location, timestamp);
-    	}
+    public synchronized IPositionConverter findPositionConverter(ITranslationUnit tu, long timestamp)
+    {
+        IFile file = (IFile) tu.getResource();
+        if (file != null) {
+            return findPositionConverter(file, timestamp);
+        }
+        IPath location = tu.getLocation();
+        if (location != null) {
+            return findPositionConverter(location, timestamp);
+        }
 
-    	URI locationURI = tu.getLocationURI();
-    	if (locationURI != null) {
-    		return findPositionConverter(locationURI, timestamp);
-    	}
+        URI locationURI = tu.getLocationURI();
+        if (locationURI != null) {
+            return findPositionConverter(locationURI, timestamp);
+        }
 
-    	return null;
+        return null;
     }
 
     @Override
-	public synchronized IPositionConverter findPositionConverter(URI locationURI, long timestamp) {
-    	PositionTrackerChain chain= fPositionTrackerMap.get(locationURI);
-    	if (chain == null) {
-            IPath path= URIUtil.toPath(locationURI);
+    public synchronized IPositionConverter findPositionConverter(URI locationURI, long timestamp)
+    {
+        PositionTrackerChain chain = fPositionTrackerMap.get(locationURI);
+        if (chain == null) {
+            IPath path = URIUtil.toPath(locationURI);
             if (path != null) {
-            	chain= fPositionTrackerMap.get(path);
+                chain = fPositionTrackerMap.get(path);
             }
-    	}
+        }
         if (chain != null) {
             return chain.findTrackerAt(timestamp);
         }

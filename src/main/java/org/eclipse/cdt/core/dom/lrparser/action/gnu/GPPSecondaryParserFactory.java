@@ -4,13 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.lrparser.action.gnu;
-
-import java.util.Map;
 
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
@@ -24,39 +22,46 @@ import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPNoFunctionDeclaratorPar
 import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPTemplateTypeParameterParser;
 import org.eclipse.cdt.internal.core.dom.lrparser.gpp.GPPSizeofExpressionParser;
 
-public class GPPSecondaryParserFactory implements ICPPSecondaryParserFactory {
+import java.util.Map;
 
-	
-	private static final GPPSecondaryParserFactory DEFAULT_INSTANCE = new GPPSecondaryParserFactory();
-	
-	public static GPPSecondaryParserFactory getDefault() {
-		return DEFAULT_INSTANCE;
-	}
-	
-	
-	@Override
-	public ISecondaryParser<ICPPASTTemplateParameter> getTemplateTypeParameterParser(ITokenStream stream, Map<String,String> properties) {
-		return new CPPTemplateTypeParameterParser(stream, properties);
-	}
-	
-	@Override
-	public ISecondaryParser<IASTDeclarator> getNoFunctionDeclaratorParser(ITokenStream stream, Map<String,String> properties) {
-		return new CPPNoFunctionDeclaratorParser(stream, properties); 
-	}
+public class GPPSecondaryParserFactory
+        implements ICPPSecondaryParserFactory
+{
 
-	@Override
-	public ISecondaryParser<IASTExpression> getExpressionParser(ITokenStream stream, Map<String,String> properties) {
-		return new CPPExpressionParser(stream, properties);
-	}
+    private static final GPPSecondaryParserFactory DEFAULT_INSTANCE = new GPPSecondaryParserFactory();
 
-	@Override
-	public ISecondaryParser<IASTExpression> getNoCastExpressionParser(ITokenStream stream, Map<String,String> properties) {
-		return new CPPNoCastExpressionParser(stream, properties);
-	}
+    public static GPPSecondaryParserFactory getDefault()
+    {
+        return DEFAULT_INSTANCE;
+    }
 
-	@Override
-	public ISecondaryParser<IASTExpression> getSizeofExpressionParser(ITokenStream stream, Map<String,String> properties) {
-		return new GPPSizeofExpressionParser(stream, properties);
-	}
-	
+    @Override
+    public ISecondaryParser<ICPPASTTemplateParameter> getTemplateTypeParameterParser(ITokenStream stream, Map<String, String> properties)
+    {
+        return new CPPTemplateTypeParameterParser(stream, properties);
+    }
+
+    @Override
+    public ISecondaryParser<IASTDeclarator> getNoFunctionDeclaratorParser(ITokenStream stream, Map<String, String> properties)
+    {
+        return new CPPNoFunctionDeclaratorParser(stream, properties);
+    }
+
+    @Override
+    public ISecondaryParser<IASTExpression> getExpressionParser(ITokenStream stream, Map<String, String> properties)
+    {
+        return new CPPExpressionParser(stream, properties);
+    }
+
+    @Override
+    public ISecondaryParser<IASTExpression> getNoCastExpressionParser(ITokenStream stream, Map<String, String> properties)
+    {
+        return new CPPNoCastExpressionParser(stream, properties);
+    }
+
+    @Override
+    public ISecondaryParser<IASTExpression> getSizeofExpressionParser(ITokenStream stream, Map<String, String> properties)
+    {
+        return new GPPSizeofExpressionParser(stream, properties);
+    }
 }

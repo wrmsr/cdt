@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM Rational Software) - Initial API and implementation
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Bryan Wilkinson (QNX)
- *     Anton Leherbauer (Wind River Systems)
+ * John Camelon (IBM Rational Software) - Initial API and implementation
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Bryan Wilkinson (QNX)
+ * Anton Leherbauer (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -33,108 +33,133 @@ import org.eclipse.cdt.internal.core.dom.parser.ProblemType;
 /**
  * ID Expression in C.
  */
-public class CASTIdExpression extends ASTNode implements IASTIdExpression, IASTCompletionContext {
+public class CASTIdExpression
+        extends ASTNode
+        implements IASTIdExpression, IASTCompletionContext
+{
     private IASTName name;
 
-    public CASTIdExpression() {
-	}
+    public CASTIdExpression()
+    {
+    }
 
-	public CASTIdExpression(IASTName name) {
-		setName(name);
-	}
+    public CASTIdExpression(IASTName name)
+    {
+        setName(name);
+    }
 
-	@Override
-	public CASTIdExpression copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
-	
-	@Override
-	public CASTIdExpression copy(CopyStyle style) {
-		CASTIdExpression copy = new CASTIdExpression(name == null ? null : name.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public CASTIdExpression copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public IASTName getName() {
+    @Override
+    public CASTIdExpression copy(CopyStyle style)
+    {
+        CASTIdExpression copy = new CASTIdExpression(name == null ? null : name.copy(style));
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTName getName()
+    {
         return name;
     }
 
     @Override
-	public void setName(IASTName name) {
+    public void setName(IASTName name)
+    {
         assertNotFrozen();
         this.name = name;
         if (name != null) {
-			name.setParent(this);
-			name.setPropertyInParent(ID_NAME);
-		}
+            name.setParent(this);
+            name.setPropertyInParent(ID_NAME);
+        }
     }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitExpressions) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
-      
-        if (name != null && !name.accept(action)) return false;
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
+
+        if (name != null && !name.accept(action)) {
+            return false;
+        }
 
         if (action.shouldVisitExpressions) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
-	@Override
-	public int getRoleForName(IASTName n) {
-		if (n == name) return r_reference;
-		return r_unclear;
-	}
-	
-	@Override
-	public IType getExpressionType() {
-		IBinding binding = getName().resolveBinding();
-		if (binding instanceof IVariable) {
-			return ((IVariable) binding).getType();
-		} 
-		if (binding instanceof IFunction) {
-			return ((IFunction) binding).getType();
-		}
-		if (binding instanceof IEnumerator) {
-			return ((IEnumerator) binding).getType();
-		}
-		if (binding instanceof IProblemBinding) {
-			return new ProblemType(ISemanticProblem.TYPE_UNRESOLVED_NAME);
-		}
-		return new ProblemType(ISemanticProblem.TYPE_UNKNOWN_FOR_EXPRESSION);
-	}
-	
-	@Override
-	public boolean isLValue() {
-		return true;
-	}
-	
-	@Override
-	public final ValueCategory getValueCategory() {
-		return ValueCategory.LVALUE;
-	}
+    @Override
+    public int getRoleForName(IASTName n)
+    {
+        if (n == name) {
+            return r_reference;
+        }
+        return r_unclear;
+    }
 
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix) {
-		IBinding[] bindings = CVisitor.findBindingsForContentAssist(n, isPrefix);
+    @Override
+    public IType getExpressionType()
+    {
+        IBinding binding = getName().resolveBinding();
+        if (binding instanceof IVariable) {
+            return ((IVariable) binding).getType();
+        }
+        if (binding instanceof IFunction) {
+            return ((IFunction) binding).getType();
+        }
+        if (binding instanceof IEnumerator) {
+            return ((IEnumerator) binding).getType();
+        }
+        if (binding instanceof IProblemBinding) {
+            return new ProblemType(ISemanticProblem.TYPE_UNRESOLVED_NAME);
+        }
+        return new ProblemType(ISemanticProblem.TYPE_UNKNOWN_FOR_EXPRESSION);
+    }
 
-		for (int i = 0; i < bindings.length; i++) {
-			if (bindings[i] instanceof IEnumeration || bindings[i] instanceof ICompositeType) {
-				bindings[i]= null;
-			}
-		}
-		
-		return ArrayUtil.removeNulls(IBinding.class, bindings);
-	}
+    @Override
+    public boolean isLValue()
+    {
+        return true;
+    }
+
+    @Override
+    public final ValueCategory getValueCategory()
+    {
+        return ValueCategory.LVALUE;
+    }
+
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix)
+    {
+        IBinding[] bindings = CVisitor.findBindingsForContentAssist(n, isPrefix);
+
+        for (int i = 0; i < bindings.length; i++) {
+            if (bindings[i] instanceof IEnumeration || bindings[i] instanceof ICompositeType) {
+                bindings[i] = null;
+            }
+        }
+
+        return ArrayUtil.removeNulls(IBinding.class, bindings);
+    }
 }

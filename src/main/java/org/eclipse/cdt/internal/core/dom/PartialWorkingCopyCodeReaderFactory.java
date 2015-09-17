@@ -4,15 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    IBM - Initial API and implementation
+ * IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
 
 import org.eclipse.cdt.core.dom.CDOM;
 import org.eclipse.cdt.core.index.IIndexFileLocation;
@@ -25,29 +21,37 @@ import org.eclipse.cdt.core.parser.ParserUtil;
 import org.eclipse.cdt.internal.core.parser.EmptyIterator;
 import org.eclipse.core.runtime.CoreException;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * @author jcamelon
  */
 @Deprecated
-public class PartialWorkingCopyCodeReaderFactory extends AbstractCodeReaderFactory {
+public class PartialWorkingCopyCodeReaderFactory
+        extends AbstractCodeReaderFactory
+{
 
     private final IWorkingCopyProvider provider;
-	private ICodeReaderCache cache = null;
+    private ICodeReaderCache cache = null;
 
     /**
      * @param provider
      */
-    public PartialWorkingCopyCodeReaderFactory(IWorkingCopyProvider provider, IIncludeFileResolutionHeuristics heuristics) {
-    	super(heuristics);
+    public PartialWorkingCopyCodeReaderFactory(IWorkingCopyProvider provider, IIncludeFileResolutionHeuristics heuristics)
+    {
+        super(heuristics);
         this.provider = provider;
-		cache = SavedCodeReaderFactory.getInstance().getCodeReaderCache();
+        cache = SavedCodeReaderFactory.getInstance().getCodeReaderCache();
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#getUniqueIdentifier()
      */
     @Override
-	public int getUniqueIdentifier() {
+    public int getUniqueIdentifier()
+    {
         return CDOM.PARSE_WORKING_COPY_WITH_SAVED_INCLUSIONS;
     }
 
@@ -55,47 +59,55 @@ public class PartialWorkingCopyCodeReaderFactory extends AbstractCodeReaderFacto
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#createCodeReaderForTranslationUnit(java.lang.String)
      */
     @Override
-	public CodeReader createCodeReaderForTranslationUnit(String path) {
-		return checkWorkingCopyThenCache(path);
+    public CodeReader createCodeReaderForTranslationUnit(String path)
+    {
+        return checkWorkingCopyThenCache(path);
     }
 
-    public CodeReader createCodeReaderForTranslationUnit(ITranslationUnit tu) {
-		return new CodeReader(tu.getPath().toOSString(), tu.getContents());
+    public CodeReader createCodeReaderForTranslationUnit(ITranslationUnit tu)
+    {
+        return new CodeReader(tu.getPath().toOSString(), tu.getContents());
     }
 
-	protected CodeReader checkWorkingCopyThenCache(String path) {
-		char [] buffer = ParserUtil.findWorkingCopyBuffer( path, createWorkingCopyIterator() );
-		if( buffer != null )
-			return new CodeReader(path, buffer);
-		return cache.get( path );
-	}
+    protected CodeReader checkWorkingCopyThenCache(String path)
+    {
+        char[] buffer = ParserUtil.findWorkingCopyBuffer(path, createWorkingCopyIterator());
+        if (buffer != null) {
+            return new CodeReader(path, buffer);
+        }
+        return cache.get(path);
+    }
 
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#createCodeReaderForInclusion(java.lang.String)
      */
     @Override
-	public CodeReader createCodeReaderForInclusion(String path) {
-        return cache.get( path );
+    public CodeReader createCodeReaderForInclusion(String path)
+    {
+        return cache.get(path);
     }
 
-
-	@Override
-	public CodeReader createCodeReaderForInclusion(IIndexFileLocation ifl, String astPath)
-			throws CoreException, IOException {
-		return cache.get(astPath, ifl);
-	}
-
-	protected Iterator<IWorkingCopy> createWorkingCopyIterator() {
-        if( provider == null ) return EmptyIterator.empty();
-        return Arrays.asList( provider.getWorkingCopies() ).iterator();
+    @Override
+    public CodeReader createCodeReaderForInclusion(IIndexFileLocation ifl, String astPath)
+            throws CoreException, IOException
+    {
+        return cache.get(astPath, ifl);
     }
 
-	/* (non-Javadoc)
+    protected Iterator<IWorkingCopy> createWorkingCopyIterator()
+    {
+        if (provider == null) {
+            return EmptyIterator.empty();
+        }
+        return Arrays.asList(provider.getWorkingCopies()).iterator();
+    }
+
+    /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#getCodeReaderCache()
      */
-	@Override
-	public ICodeReaderCache getCodeReaderCache() {
-		return cache;
-	}
-
+    @Override
+    public ICodeReaderCache getCodeReaderCache()
+    {
+        return cache;
+    }
 }

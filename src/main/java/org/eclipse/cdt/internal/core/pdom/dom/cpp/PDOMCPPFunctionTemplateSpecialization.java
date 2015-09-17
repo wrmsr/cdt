@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
+ * QNX - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.cpp;
 
@@ -28,41 +28,51 @@ import org.eclipse.core.runtime.CoreException;
  *
  * @author Bryan Wilkinson
  */
-class PDOMCPPFunctionTemplateSpecialization extends	PDOMCPPFunctionSpecialization 
-		implements ICPPFunctionTemplate, ICPPInstanceCache, IPDOMMemberOwner {
-	
-	public PDOMCPPFunctionTemplateSpecialization(PDOMCPPLinkage linkage, PDOMNode parent,
-			ICPPFunctionTemplate template, PDOMBinding specialized) throws CoreException {
-		super(linkage, parent, template, specialized);
-	}
+class PDOMCPPFunctionTemplateSpecialization
+        extends PDOMCPPFunctionSpecialization
+        implements ICPPFunctionTemplate, ICPPInstanceCache, IPDOMMemberOwner
+{
 
-	public PDOMCPPFunctionTemplateSpecialization(PDOMLinkage linkage, long bindingRecord) {
-		super(linkage, bindingRecord);
-	}
-	
-	@Override
-	public int getNodeType() {
-		return IIndexCPPBindingConstants.CPP_FUNCTION_TEMPLATE_SPECIALIZATION;
-	}
-	
-	@Override
-	public ICPPTemplateParameter[] getTemplateParameters() {
-		ICPPFunctionTemplate template = (ICPPFunctionTemplate) getSpecializedBinding();
-		return template.getTemplateParameters();
-	}
+    public PDOMCPPFunctionTemplateSpecialization(PDOMCPPLinkage linkage, PDOMNode parent,
+            ICPPFunctionTemplate template, PDOMBinding specialized)
+            throws CoreException
+    {
+        super(linkage, parent, template, specialized);
+    }
 
-	@Override
-	public ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments) {
-		return PDOMInstanceCache.getCache(this).getInstance(arguments);	
-	}
+    public PDOMCPPFunctionTemplateSpecialization(PDOMLinkage linkage, long bindingRecord)
+    {
+        super(linkage, bindingRecord);
+    }
 
-	@Override
-	public void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance) {
-		PDOMInstanceCache.getCache(this).addInstance(arguments, instance);	
-	}
-	
-	@Override
-	public ICPPTemplateInstance[] getAllInstances() {
-		return PDOMInstanceCache.getCache(this).getAllInstances();	
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexCPPBindingConstants.CPP_FUNCTION_TEMPLATE_SPECIALIZATION;
+    }
+
+    @Override
+    public ICPPTemplateParameter[] getTemplateParameters()
+    {
+        ICPPFunctionTemplate template = (ICPPFunctionTemplate) getSpecializedBinding();
+        return template.getTemplateParameters();
+    }
+
+    @Override
+    public ICPPTemplateInstance getInstance(ICPPTemplateArgument[] arguments)
+    {
+        return PDOMInstanceCache.getCache(this).getInstance(arguments);
+    }
+
+    @Override
+    public void addInstance(ICPPTemplateArgument[] arguments, ICPPTemplateInstance instance)
+    {
+        PDOMInstanceCache.getCache(this).addInstance(arguments, instance);
+    }
+
+    @Override
+    public ICPPTemplateInstance[] getAllInstances()
+    {
+        return PDOMInstanceCache.getCache(this).getAllInstances();
+    }
 }

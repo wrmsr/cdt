@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX - initial API and implementation
+ * QNX - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.errorparsers;
 
@@ -15,17 +15,22 @@ package org.eclipse.cdt.internal.errorparsers;
  * this class is moved to public package
  */
 @Deprecated
-public class ErrorPattern extends org.eclipse.cdt.core.errorparsers.ErrorPattern {
-	public ErrorPattern(String pattern, int groupFileName, int groupLineNum, int groupDesc, int groupVarName,
-			int severity) {
-		super(pattern, groupFileName, groupLineNum, groupDesc, groupVarName, severity);
-	}
+public class ErrorPattern
+        extends org.eclipse.cdt.core.errorparsers.ErrorPattern
+{
+    public ErrorPattern(String pattern, int groupFileName, int groupLineNum, int groupDesc, int groupVarName,
+            int severity)
+    {
+        super(pattern, groupFileName, groupLineNum, groupDesc, groupVarName, severity);
+    }
 
-	public ErrorPattern(String pattern, int groupDesc, int severity) {
-		super(pattern, groupDesc, severity);
-	}
+    public ErrorPattern(String pattern, int groupDesc, int severity)
+    {
+        super(pattern, groupDesc, severity);
+    }
 
-	public ErrorPattern(String pattern) {
-		super(pattern);
-	}
+    public ErrorPattern(String pattern)
+    {
+        super(pattern);
+    }
 }

@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM - Initial API and implementation
- *     Yuan Zhang / Beth Tibbitts (IBM Research)
- *     Markus Schorn (Wind River Systems)
+ * IBM - Initial API and implementation
+ * Yuan Zhang / Beth Tibbitts (IBM Research)
+ * Markus Schorn (Wind River Systems)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.c;
 
@@ -19,46 +19,60 @@ import org.eclipse.cdt.core.dom.ast.IASTProblemDeclaration;
 /**
  * @author jcamelon
  */
-public class CASTProblemDeclaration extends CASTProblemOwner implements IASTProblemDeclaration {
+public class CASTProblemDeclaration
+        extends CASTProblemOwner
+        implements IASTProblemDeclaration
+{
 
-    public CASTProblemDeclaration() {
-		super();
-	}
+    public CASTProblemDeclaration()
+    {
+        super();
+    }
 
-	public CASTProblemDeclaration(IASTProblem problem) {
-		super(problem);
-	}
+    public CASTProblemDeclaration(IASTProblem problem)
+    {
+        super(problem);
+    }
 
-	@Override
-	public CASTProblemDeclaration copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    @Override
+    public CASTProblemDeclaration copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public CASTProblemDeclaration copy(CopyStyle style) {
-		CASTProblemDeclaration copy = new CASTProblemDeclaration();
-		return copy(copy, style);
-	}
-	
-	@Override
-	public boolean accept(ASTVisitor action) {
+    @Override
+    public CASTProblemDeclaration copy(CopyStyle style)
+    {
+        CASTProblemDeclaration copy = new CASTProblemDeclaration();
+        return copy(copy, style);
+    }
+
+    @Override
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitDeclarations) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-        super.accept(action);	// Visit the problem.
+        super.accept(action);    // Visit the problem.
 
         if (action.shouldVisitDeclarations) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 }

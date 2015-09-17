@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *    IBM - Initial API and implementation
+ * IBM - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom;
 
@@ -19,28 +19,32 @@ import org.eclipse.cdt.core.parser.IScanner;
  * @author jcamelon
  */
 @Deprecated
-public class WorkingCopyCodeReaderFactory extends PartialWorkingCopyCodeReaderFactory {
+public class WorkingCopyCodeReaderFactory
+        extends PartialWorkingCopyCodeReaderFactory
+{
 
     /**
      * @param provider
      */
-    public WorkingCopyCodeReaderFactory(IWorkingCopyProvider provider, IIncludeFileResolutionHeuristics heuristics) {
+    public WorkingCopyCodeReaderFactory(IWorkingCopyProvider provider, IIncludeFileResolutionHeuristics heuristics)
+    {
         super(provider, heuristics);
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#getUniqueIdentifier()
      */
     @Override
-	public int getUniqueIdentifier() {
+    public int getUniqueIdentifier()
+    {
         return CDOM.PARSE_WORKING_COPY_WHENEVER_POSSIBLE;
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.cdt.core.dom.ICodeReaderFactory#createCodeReaderForInclusion(java.lang.String)
      */
-    public CodeReader createCodeReaderForInclusion(IScanner scanner, String path) {
+    public CodeReader createCodeReaderForInclusion(IScanner scanner, String path)
+    {
         return checkWorkingCopyThenCache(path);
     }
-
 }

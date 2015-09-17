@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Markus Schorn - initial API and implementation
- *     Sergey Prigogin (Google)
- *******************************************************************************/ 
+ * Markus Schorn - initial API and implementation
+ * Sergey Prigogin (Google)
+ *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
@@ -27,52 +27,54 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPMethod;
  *
  * @since 5.0
  */
-public interface ICPPClassSpecializationScope extends ICPPClassScope {
-	/**
-	 * Returns the class that was specialized to get this scope.
-	 */
-	ICPPClassType getOriginalClassType();
+public interface ICPPClassSpecializationScope
+        extends ICPPClassScope
+{
+    /**
+     * Returns the class that was specialized to get this scope.
+     */
+    ICPPClassType getOriginalClassType();
 
-	/**
-	 * The specialized class.
-	 */
-	@Override
-	ICPPClassSpecialization getClassType();
+    /**
+     * The specialized class.
+     */
+    @Override
+    ICPPClassSpecialization getClassType();
 
-	/**
-	 * Computes the bases via the original class.
-	 */
-	ICPPBase[] getBases(IASTNode point);
+    /**
+     * Computes the bases via the original class.
+     */
+    ICPPBase[] getBases(IASTNode point);
 
-	/**
-	 * Similar to {@link ICPPClassScope#getConstructors()} but a accepts a starting point
-	 * for template instantiation.
-	 */
-	ICPPConstructor[] getConstructors(IASTNode point);
+    /**
+     * Similar to {@link ICPPClassScope#getConstructors()} but a accepts a starting point
+     * for template instantiation.
+     */
+    ICPPConstructor[] getConstructors(IASTNode point);
 
-	/**
-	 * Similar to {@link ICPPClassScope#getImplicitMethods()} but a accepts a starting point
-	 * for template instantiation.
-	 */
-	ICPPMethod[] getImplicitMethods(IASTNode point);
+    /**
+     * Similar to {@link ICPPClassScope#getImplicitMethods()} but a accepts a starting point
+     * for template instantiation.
+     */
+    ICPPMethod[] getImplicitMethods(IASTNode point);
 
-	/**
-	 * Computes the methods via the original class.
-	 */
-	ICPPMethod[] getDeclaredMethods(IASTNode point);
+    /**
+     * Computes the methods via the original class.
+     */
+    ICPPMethod[] getDeclaredMethods(IASTNode point);
 
-	/**
-	 * Computes the fields via the original class.
-	 */
-	ICPPField[] getDeclaredFields(IASTNode point);
+    /**
+     * Computes the fields via the original class.
+     */
+    ICPPField[] getDeclaredFields(IASTNode point);
 
-	/**
-	 * Computes the friends via the original class.
-	 */
-	IBinding[] getFriends(IASTNode point);
+    /**
+     * Computes the friends via the original class.
+     */
+    IBinding[] getFriends(IASTNode point);
 
-	/**
-	 * Computes the nested classes via the original class.
-	 */
-	ICPPClassType[] getNestedClasses(IASTNode point);
+    /**
+     * Computes the nested classes via the original class.
+     */
+    ICPPClassType[] getNestedClasses(IASTNode point);
 }

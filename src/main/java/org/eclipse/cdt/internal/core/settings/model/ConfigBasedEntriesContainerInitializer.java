@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -16,14 +16,16 @@ import org.eclipse.cdt.core.model.PathEntryContainerInitializer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
-public class ConfigBasedEntriesContainerInitializer extends
-		PathEntryContainerInitializer {
+public class ConfigBasedEntriesContainerInitializer
+        extends
+        PathEntryContainerInitializer
+{
 
-	@Override
-	public void initialize(IPath containerPath, ICProject project)
-			throws CoreException {
-		ConfigBasedPathEntryContainer container = ConfigBasedPathEntryStore.createContainer(project.getProject());
-		CoreModel.setPathEntryContainer(new ICProject[]{project}, container, null);
-	}
-
+    @Override
+    public void initialize(IPath containerPath, ICProject project)
+            throws CoreException
+    {
+        ConfigBasedPathEntryContainer container = ConfigBasedPathEntryStore.createContainer(project.getProject());
+        CoreModel.setPathEntryContainer(new ICProject[] {project}, container, null);
+    }
 }

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
  * Intel Corporation - Initial API and implementation
  *******************************************************************************/
@@ -12,47 +12,49 @@ package org.eclipse.cdt.core.settings.model;
 
 import java.util.List;
 
-public interface ICLanguageSetting extends ICSettingObject {
-	String[] getSourceContentTypeIds();
-	
-	String[] getSourceExtensions();
+public interface ICLanguageSetting
+        extends ICSettingObject
+{
+    String[] getSourceContentTypeIds();
+
+    String[] getSourceExtensions();
 
 //	IContentType getHeaderContentType();
 
 //	String[] getHeaderExtensions();
 
-	/**
-	 * @return language id. Note that that id can be {@code null}.
-	 */
-	String getLanguageId();
-	
+    /**
+     * @return language id. Note that that id can be {@code null}.
+     */
+    String getLanguageId();
+
 //	ICLanguageSettingEntry[] getSettingEntries();
-	
+
 //	void removeEntry(ICLanguageSettingEntry entry);
-	
+
 //	void addEntry(ICLanguageSettingEntry entry, int position);
 
-	ICLanguageSettingEntry[] getSettingEntries(int kind);
+    ICLanguageSettingEntry[] getSettingEntries(int kind);
 
-	List<ICLanguageSettingEntry> getSettingEntriesList(int kind);
+    List<ICLanguageSettingEntry> getSettingEntriesList(int kind);
 
 //	ICLanguageSettingEntry[] getResolvedSettingEntries();
 
-	ICLanguageSettingEntry[] getResolvedSettingEntries(int kind);
+    ICLanguageSettingEntry[] getResolvedSettingEntries(int kind);
 
-	void setSettingEntries(int kind, ICLanguageSettingEntry[] entries);
+    void setSettingEntries(int kind, ICLanguageSettingEntry[] entries);
 
-	void setSettingEntries(int kind, List<ICLanguageSettingEntry> entriesList);
+    void setSettingEntries(int kind, List<ICLanguageSettingEntry> entriesList);
 
 //	void changeEntries(ICLanguageSettingEntryInfo[] added, ICLanguageSettingEntry[] removed);
 
-	int getSupportedEntryKinds();
+    int getSupportedEntryKinds();
 
-	boolean supportsEntryKind(int kind);
-	
-	void setLanguageId(String id);
-	
-	void setSourceContentTypeIds(String ids[]);
+    boolean supportsEntryKind(int kind);
 
-	void setSourceExtensions(String exts[]);
+    void setLanguageId(String id);
+
+    void setSourceContentTypeIds(String ids[]);
+
+    void setSourceExtensions(String exts[]);
 }

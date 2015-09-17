@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.parser.util;
 
@@ -14,49 +14,58 @@ import java.util.Collection;
 
 /**
  * Static methods for working with strings.
- * 
+ *
  * @since 5.6
  */
-public class StringUtil {
+public class StringUtil
+{
 
-	private StringUtil() {}
+    private StringUtil() {}
 
-	/**
-	 * Joins strings using the given delimiter.
-	 */
-	public static String join(Iterable<String> strings, String delimiter) {
-		if (strings instanceof Collection) {
-			int size = ((Collection<String>) strings).size();
-			if (size == 1)
-				return strings.iterator().next();
-			if (size == 0)
-				return ""; //$NON-NLS-1$
-		}
+    /**
+     * Joins strings using the given delimiter.
+     */
+    public static String join(Iterable<String> strings, String delimiter)
+    {
+        if (strings instanceof Collection) {
+            int size = ((Collection<String>) strings).size();
+            if (size == 1) {
+                return strings.iterator().next();
+            }
+            if (size == 0) {
+                return ""; //$NON-NLS-1$
+            }
+        }
 
-		StringBuilder buf = new StringBuilder();
-		for (String str : strings) {
-			if (buf.length() != 0)
-				buf.append(delimiter);
-			buf.append(str);
-		}
-		return buf.toString();
-	}
+        StringBuilder buf = new StringBuilder();
+        for (String str : strings) {
+            if (buf.length() != 0) {
+                buf.append(delimiter);
+            }
+            buf.append(str);
+        }
+        return buf.toString();
+    }
 
-	/**
-	 * Joins strings using the given delimiter.
-	 */
-	public static String join(String[] strings, String delimiter) {
-		if (strings.length == 1)
-			return strings[0];
-		if (strings.length == 0)
-			return ""; //$NON-NLS-1$
+    /**
+     * Joins strings using the given delimiter.
+     */
+    public static String join(String[] strings, String delimiter)
+    {
+        if (strings.length == 1) {
+            return strings[0];
+        }
+        if (strings.length == 0) {
+            return ""; //$NON-NLS-1$
+        }
 
-		StringBuilder buf = new StringBuilder();
-		for (String str : strings) {
-			if (buf.length() != 0)
-				buf.append(delimiter);
-			buf.append(str);
-		}
-		return buf.toString();
-	}
+        StringBuilder buf = new StringBuilder();
+        for (String str : strings) {
+            if (buf.length() != 0) {
+                buf.append(delimiter);
+            }
+            buf.append(str);
+        }
+        return buf.toString();
+    }
 }

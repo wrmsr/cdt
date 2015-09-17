@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Bala Torati (Symbian) - Initial API and implementation
+ * Bala Torati (Symbian) - Initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.core.templateengine;
 
@@ -15,13 +15,16 @@ package org.eclipse.cdt.core.templateengine;
  * @deprecated Provide your own messages.
  */
 @Deprecated
-public class TemplateEngineMessages {
-	private TemplateEngineMessages() {
-	}
+public class TemplateEngineMessages
+{
+    private TemplateEngineMessages()
+    {
+    }
 
-	public static String ProcessRunner_missingArg;
+    public static String ProcessRunner_missingArg;
 
-	public static String getString(String key) {
-		throw new UnsupportedOperationException();
-	}
+    public static String getString(String key)
+    {
+        throw new UnsupportedOperationException();
+    }
 }

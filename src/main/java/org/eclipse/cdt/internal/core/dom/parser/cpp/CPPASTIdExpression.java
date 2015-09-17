@@ -4,16 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     John Camelon (IBM) - Initial API and implementation
- *     Bryan Wilkinson (QNX)
- *     Markus Schorn (Wind River Systems)
- *     Sergey Prigogin (Google)
+ * John Camelon (IBM) - Initial API and implementation
+ * Bryan Wilkinson (QNX)
+ * Markus Schorn (Wind River Systems)
+ * Sergey Prigogin (Google)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp;
-
-import static org.eclipse.cdt.core.dom.ast.IASTExpression.ValueCategory.LVALUE;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTIdExpression;
@@ -32,129 +30,159 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.EvalID;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.FunctionSetType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil;
 
-public class CPPASTIdExpression extends ASTNode
-		implements IASTIdExpression, ICPPASTExpression, ICPPASTCompletionContext {
-	private IASTName fName;
-	private ICPPEvaluation fEvaluation;
-	private IASTImplicitDestructorName[] fImplicitDestructorNames;
+import static org.eclipse.cdt.core.dom.ast.IASTExpression.ValueCategory.LVALUE;
 
-    public CPPASTIdExpression() {
-	}
+public class CPPASTIdExpression
+        extends ASTNode
+        implements IASTIdExpression, ICPPASTExpression, ICPPASTCompletionContext
+{
+    private IASTName fName;
+    private ICPPEvaluation fEvaluation;
+    private IASTImplicitDestructorName[] fImplicitDestructorNames;
 
-	public CPPASTIdExpression(IASTName name) {
-		setName(name);
-	}
+    public CPPASTIdExpression()
+    {
+    }
 
-	@Override
-	public CPPASTIdExpression copy() {
-		return copy(CopyStyle.withoutLocations);
-	}
+    public CPPASTIdExpression(IASTName name)
+    {
+        setName(name);
+    }
 
-	@Override
-	public CPPASTIdExpression copy(CopyStyle style) {
-		CPPASTIdExpression copy = new CPPASTIdExpression(fName == null ? null : fName.copy(style));
-		return copy(copy, style);
-	}
+    @Override
+    public CPPASTIdExpression copy()
+    {
+        return copy(CopyStyle.withoutLocations);
+    }
 
-	@Override
-	public IASTName getName() {
+    @Override
+    public CPPASTIdExpression copy(CopyStyle style)
+    {
+        CPPASTIdExpression copy = new CPPASTIdExpression(fName == null ? null : fName.copy(style));
+        return copy(copy, style);
+    }
+
+    @Override
+    public IASTName getName()
+    {
         return fName;
     }
 
     @Override
-	public void setName(IASTName name) {
+    public void setName(IASTName name)
+    {
         assertNotFrozen();
         this.fName = name;
         if (name != null) {
-			name.setParent(this);
-			name.setPropertyInParent(ID_NAME);
-		}
+            name.setParent(this);
+            name.setPropertyInParent(ID_NAME);
+        }
     }
 
-	@Override
-	public IASTImplicitDestructorName[] getImplicitDestructorNames() {
-		if (fImplicitDestructorNames == null) {
-			fImplicitDestructorNames = DestructorCallCollector.getTemporariesDestructorCalls(this);
-		}
+    @Override
+    public IASTImplicitDestructorName[] getImplicitDestructorNames()
+    {
+        if (fImplicitDestructorNames == null) {
+            fImplicitDestructorNames = DestructorCallCollector.getTemporariesDestructorCalls(this);
+        }
 
-		return fImplicitDestructorNames;
-	}
+        return fImplicitDestructorNames;
+    }
 
     @Override
-	public boolean accept(ASTVisitor action) {
+    public boolean accept(ASTVisitor action)
+    {
         if (action.shouldVisitExpressions) {
-		    switch (action.visit(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.visit(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
 
-        if (fName != null && !fName.accept(action)) return false;
+        if (fName != null && !fName.accept(action)) {
+            return false;
+        }
 
-        if (action.shouldVisitImplicitDestructorNames && !acceptByNodes(getImplicitDestructorNames(), action))
-        	return false;
+        if (action.shouldVisitImplicitDestructorNames && !acceptByNodes(getImplicitDestructorNames(), action)) {
+            return false;
+        }
 
         if (action.shouldVisitExpressions) {
-		    switch (action.leave(this)) {
-	            case ASTVisitor.PROCESS_ABORT: return false;
-	            case ASTVisitor.PROCESS_SKIP: return true;
-	            default: break;
-	        }
-		}
+            switch (action.leave(this)) {
+                case ASTVisitor.PROCESS_ABORT:
+                    return false;
+                case ASTVisitor.PROCESS_SKIP:
+                    return true;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
-	@Override
-	public int getRoleForName(IASTName n) {
-		if (fName == n)
-			return r_reference;
-		return r_unclear;
-	}
+    @Override
+    public int getRoleForName(IASTName n)
+    {
+        if (fName == n) {
+            return r_reference;
+        }
+        return r_unclear;
+    }
 
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix, String[] namespaces) {
-		return CPPSemantics.findBindingsForContentAssist(n, isPrefix, namespaces);
-	}
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix, String[] namespaces)
+    {
+        return CPPSemantics.findBindingsForContentAssist(n, isPrefix, namespaces);
+    }
 
-	@Override
-	public String toString() {
-		return fName != null ? fName.toString() : "<unnamed>"; //$NON-NLS-1$
-	}
+    @Override
+    public String toString()
+    {
+        return fName != null ? fName.toString() : "<unnamed>"; //$NON-NLS-1$
+    }
 
-	@Override
-	public IBinding[] findBindings(IASTName n, boolean isPrefix) {
-		return findBindings(n, isPrefix, null);
-	}
+    @Override
+    public IBinding[] findBindings(IASTName n, boolean isPrefix)
+    {
+        return findBindings(n, isPrefix, null);
+    }
 
-	@Override
-	public ICPPEvaluation getEvaluation() {
-		if (fEvaluation == null) {
-			fEvaluation= EvalID.create(this);
-		}
-		return fEvaluation;
-	}
+    @Override
+    public ICPPEvaluation getEvaluation()
+    {
+        if (fEvaluation == null) {
+            fEvaluation = EvalID.create(this);
+        }
+        return fEvaluation;
+    }
 
-	@Override
-	public IType getExpressionType() {
-		IType type= getEvaluation().getTypeOrFunctionSet(this);
-		if (type instanceof FunctionSetType) {
-			IBinding binding= fName.resolveBinding();
-			if (binding instanceof IFunction) {
-				return SemanticUtil.mapToAST(((IFunction) binding).getType(), this);
-			}
-			return ProblemType.UNKNOWN_FOR_EXPRESSION;
-		}
-		return type;
-	}
+    @Override
+    public IType getExpressionType()
+    {
+        IType type = getEvaluation().getTypeOrFunctionSet(this);
+        if (type instanceof FunctionSetType) {
+            IBinding binding = fName.resolveBinding();
+            if (binding instanceof IFunction) {
+                return SemanticUtil.mapToAST(((IFunction) binding).getType(), this);
+            }
+            return ProblemType.UNKNOWN_FOR_EXPRESSION;
+        }
+        return type;
+    }
 
-	@Override
-	public boolean isLValue() {
-		return getValueCategory() == LVALUE;
-	}
+    @Override
+    public boolean isLValue()
+    {
+        return getValueCategory() == LVALUE;
+    }
 
-	@Override
-	public ValueCategory getValueCategory() {
-		return getEvaluation().getValueCategory(this);
-	}
+    @Override
+    public ValueCategory getValueCategory()
+    {
+        return getEvaluation().getValueCategory(this);
+    }
 }

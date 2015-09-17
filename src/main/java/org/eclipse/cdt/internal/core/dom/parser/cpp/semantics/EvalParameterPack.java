@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Nathan Ridge - initial API and implementation
+ * Nathan Ridge - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.dom.parser.cpp.semantics;
 
@@ -28,112 +28,136 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Evaluation for a pack expansion expression.
  */
-public class EvalParameterPack extends CPPDependentEvaluation {
+public class EvalParameterPack
+        extends CPPDependentEvaluation
+{
 
-	private ICPPEvaluation fExpansionPattern;
-	private IType fType;
-	
-	public EvalParameterPack(ICPPEvaluation expansionPattern, IASTNode pointOfDefinition) {
-		this(expansionPattern, findEnclosingTemplate(pointOfDefinition));
-	}
+    private ICPPEvaluation fExpansionPattern;
+    private IType fType;
 
-	public EvalParameterPack(ICPPEvaluation expansionPattern, IBinding templateDefinition) {
-		super(templateDefinition);
-		fExpansionPattern = expansionPattern;
-	}
-	
-	public ICPPEvaluation getExpansionPattern() {
-		return fExpansionPattern;
-	}
-	
-	@Override
-	public boolean isInitializerList() {
-		return fExpansionPattern.isInitializerList();
-	}
+    public EvalParameterPack(ICPPEvaluation expansionPattern, IASTNode pointOfDefinition)
+    {
+        this(expansionPattern, findEnclosingTemplate(pointOfDefinition));
+    }
 
-	@Override
-	public boolean isFunctionSet() {
-		return fExpansionPattern.isFunctionSet();
-	}
+    public EvalParameterPack(ICPPEvaluation expansionPattern, IBinding templateDefinition)
+    {
+        super(templateDefinition);
+        fExpansionPattern = expansionPattern;
+    }
 
-	@Override
-	public boolean isTypeDependent() {
-		return fExpansionPattern.isTypeDependent();
-	}
+    public ICPPEvaluation getExpansionPattern()
+    {
+        return fExpansionPattern;
+    }
 
-	@Override
-	public boolean isValueDependent() {
-		return fExpansionPattern.isValueDependent();
-	}
+    @Override
+    public boolean isInitializerList()
+    {
+        return fExpansionPattern.isInitializerList();
+    }
 
-	@Override
-	public boolean isConstantExpression(IASTNode point) {
-		return false;
-	}
+    @Override
+    public boolean isFunctionSet()
+    {
+        return fExpansionPattern.isFunctionSet();
+    }
 
-	@Override
-	public IType getTypeOrFunctionSet(IASTNode point) {
-		if (fType == null) {
-			IType type = fExpansionPattern.getTypeOrFunctionSet(point);
-			if (type == null) {
-				fType= ProblemType.UNKNOWN_FOR_EXPRESSION;
-			} else {
-				fType= new CPPParameterPackType(type);
-			}
-		}
-		return fType;
-	}
+    @Override
+    public boolean isTypeDependent()
+    {
+        return fExpansionPattern.isTypeDependent();
+    }
 
-	@Override
-	public IValue getValue(IASTNode point) {
-		return Value.create(fExpansionPattern);		
-	}
+    @Override
+    public boolean isValueDependent()
+    {
+        return fExpansionPattern.isValueDependent();
+    }
 
-	@Override
-	public ValueCategory getValueCategory(IASTNode point) {
-		return ValueCategory.PRVALUE;
-	}
+    @Override
+    public boolean isConstantExpression(IASTNode point)
+    {
+        return false;
+    }
 
-	@Override
-	public ICPPEvaluation instantiate(ICPPTemplateParameterMap tpMap, int packOffset,
-			ICPPTypeSpecialization within, int maxdepth, IASTNode point) {
-		ICPPEvaluation expansionPattern = fExpansionPattern.instantiate(tpMap, packOffset, within,
-				maxdepth, point);
-		if (expansionPattern == fExpansionPattern)
-			return this;
-		return new EvalParameterPack(expansionPattern, getTemplateDefinition());
-	}
+    @Override
+    public IType getTypeOrFunctionSet(IASTNode point)
+    {
+        if (fType == null) {
+            IType type = fExpansionPattern.getTypeOrFunctionSet(point);
+            if (type == null) {
+                fType = ProblemType.UNKNOWN_FOR_EXPRESSION;
+            }
+            else {
+                fType = new CPPParameterPackType(type);
+            }
+        }
+        return fType;
+    }
 
-	@Override
-	public ICPPEvaluation computeForFunctionCall(CPPFunctionParameterMap parameterMap,
-			ConstexprEvaluationContext context) {
-		ICPPEvaluation expansionPattern = fExpansionPattern.computeForFunctionCall(parameterMap,
-				context.recordStep());
-		if (expansionPattern == fExpansionPattern)
-			return this;
-		return new EvalParameterPack(expansionPattern, getTemplateDefinition());
-	}
+    @Override
+    public IValue getValue(IASTNode point)
+    {
+        return Value.create(fExpansionPattern);
+    }
 
-	@Override
-	public int determinePackSize(ICPPTemplateParameterMap tpMap) {
-		return CPPTemplates.PACK_SIZE_NOT_FOUND;
-	}
+    @Override
+    public ValueCategory getValueCategory(IASTNode point)
+    {
+        return ValueCategory.PRVALUE;
+    }
 
-	@Override
-	public boolean referencesTemplateParameter() {
-		return fExpansionPattern.referencesTemplateParameter();
-	}
+    @Override
+    public ICPPEvaluation instantiate(ICPPTemplateParameterMap tpMap, int packOffset,
+            ICPPTypeSpecialization within, int maxdepth, IASTNode point)
+    {
+        ICPPEvaluation expansionPattern = fExpansionPattern.instantiate(tpMap, packOffset, within,
+                maxdepth, point);
+        if (expansionPattern == fExpansionPattern) {
+            return this;
+        }
+        return new EvalParameterPack(expansionPattern, getTemplateDefinition());
+    }
 
-	@Override
-	public void marshal(ITypeMarshalBuffer buffer, boolean includeValue) throws CoreException {
-		buffer.putShort(ITypeMarshalBuffer.EVAL_PARAMETER_PACK);
-		buffer.marshalEvaluation(fExpansionPattern, includeValue);
-		marshalTemplateDefinition(buffer);
-	}
-	
-	public static ISerializableEvaluation unmarshal(short firstBytes, ITypeMarshalBuffer buffer) throws CoreException {
-		ICPPEvaluation expansionPattern = (ICPPEvaluation) buffer.unmarshalEvaluation();
-		IBinding templateDefinition = buffer.unmarshalBinding();
-		return new EvalParameterPack(expansionPattern, templateDefinition);
-	}
+    @Override
+    public ICPPEvaluation computeForFunctionCall(CPPFunctionParameterMap parameterMap,
+            ConstexprEvaluationContext context)
+    {
+        ICPPEvaluation expansionPattern = fExpansionPattern.computeForFunctionCall(parameterMap,
+                context.recordStep());
+        if (expansionPattern == fExpansionPattern) {
+            return this;
+        }
+        return new EvalParameterPack(expansionPattern, getTemplateDefinition());
+    }
+
+    @Override
+    public int determinePackSize(ICPPTemplateParameterMap tpMap)
+    {
+        return CPPTemplates.PACK_SIZE_NOT_FOUND;
+    }
+
+    @Override
+    public boolean referencesTemplateParameter()
+    {
+        return fExpansionPattern.referencesTemplateParameter();
+    }
+
+    @Override
+    public void marshal(ITypeMarshalBuffer buffer, boolean includeValue)
+            throws CoreException
+    {
+        buffer.putShort(ITypeMarshalBuffer.EVAL_PARAMETER_PACK);
+        buffer.marshalEvaluation(fExpansionPattern, includeValue);
+        marshalTemplateDefinition(buffer);
+    }
+
+    public static ISerializableEvaluation unmarshal(short firstBytes, ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        ICPPEvaluation expansionPattern = (ICPPEvaluation) buffer.unmarshalEvaluation();
+        IBinding templateDefinition = buffer.unmarshalBinding();
+        return new EvalParameterPack(expansionPattern, templateDefinition);
+    }
 }

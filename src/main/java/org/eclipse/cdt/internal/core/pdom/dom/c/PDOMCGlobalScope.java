@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- * 	   Sergey Prigogin (Google) - initial API and implementation
+ * Sergey Prigogin (Google) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.c;
 
@@ -16,8 +16,11 @@ import org.eclipse.cdt.internal.core.pdom.dom.PDOMGlobalScope;
 /**
  * Represents the global C index scope.
  */
-public class PDOMCGlobalScope extends PDOMGlobalScope implements ICScope {
-	public static final PDOMCGlobalScope INSTANCE = new PDOMCGlobalScope(); 
+public class PDOMCGlobalScope
+        extends PDOMGlobalScope
+        implements ICScope
+{
+    public static final PDOMCGlobalScope INSTANCE = new PDOMCGlobalScope();
 
-	private PDOMCGlobalScope() {}
+    private PDOMCGlobalScope() {}
 }

@@ -4,19 +4,22 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     QNX Software Systems - Initial API and implementation
+ * QNX Software Systems - Initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.cdt.internal.core.model;
 
-public class CFileInfo extends CElementInfo {
+public class CFileInfo
+        extends CElementInfo
+{
 
-	/**
-	 * Constructs a new C Model Info 
-	 */
-	protected CFileInfo(CElement element) {
-		super(element);
-	}
+    /**
+     * Constructs a new C Model Info
+     */
+    protected CFileInfo(CElement element)
+    {
+        super(element);
+    }
 }

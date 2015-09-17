@@ -4,12 +4,12 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     Doug Schaefer (QNX) - Initial API and implementation
- *     Markus Schorn (Wind River Systems)
- *     IBM Corporation
- *     Andrew Ferguson (Symbian)
+ * Doug Schaefer (QNX) - Initial API and implementation
+ * Markus Schorn (Wind River Systems)
+ * IBM Corporation
+ * Andrew Ferguson (Symbian)
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.pdom.dom.c;
 
@@ -51,337 +51,397 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * Container for c bindings
  */
-class PDOMCLinkage extends PDOMLinkage implements IIndexCBindingConstants {
+class PDOMCLinkage
+        extends PDOMLinkage
+        implements IIndexCBindingConstants
+{
 
-	public PDOMCLinkage(PDOM pdom, long record) {
-		super(pdom, record);
-	}
+    public PDOMCLinkage(PDOM pdom, long record)
+    {
+        super(pdom, record);
+    }
 
-	public PDOMCLinkage(PDOM pdom) throws CoreException {
-		super(pdom, C_LINKAGE_NAME, C_LINKAGE_NAME.toCharArray()); 
-	}
+    public PDOMCLinkage(PDOM pdom)
+            throws CoreException
+    {
+        super(pdom, C_LINKAGE_NAME, C_LINKAGE_NAME.toCharArray());
+    }
 
-	@Override
-	public int getNodeType() {
-		return IIndexBindingConstants.LINKAGE;
-	}
-	
-	@Override
-	public String getLinkageName() {
-		return C_LINKAGE_NAME;
-	}
+    @Override
+    public int getNodeType()
+    {
+        return IIndexBindingConstants.LINKAGE;
+    }
 
-	@Override
-	public int getLinkageID() {
-		return C_LINKAGE_ID;
-	}
+    @Override
+    public String getLinkageName()
+    {
+        return C_LINKAGE_NAME;
+    }
 
-	private PDOMBinding addBinding(final IBinding inputBinding, IASTName fromName) throws CoreException {
-		if (cannotAdapt(inputBinding)) {
-			return null;
-		}
+    @Override
+    public int getLinkageID()
+    {
+        return C_LINKAGE_ID;
+    }
 
-		PDOMBinding pdomBinding= attemptFastAdaptBinding(inputBinding);
-		
-		if (pdomBinding == null) {
-			// assign names to anonymous types.
-			IBinding binding= PDOMASTAdapter.getAdapterForAnonymousASTBinding(inputBinding);
-			if (binding == null) 
-				return null;
+    private PDOMBinding addBinding(final IBinding inputBinding, IASTName fromName)
+            throws CoreException
+    {
+        if (cannotAdapt(inputBinding)) {
+            return null;
+        }
 
-			PDOMNode parent = getAdaptedParent(binding);
-			if (parent == null)
-				return null;
-		
-			long[] localToFileHolder= {0};
-			pdomBinding = adaptBinding(parent, binding, localToFileHolder);
-			if (pdomBinding == null) {
-				pdomBinding = createBinding(parent, binding, localToFileHolder[0]);
-				if (pdomBinding != null) {
-					getPDOM().putCachedResult(inputBinding, pdomBinding);
-				}
+        PDOMBinding pdomBinding = attemptFastAdaptBinding(inputBinding);
 
-				// Synchronize the tags associated with the persistent binding to match the set that
-				// is associated with the input binding.
-				TagManager.getInstance().syncTags(pdomBinding, inputBinding);
+        if (pdomBinding == null) {
+            // assign names to anonymous types.
+            IBinding binding = PDOMASTAdapter.getAdapterForAnonymousASTBinding(inputBinding);
+            if (binding == null) {
+                return null;
+            }
 
-				return pdomBinding;
-			}
+            PDOMNode parent = getAdaptedParent(binding);
+            if (parent == null) {
+                return null;
+            }
 
-			getPDOM().putCachedResult(inputBinding, pdomBinding);
-		}
-		
-		if (shouldUpdate(pdomBinding, fromName)) {
-			IBinding fromBinding = fromName.getBinding();
+            long[] localToFileHolder = {0};
+            pdomBinding = adaptBinding(parent, binding, localToFileHolder);
+            if (pdomBinding == null) {
+                pdomBinding = createBinding(parent, binding, localToFileHolder[0]);
+                if (pdomBinding != null) {
+                    getPDOM().putCachedResult(inputBinding, pdomBinding);
+                }
 
-			pdomBinding.update(this, fromBinding);
+                // Synchronize the tags associated with the persistent binding to match the set that
+                // is associated with the input binding.
+                TagManager.getInstance().syncTags(pdomBinding, inputBinding);
 
-			// Update the tags based on the tags from the new binding.  This cannot be done in
-			// PDOMBinding.update, because not all subclasses (e.g., PDOMCFunction) call
-			// the superclass implementation.
-			TagManager.getInstance().syncTags(pdomBinding, fromBinding);
-		}
-		return pdomBinding;
-	}
-	
-	private PDOMBinding createBinding(PDOMNode parent, IBinding binding, long localToFile) throws CoreException {
-		PDOMBinding pdomBinding= null;
+                return pdomBinding;
+            }
 
-		PDOMNode insertIntoIndex= null;
-		if (binding instanceof IField) { // must be before IVariable
-			if (parent instanceof IPDOMMemberOwner) {
-				pdomBinding = new PDOMCField(this, (IPDOMMemberOwner)parent, (IField) binding);
-				// If the field is inside an anonymous struct or union, add it to the parent node as well.
-				if (parent instanceof ICompositeType && ((ICompositeType) parent).isAnonymous()) {
-					insertIntoIndex = parent.getParentNode();
-					if (insertIntoIndex == null) {
-						insertIntoIndex = this;
-					}
-				}
-			}
-		} else if (binding instanceof IVariable) {
-			IVariable var= (IVariable) binding;
-			pdomBinding = new PDOMCVariable(this, parent, var);
-		} else if (binding instanceof IFunction) {
-			IFunction func= (IFunction) binding;
-			pdomBinding = new PDOMCFunction(this, parent, func);
-		} else if (binding instanceof ICompositeType) {
-			pdomBinding = new PDOMCStructure(this, parent, (ICompositeType) binding);
-		} else if (binding instanceof IEnumeration) {
-			pdomBinding = new PDOMCEnumeration(this, parent, (IEnumeration) binding);
-		} else if (binding instanceof IEnumerator) {
-			assert parent instanceof IEnumeration;
-			pdomBinding = new PDOMCEnumerator(this, parent, (IEnumerator) binding);
-			insertIntoIndex= parent.getParentNode();
-			if (insertIntoIndex == null) {
-				insertIntoIndex= this;
-			}
-		} else if (binding instanceof ITypedef) {
-			pdomBinding = new PDOMCTypedef(this, parent, (ITypedef)binding);
-		}
+            getPDOM().putCachedResult(inputBinding, pdomBinding);
+        }
 
-		if (pdomBinding != null) {
-			pdomBinding.setLocalToFileRec(localToFile);
-			parent.addChild(pdomBinding);
-			if (insertIntoIndex != null) {
-				insertIntoIndex.addChild(pdomBinding);
-			}
-			if (parent != this && insertIntoIndex != this) {
-				insertIntoNestedBindingsIndex(pdomBinding);
-			}
-		}
-		return pdomBinding;
-	}
+        if (shouldUpdate(pdomBinding, fromName)) {
+            IBinding fromBinding = fromName.getBinding();
 
-	private boolean shouldUpdate(PDOMBinding pdomBinding, IASTName fromName) throws CoreException {
-		if (fromName != null) {
-			if (fromName.isDefinition()) {
-				return true;
-			}
-			if (fromName.isReference()) {
-				return false;
-			}
-			return !pdomBinding.hasDefinition();
-		}
-		return false;
-	}
+            pdomBinding.update(this, fromBinding);
 
-	@Override
-	public PDOMBinding addBinding(IASTName name) throws CoreException {
-		if (name == null)
-			return null;
+            // Update the tags based on the tags from the new binding.  This cannot be done in
+            // PDOMBinding.update, because not all subclasses (e.g., PDOMCFunction) call
+            // the superclass implementation.
+            TagManager.getInstance().syncTags(pdomBinding, fromBinding);
+        }
+        return pdomBinding;
+    }
 
-		char[] namechars = name.getSimpleID();
-		if (namechars == null)
-			return null;
+    private PDOMBinding createBinding(PDOMNode parent, IBinding binding, long localToFile)
+            throws CoreException
+    {
+        PDOMBinding pdomBinding = null;
 
-		IBinding binding = name.resolveBinding();
-		return addBinding(binding, name);
-	}
+        PDOMNode insertIntoIndex = null;
+        if (binding instanceof IField) { // must be before IVariable
+            if (parent instanceof IPDOMMemberOwner) {
+                pdomBinding = new PDOMCField(this, (IPDOMMemberOwner) parent, (IField) binding);
+                // If the field is inside an anonymous struct or union, add it to the parent node as well.
+                if (parent instanceof ICompositeType && ((ICompositeType) parent).isAnonymous()) {
+                    insertIntoIndex = parent.getParentNode();
+                    if (insertIntoIndex == null) {
+                        insertIntoIndex = this;
+                    }
+                }
+            }
+        }
+        else if (binding instanceof IVariable) {
+            IVariable var = (IVariable) binding;
+            pdomBinding = new PDOMCVariable(this, parent, var);
+        }
+        else if (binding instanceof IFunction) {
+            IFunction func = (IFunction) binding;
+            pdomBinding = new PDOMCFunction(this, parent, func);
+        }
+        else if (binding instanceof ICompositeType) {
+            pdomBinding = new PDOMCStructure(this, parent, (ICompositeType) binding);
+        }
+        else if (binding instanceof IEnumeration) {
+            pdomBinding = new PDOMCEnumeration(this, parent, (IEnumeration) binding);
+        }
+        else if (binding instanceof IEnumerator) {
+            assert parent instanceof IEnumeration;
+            pdomBinding = new PDOMCEnumerator(this, parent, (IEnumerator) binding);
+            insertIntoIndex = parent.getParentNode();
+            if (insertIntoIndex == null) {
+                insertIntoIndex = this;
+            }
+        }
+        else if (binding instanceof ITypedef) {
+            pdomBinding = new PDOMCTypedef(this, parent, (ITypedef) binding);
+        }
 
-	@Override
-	public int getBindingType(IBinding binding) {
-		if (binding instanceof IField)
-			// This needs to be before variable
-			return CFIELD;
-		else if (binding instanceof IVariable)
-			return CVARIABLE;
-		else if (binding instanceof IFunction)
-			return CFUNCTION;
-		else if (binding instanceof ICompositeType)
-			return CSTRUCTURE;
-		else if (binding instanceof IEnumeration)
-			return CENUMERATION;
-		else if (binding instanceof IEnumerator)
-			return CENUMERATOR;
-		else if (binding instanceof ITypedef)
-			return CTYPEDEF;
-		else
-			return 0;
-	}
+        if (pdomBinding != null) {
+            pdomBinding.setLocalToFileRec(localToFile);
+            parent.addChild(pdomBinding);
+            if (insertIntoIndex != null) {
+                insertIntoIndex.addChild(pdomBinding);
+            }
+            if (parent != this && insertIntoIndex != this) {
+                insertIntoNestedBindingsIndex(pdomBinding);
+            }
+        }
+        return pdomBinding;
+    }
 
-	/**
-	 * Adapts the parent of the given binding to an object contained in this linkage. May return 
-	 * <code>null</code> if the binding cannot be adapted or the binding does not exist and addParent
-	 * is set to <code>false</code>.
-	 * @param binding the binding to adapt
-	 * @return <ul>
-	 * <li> null - skip this binding (don't add to pdom)
-	 * <li> this - for global scope
-	 * <li> a PDOMBinding instance - parent adapted binding
-	 * </ul>
-	 * @throws CoreException
-	 */
-	final private PDOMNode getAdaptedParent(IBinding binding) throws CoreException {
-		if (binding instanceof IIndexBinding) {
-			IIndexBinding ib= (IIndexBinding) binding;
-			if (ib.isFileLocal()) {
-				return null;
-			}
-		} 
-		
-		IBinding owner= binding.getOwner();
-		if (owner == null) {
-			return this;
-		}
-		if (owner instanceof IFunction) {
-			return null;
-		}
+    private boolean shouldUpdate(PDOMBinding pdomBinding, IASTName fromName)
+            throws CoreException
+    {
+        if (fromName != null) {
+            if (fromName.isDefinition()) {
+                return true;
+            }
+            if (fromName.isReference()) {
+                return false;
+            }
+            return !pdomBinding.hasDefinition();
+        }
+        return false;
+    }
 
-		return adaptBinding(owner);
-	}
+    @Override
+    public PDOMBinding addBinding(IASTName name)
+            throws CoreException
+    {
+        if (name == null) {
+            return null;
+        }
 
-	@Override
-	public final PDOMBinding adaptBinding(final IBinding inputBinding, boolean includeLocal) throws CoreException {
-		return adaptBinding(null, inputBinding, includeLocal ? FILE_LOCAL_REC_DUMMY : null);
-	}
-	
-	private final PDOMBinding adaptBinding(final PDOMNode parent, IBinding inputBinding, long[] localToFileHolder) throws CoreException {
-		if (inputBinding instanceof CompositeIndexBinding) {
-			inputBinding= ((CompositeIndexBinding) inputBinding).getRawBinding();
-		}
-		
-		if (cannotAdapt(inputBinding)) {
-			return null;
-		}
-		PDOMBinding result= attemptFastAdaptBinding(inputBinding);
-		if (result != null) {
-			return result;
-		}
+        char[] namechars = name.getSimpleID();
+        if (namechars == null) {
+            return null;
+        }
 
-		// assign names to anonymous types.
-		IBinding binding= PDOMASTAdapter.getAdapterForAnonymousASTBinding(inputBinding);
-		if (binding == null) {
-			return null;
-		}
+        IBinding binding = name.resolveBinding();
+        return addBinding(binding, name);
+    }
 
-		result= doAdaptBinding(parent, binding, localToFileHolder);
-		if (result != null) {
-			getPDOM().putCachedResult(inputBinding, result);
-		}
-		return result;
-	}
+    @Override
+    public int getBindingType(IBinding binding)
+    {
+        if (binding instanceof IField)
+        // This needs to be before variable
+        {
+            return CFIELD;
+        }
+        else if (binding instanceof IVariable) {
+            return CVARIABLE;
+        }
+        else if (binding instanceof IFunction) {
+            return CFUNCTION;
+        }
+        else if (binding instanceof ICompositeType) {
+            return CSTRUCTURE;
+        }
+        else if (binding instanceof IEnumeration) {
+            return CENUMERATION;
+        }
+        else if (binding instanceof IEnumerator) {
+            return CENUMERATOR;
+        }
+        else if (binding instanceof ITypedef) {
+            return CTYPEDEF;
+        }
+        else {
+            return 0;
+        }
+    }
 
-	private final PDOMBinding doAdaptBinding(PDOMNode parent, final IBinding binding, long[] localToFileHolder) throws CoreException {
-		if (parent == null) {
-			parent= getAdaptedParent(binding);
-		}
-		if (parent == this) {
-			final int[] bindingTypes = new int[] {getBindingType(binding)};
-			final char[] nameChars = binding.getNameCharArray();
-			PDOMBinding nonLocal= FindBinding.findBinding(getIndex(), this, nameChars, bindingTypes, 0);
-			if (localToFileHolder == null)
-				return nonLocal;
-			
-			long localToFileRec= getLocalToFileRec(parent, binding, nonLocal);
-			if (localToFileRec == 0)
-				return nonLocal;
-			localToFileHolder[0]= localToFileRec;
-			return FindBinding.findBinding(getIndex(), this, nameChars, bindingTypes, localToFileRec);
-		} 
-		if (parent instanceof IPDOMMemberOwner) {
-			final int[] bindingTypes = new int[] {getBindingType(binding)};
-			final char[] nameChars = binding.getNameCharArray();
-			PDOMBinding nonLocal= FindBinding.findBinding(parent, this, nameChars, bindingTypes, 0);
-			if (localToFileHolder == null)
-				return nonLocal;
+    /**
+     * Adapts the parent of the given binding to an object contained in this linkage. May return
+     * <code>null</code> if the binding cannot be adapted or the binding does not exist and addParent
+     * is set to <code>false</code>.
+     * @param binding the binding to adapt
+     * @return <ul>
+     * <li> null - skip this binding (don't add to pdom)
+     * <li> this - for global scope
+     * <li> a PDOMBinding instance - parent adapted binding
+     * </ul>
+     * @throws CoreException
+     */
+    final private PDOMNode getAdaptedParent(IBinding binding)
+            throws CoreException
+    {
+        if (binding instanceof IIndexBinding) {
+            IIndexBinding ib = (IIndexBinding) binding;
+            if (ib.isFileLocal()) {
+                return null;
+            }
+        }
 
-			long localToFileRec= getLocalToFileRec(parent, binding, nonLocal);
-			if (localToFileRec == 0)
-				return nonLocal;
-			localToFileHolder[0]= localToFileRec;
-			return FindBinding.findBinding(parent, this, nameChars, bindingTypes, localToFileRec);
-		}
-		return null;
-	}
+        IBinding owner = binding.getOwner();
+        if (owner == null) {
+            return this;
+        }
+        if (owner instanceof IFunction) {
+            return null;
+        }
 
-	@Override
-	public PDOMNode getNode(long record, int nodeType) throws CoreException {
-		switch (nodeType) {
-		case CVARIABLE:
-			return new PDOMCVariable(this, record);
-		case CFUNCTION:
-			return new PDOMCFunction(this, record);
-		case CSTRUCTURE:
-			return new PDOMCStructure(this, record);
-		case CFIELD:
-			return new PDOMCField(this, record);
-		case CENUMERATION:
-			return new PDOMCEnumeration(this, record);
-		case CENUMERATOR:
-			return new PDOMCEnumerator(this, record);
-		case CTYPEDEF:
-			return new PDOMCTypedef(this, record);
-		}
+        return adaptBinding(owner);
+    }
 
-		assert false;
-		return null;
-	}
-	
-	@Override
-	public IBTreeComparator getIndexComparator() {
-		return new FindBinding.DefaultBindingBTreeComparator(this);
-	}
+    @Override
+    public final PDOMBinding adaptBinding(final IBinding inputBinding, boolean includeLocal)
+            throws CoreException
+    {
+        return adaptBinding(null, inputBinding, includeLocal ? FILE_LOCAL_REC_DUMMY : null);
+    }
 
-	@Override
-	public PDOMGlobalScope getGlobalScope() {
-		return PDOMCGlobalScope.INSTANCE;
-	}
+    private final PDOMBinding adaptBinding(final PDOMNode parent, IBinding inputBinding, long[] localToFileHolder)
+            throws CoreException
+    {
+        if (inputBinding instanceof CompositeIndexBinding) {
+            inputBinding = ((CompositeIndexBinding) inputBinding).getRawBinding();
+        }
 
-	@Override 
-	public PDOMBinding addTypeBinding(IBinding type) throws CoreException {
-		return addBinding(type, null);
-	}
+        if (cannotAdapt(inputBinding)) {
+            return null;
+        }
+        PDOMBinding result = attemptFastAdaptBinding(inputBinding);
+        if (result != null) {
+            return result;
+        }
 
-	@Override
-	public IBinding unmarshalBinding(ITypeMarshalBuffer buffer) throws CoreException {
-		throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal a binding, first byte=" + buffer.getByte())); //$NON-NLS-1$
-	}
-	
-	@Override
-	public IType unmarshalType(ITypeMarshalBuffer buffer) throws CoreException {
-		short firstBytes= buffer.getShort();
-		switch((firstBytes & ITypeMarshalBuffer.KIND_MASK)) {
-		case ITypeMarshalBuffer.ARRAY_TYPE:
-			return CArrayType.unmarshal(firstBytes, buffer);
-		case ITypeMarshalBuffer.BASIC_TYPE:
-			return CBasicType.unmarshal(firstBytes, buffer);
-		case ITypeMarshalBuffer.CVQUALIFIER_TYPE:
-			return CQualifierType.unmarshal(firstBytes, buffer);
-		case ITypeMarshalBuffer.FUNCTION_TYPE:
-			return CFunctionType.unmarshal(firstBytes, buffer);
-		case ITypeMarshalBuffer.POINTER_TYPE:
-			return CPointerType.unmarshal(firstBytes, buffer);
-		case ITypeMarshalBuffer.PROBLEM_TYPE:
-			return ProblemType.unmarshal(firstBytes, buffer);
-		}
-		
-		throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal a type, first bytes=" + firstBytes)); //$NON-NLS-1$
-	}
-	
-	@Override
-	public ISerializableEvaluation unmarshalEvaluation(ITypeMarshalBuffer buffer)
-			throws CoreException {
-		throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal an evaluation, first byte=" + buffer.getByte())); //$NON-NLS-1$
-	}
+        // assign names to anonymous types.
+        IBinding binding = PDOMASTAdapter.getAdapterForAnonymousASTBinding(inputBinding);
+        if (binding == null) {
+            return null;
+        }
+
+        result = doAdaptBinding(parent, binding, localToFileHolder);
+        if (result != null) {
+            getPDOM().putCachedResult(inputBinding, result);
+        }
+        return result;
+    }
+
+    private final PDOMBinding doAdaptBinding(PDOMNode parent, final IBinding binding, long[] localToFileHolder)
+            throws CoreException
+    {
+        if (parent == null) {
+            parent = getAdaptedParent(binding);
+        }
+        if (parent == this) {
+            final int[] bindingTypes = new int[] {getBindingType(binding)};
+            final char[] nameChars = binding.getNameCharArray();
+            PDOMBinding nonLocal = FindBinding.findBinding(getIndex(), this, nameChars, bindingTypes, 0);
+            if (localToFileHolder == null) {
+                return nonLocal;
+            }
+
+            long localToFileRec = getLocalToFileRec(parent, binding, nonLocal);
+            if (localToFileRec == 0) {
+                return nonLocal;
+            }
+            localToFileHolder[0] = localToFileRec;
+            return FindBinding.findBinding(getIndex(), this, nameChars, bindingTypes, localToFileRec);
+        }
+        if (parent instanceof IPDOMMemberOwner) {
+            final int[] bindingTypes = new int[] {getBindingType(binding)};
+            final char[] nameChars = binding.getNameCharArray();
+            PDOMBinding nonLocal = FindBinding.findBinding(parent, this, nameChars, bindingTypes, 0);
+            if (localToFileHolder == null) {
+                return nonLocal;
+            }
+
+            long localToFileRec = getLocalToFileRec(parent, binding, nonLocal);
+            if (localToFileRec == 0) {
+                return nonLocal;
+            }
+            localToFileHolder[0] = localToFileRec;
+            return FindBinding.findBinding(parent, this, nameChars, bindingTypes, localToFileRec);
+        }
+        return null;
+    }
+
+    @Override
+    public PDOMNode getNode(long record, int nodeType)
+            throws CoreException
+    {
+        switch (nodeType) {
+            case CVARIABLE:
+                return new PDOMCVariable(this, record);
+            case CFUNCTION:
+                return new PDOMCFunction(this, record);
+            case CSTRUCTURE:
+                return new PDOMCStructure(this, record);
+            case CFIELD:
+                return new PDOMCField(this, record);
+            case CENUMERATION:
+                return new PDOMCEnumeration(this, record);
+            case CENUMERATOR:
+                return new PDOMCEnumerator(this, record);
+            case CTYPEDEF:
+                return new PDOMCTypedef(this, record);
+        }
+
+        assert false;
+        return null;
+    }
+
+    @Override
+    public IBTreeComparator getIndexComparator()
+    {
+        return new FindBinding.DefaultBindingBTreeComparator(this);
+    }
+
+    @Override
+    public PDOMGlobalScope getGlobalScope()
+    {
+        return PDOMCGlobalScope.INSTANCE;
+    }
+
+    @Override
+    public PDOMBinding addTypeBinding(IBinding type)
+            throws CoreException
+    {
+        return addBinding(type, null);
+    }
+
+    @Override
+    public IBinding unmarshalBinding(ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal a binding, first byte=" + buffer.getByte())); //$NON-NLS-1$
+    }
+
+    @Override
+    public IType unmarshalType(ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        short firstBytes = buffer.getShort();
+        switch ((firstBytes & ITypeMarshalBuffer.KIND_MASK)) {
+            case ITypeMarshalBuffer.ARRAY_TYPE:
+                return CArrayType.unmarshal(firstBytes, buffer);
+            case ITypeMarshalBuffer.BASIC_TYPE:
+                return CBasicType.unmarshal(firstBytes, buffer);
+            case ITypeMarshalBuffer.CVQUALIFIER_TYPE:
+                return CQualifierType.unmarshal(firstBytes, buffer);
+            case ITypeMarshalBuffer.FUNCTION_TYPE:
+                return CFunctionType.unmarshal(firstBytes, buffer);
+            case ITypeMarshalBuffer.POINTER_TYPE:
+                return CPointerType.unmarshal(firstBytes, buffer);
+            case ITypeMarshalBuffer.PROBLEM_TYPE:
+                return ProblemType.unmarshal(firstBytes, buffer);
+        }
+
+        throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal a type, first bytes=" + firstBytes)); //$NON-NLS-1$
+    }
+
+    @Override
+    public ISerializableEvaluation unmarshalEvaluation(ITypeMarshalBuffer buffer)
+            throws CoreException
+    {
+        throw new CoreException(CCorePlugin.createStatus("Cannot unmarshal an evaluation, first byte=" + buffer.getByte())); //$NON-NLS-1$
+    }
 }

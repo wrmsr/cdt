@@ -4,20 +4,20 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p/>
  * Contributors:
- *     IBM Rational Software - Initial API and implementation
- *     Mike Kucera (IBM) - convert to Java 5 enum
+ * IBM Rational Software - Initial API and implementation
+ * Mike Kucera (IBM) - convert to Java 5 enum
  *******************************************************************************/
 package org.eclipse.cdt.internal.core.parser;
-
 
 /**
  * @author jcamelon
  *
  */
-public enum SimpleDeclarationStrategy {
+public enum SimpleDeclarationStrategy
+{
     TRY_CONSTRUCTOR,
-	TRY_FUNCTION,
-	TRY_VARIABLE,
+    TRY_FUNCTION,
+    TRY_VARIABLE,
 }
