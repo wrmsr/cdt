@@ -184,17 +184,7 @@ public class CommandLauncher
         String command = commandPath.toOSString();
         fCommandArgs = constructCommandArray(command, args);
         if (Platform.getOS().equals(Platform.OS_WIN32)) {
-            // Handle cygwin link
-            IPath location = PathUtil.findProgramLocation(command, envPathValue);
-            isFound = location != null;
-            if (location != null) {
-                try {
-                    fCommandArgs[0] = Cygwin.cygwinToWindowsPath(location.toString(), envPathValue);
-                }
-                catch (Exception e) {
-                    // if no cygwin nothing to worry about
-                }
-            }
+            throw new IllegalStateException();
         }
 
         File dir = workingDirectory != null ? workingDirectory.toFile() : null;
