@@ -16,7 +16,7 @@ import org.eclipse.cdt.core.dom.parser.IBuiltinBindingsProvider;
 import org.eclipse.cdt.core.parser.GCCKeywords;
 import org.eclipse.cdt.core.parser.IToken.ContextSensitiveTokenType;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.parser.GCCBuiltinSymbolProvider;
+import org.eclipse.cdt.core.dom.parser.GCCBuiltinSymbolProvider;
 
 import java.util.HashMap;
 import java.util.Map;

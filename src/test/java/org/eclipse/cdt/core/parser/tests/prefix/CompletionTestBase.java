@@ -42,9 +42,9 @@ import org.eclipse.cdt.core.parser.tests.ast2.AST2TestBase;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
-import org.eclipse.cdt.internal.core.dom.parser.c.GNUCSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.GNUCPPSourceParser;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.c.GNUCSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.GNUCPPSourceParser;
+import org.eclipse.cdt.core.parser.ParserException;
 
 public class CompletionTestBase extends BaseTestCase {
 

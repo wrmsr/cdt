@@ -12,7 +12,7 @@ package org.eclipse.cdt.utils.envvar;
 
 import org.eclipse.cdt.core.envvar.EnvironmentVariable;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
-import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
+import org.eclipse.cdt.core.envvar.EnvironmentVariableManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -32,12 +32,12 @@ import org.eclipse.cdt.core.parser.tests.ast2.AST2TestBase;
 import org.eclipse.cdt.core.parser.tests.rewrite.RewriteBaseTest;
 import org.eclipse.cdt.core.parser.tests.rewrite.TestHelper;
 import org.eclipse.cdt.core.parser.tests.rewrite.TestSourceFile;
-import org.eclipse.cdt.internal.core.dom.parser.c.GNUCSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.GNUCPPSourceParser;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModificationMap;
-import org.eclipse.cdt.internal.core.dom.rewrite.astwriter.ASTWriter;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.ASTCommenter;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.NodeCommentMap;
+import org.eclipse.cdt.core.dom.parser.c.GNUCSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.GNUCPPSourceParser;
+import org.eclipse.cdt.core.dom.rewrite.ASTModificationMap;
+import org.eclipse.cdt.core.dom.rewrite.astwriter.ASTWriter;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.ASTCommenter;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.NodeCommentMap;
 import org.eclipse.core.resources.IFile;
 
 /**

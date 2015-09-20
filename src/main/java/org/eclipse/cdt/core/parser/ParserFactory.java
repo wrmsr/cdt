@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.parser;
 
-import org.eclipse.cdt.internal.core.parser.token.KeywordSets;
+import org.eclipse.cdt.core.parser.token.KeywordSets;
 
 import java.util.Set;
 

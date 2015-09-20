@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
-import org.eclipse.cdt.internal.core.Cygwin;
-import org.eclipse.cdt.internal.core.Messages;
-import org.eclipse.cdt.internal.core.ProcessClosure;
 import org.eclipse.cdt.utils.PathUtil;
 import org.eclipse.cdt.utils.spawner.EnvironmentReader;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;

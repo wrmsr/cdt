@@ -12,7 +12,7 @@ package org.eclipse.cdt.core.dom.ast.cpp;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
 import org.eclipse.cdt.core.dom.ast.IScope;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
 
 /**
  * Interface to model using directives. Needed to bridge between directives found in the 

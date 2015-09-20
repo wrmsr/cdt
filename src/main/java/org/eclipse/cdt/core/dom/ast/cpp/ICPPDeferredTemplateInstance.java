@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast.cpp;
 
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPDeferredClassInstance;
 
 /**
  * @deprecated use {@link ICPPDeferredClassInstance} instead.

@@ -33,7 +33,7 @@ import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IMacroBinding;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.parser.ParserException;
 
 public class DOMLocationMacroTests extends AST2TestBase {
 

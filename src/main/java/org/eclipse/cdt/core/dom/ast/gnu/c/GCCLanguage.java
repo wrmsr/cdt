@@ -29,9 +29,9 @@ import org.eclipse.cdt.core.parser.IScanner;
 import org.eclipse.cdt.core.parser.IScannerInfo;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ParserMode;
-import org.eclipse.cdt.internal.core.dom.parser.c.GNUCSourceParser;
-import org.eclipse.cdt.internal.core.pdom.dom.IPDOMLinkageFactory;
-import org.eclipse.cdt.internal.core.pdom.dom.c.PDOMCLinkageFactory;
+import org.eclipse.cdt.core.dom.parser.c.GNUCSourceParser;
+import org.eclipse.cdt.core.pdom.dom.IPDOMLinkageFactory;
+import org.eclipse.cdt.core.pdom.dom.c.PDOMCLinkageFactory;
 
 /**
  * Concrete ILanguage implementation for the DOM C parser.

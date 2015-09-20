@@ -31,9 +31,9 @@ import org.eclipse.cdt.core.index.IIndexBinding;
 import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
-import org.eclipse.cdt.internal.core.index.CIndex;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
-import org.eclipse.cdt.internal.core.pdom.dom.PDOMBinding;
+import org.eclipse.cdt.core.index.CIndex;
+import org.eclipse.cdt.core.pdom.PDOM;
+import org.eclipse.cdt.core.pdom.dom.PDOMBinding;
 import org.eclipse.core.runtime.CoreException;
 
 public class IndexSearchTest extends IndexTestBase {

@@ -11,7 +11,7 @@
 
 package org.eclipse.cdt.core.parser;
 
-import org.eclipse.cdt.internal.core.dom.parser.ParserLogServiceWrapper;
+import org.eclipse.cdt.core.dom.parser.ParserLogServiceWrapper;
 
 public abstract class AbstractParserLogService
         implements IParserLogService

@@ -14,13 +14,13 @@ import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.IPDOMNode;
 import org.eclipse.cdt.core.dom.IPDOMVisitor;
 import org.eclipse.cdt.core.index.IIndex;
-import org.eclipse.cdt.internal.core.index.CIndex;
-import org.eclipse.cdt.internal.core.index.IIndexFragment;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
-import org.eclipse.cdt.internal.core.pdom.db.IBTreeVisitor;
-import org.eclipse.cdt.internal.core.pdom.dom.PDOMBinding;
-import org.eclipse.cdt.internal.core.pdom.dom.PDOMLinkage;
-import org.eclipse.cdt.internal.core.pdom.dom.PDOMNode;
+import org.eclipse.cdt.core.index.CIndex;
+import org.eclipse.cdt.core.index.IIndexFragment;
+import org.eclipse.cdt.core.pdom.PDOM;
+import org.eclipse.cdt.core.pdom.db.IBTreeVisitor;
+import org.eclipse.cdt.core.pdom.dom.PDOMBinding;
+import org.eclipse.cdt.core.pdom.dom.PDOMLinkage;
+import org.eclipse.cdt.core.pdom.dom.PDOMNode;
 import org.eclipse.core.runtime.CoreException;
 
 /**

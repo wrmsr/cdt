@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.utils;
 
-import org.eclipse.cdt.internal.core.UNCPathConverterImpl;
+import org.eclipse.cdt.core.UNCPathConverterImpl;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;

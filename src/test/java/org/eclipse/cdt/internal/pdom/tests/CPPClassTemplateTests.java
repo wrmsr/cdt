@@ -35,10 +35,10 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateTypeParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPVariable;
 import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.parser.util.ObjectMap;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ClassTypeHelper;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
-import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPBasicType;
+import org.eclipse.cdt.core.dom.parser.cpp.ClassTypeHelper;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPDeferredClassInstance;
+import org.eclipse.cdt.core.index.IIndexFragmentBinding;
 
 /**
  * Tests PDOM class template related bindings

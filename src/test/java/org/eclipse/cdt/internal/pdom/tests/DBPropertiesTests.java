@@ -18,9 +18,9 @@ import java.util.Properties;
 import junit.framework.Test;
 
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.pdom.db.ChunkCache;
-import org.eclipse.cdt.internal.core.pdom.db.DBProperties;
-import org.eclipse.cdt.internal.core.pdom.db.Database;
+import org.eclipse.cdt.core.pdom.db.ChunkCache;
+import org.eclipse.cdt.core.pdom.db.DBProperties;
+import org.eclipse.cdt.core.pdom.db.Database;
 import org.eclipse.core.runtime.CoreException;
 
 /**

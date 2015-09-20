@@ -12,8 +12,8 @@ package org.eclipse.cdt.core.parser.tests.ast2;
 
 import java.util.ArrayList;
 
-import org.eclipse.cdt.internal.core.parser.scanner.AbstractCharArray;
-import org.eclipse.cdt.internal.core.parser.scanner.ILexerLog;
+import org.eclipse.cdt.core.parser.scanner.AbstractCharArray;
+import org.eclipse.cdt.core.parser.scanner.ILexerLog;
 
 public class TestLexerLog implements ILexerLog {
 	private ArrayList fComments= new ArrayList();

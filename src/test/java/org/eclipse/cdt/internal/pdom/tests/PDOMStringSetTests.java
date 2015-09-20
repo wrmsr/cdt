@@ -15,9 +15,9 @@ import java.io.File;
 import junit.framework.Test;
 
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.pdom.db.ChunkCache;
-import org.eclipse.cdt.internal.core.pdom.db.Database;
-import org.eclipse.cdt.internal.core.pdom.db.PDOMStringSet;
+import org.eclipse.cdt.core.pdom.db.ChunkCache;
+import org.eclipse.cdt.core.pdom.db.Database;
+import org.eclipse.cdt.core.pdom.db.PDOMStringSet;
 
 // copy/pasted from BTreeTests
 public class PDOMStringSetTests extends BaseTestCase {

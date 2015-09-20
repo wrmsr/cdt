@@ -20,8 +20,8 @@ import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionTemplate;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateInstance;
 import org.eclipse.cdt.core.index.IndexFilter;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInstanceCache;
-import org.eclipse.cdt.internal.core.index.IIndexFragment;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPInstanceCache;
+import org.eclipse.cdt.core.index.IIndexFragment;
 
 public class CPPFunctionTemplateTests extends PDOMInlineCodeTestBase {
 	

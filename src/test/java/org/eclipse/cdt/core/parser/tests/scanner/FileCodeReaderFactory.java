@@ -12,9 +12,9 @@ package org.eclipse.cdt.core.parser.tests.scanner;
 
 import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.parser.FileContent;
-import org.eclipse.cdt.internal.core.parser.IMacroDictionary;
-import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContent;
-import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContentProvider;
+import org.eclipse.cdt.core.parser.IMacroDictionary;
+import org.eclipse.cdt.core.parser.scanner.InternalFileContent;
+import org.eclipse.cdt.core.parser.scanner.InternalFileContentProvider;
 
 public class FileCodeReaderFactory extends InternalFileContentProvider {
     private static FileCodeReaderFactory instance;

@@ -15,8 +15,8 @@ import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.pdom.indexer.TodoTaskParser;
-import org.eclipse.cdt.internal.core.pdom.indexer.TodoTaskParser.Task;
+import org.eclipse.cdt.core.pdom.indexer.TodoTaskParser;
+import org.eclipse.cdt.core.pdom.indexer.TodoTaskParser.Task;
 
 public class TaskParserTest extends AST2TestBase {
 	

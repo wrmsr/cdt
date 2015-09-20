@@ -16,7 +16,7 @@ import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.ICModelStatusConstants;
-import org.eclipse.cdt.internal.core.model.CModelStatus;
+import org.eclipse.cdt.core.model.CModelStatus;
 import org.eclipse.core.runtime.CoreException;
 
 /**

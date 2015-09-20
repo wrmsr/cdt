@@ -17,8 +17,8 @@ import junit.framework.Test;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPVariable;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.internal.core.CCoreInternals;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
+import org.eclipse.cdt.core.CCoreInternals;
+import org.eclipse.cdt.core.pdom.PDOM;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 

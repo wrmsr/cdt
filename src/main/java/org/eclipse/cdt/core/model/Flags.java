@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
-import org.eclipse.cdt.internal.core.model.IConstants;
-
 /**
  * Utility class for decoding modifier flags in C elements.
  *

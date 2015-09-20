@@ -23,7 +23,6 @@ import junit.framework.TestSuite;
 import java.util.List;
 
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.core.model.tests.IntegratedCModelTest;
 
 /**
  * IMacroTest - Class for testing IMacro 
@@ -52,7 +51,7 @@ public class IMacroTests extends IntegratedCModelTest {
 	}
 
 	/**
-	 * @see org.eclipse.cdt.internal.core.model.IntegratedCModelTest
+	 * @see org.eclipse.cdt.core.model.IntegratedCModelTest
 	 */
 	@Override
 	public String getSourcefileSubdir() {
@@ -60,7 +59,7 @@ public class IMacroTests extends IntegratedCModelTest {
 	}
 
 	/**
-	 * @see org.eclipse.cdt.internal.core.model.IntegratedCModelTest
+	 * @see org.eclipse.cdt.core.model.IntegratedCModelTest
 	 */
 	@Override
 	public String getSourcefileResource() {

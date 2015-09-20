@@ -51,10 +51,10 @@ import org.eclipse.cdt.core.dom.ast.c.ICASTTypedefNameSpecifier;
 import org.eclipse.cdt.core.dom.ast.c.ICBasicType;
 import org.eclipse.cdt.core.dom.ast.gnu.c.ICASTKnRFunctionDeclarator;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.parser.c.CParameter;
-import org.eclipse.cdt.internal.core.dom.parser.c.CScope;
-import org.eclipse.cdt.internal.core.dom.parser.c.CVisitor;
-import org.eclipse.cdt.internal.core.dom.parser.c.ICInternalBinding;
+import org.eclipse.cdt.core.dom.parser.c.CParameter;
+import org.eclipse.cdt.core.dom.parser.c.CScope;
+import org.eclipse.cdt.core.dom.parser.c.CVisitor;
+import org.eclipse.cdt.core.dom.parser.c.ICInternalBinding;
 
 /**
  * @author dsteffle

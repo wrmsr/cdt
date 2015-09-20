@@ -25,9 +25,9 @@ import org.eclipse.cdt.core.dom.ast.c.ICASTArrayModifier;
 import org.eclipse.cdt.core.dom.ast.c.ICASTPointer;
 import org.eclipse.cdt.core.dom.ast.c.ICArrayType;
 import org.eclipse.cdt.core.dom.ast.c.ICPointerType;
-import org.eclipse.cdt.internal.core.dom.parser.ASTAmbiguousNode;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.ITypeContainer;
+import org.eclipse.cdt.core.dom.parser.ASTAmbiguousNode;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.ITypeContainer;
 
 import java.io.PrintStream;
 

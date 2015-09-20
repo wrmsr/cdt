@@ -18,7 +18,7 @@ import org.eclipse.cdt.core.parser.FileContent;
 import org.eclipse.cdt.core.parser.IParserLogService;
 import org.eclipse.cdt.core.parser.IScannerInfo;
 import org.eclipse.cdt.core.parser.IncludeFileContentProvider;
-import org.eclipse.cdt.internal.core.parser.CodeReaderAdapter;
+import org.eclipse.cdt.core.parser.CodeReaderAdapter;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.PlatformObject;
 
@@ -66,7 +66,7 @@ public abstract class AbstractLanguage
     {
         // For backwards compatibility, should be overridden.
         return getASTTranslationUnit(CodeReaderAdapter.adapt(content), scanInfo,
-                org.eclipse.cdt.internal.core.parser.CodeReaderFactoryAdapter.adapt(fileCreator), index,
+                org.eclipse.cdt.core.parser.CodeReaderFactoryAdapter.adapt(fileCreator), index,
                 options, log);
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractLanguage
     {
         // For backwards compatibility, should be overridden.
         return getCompletionNode(CodeReaderAdapter.adapt(reader), scanInfo,
-                org.eclipse.cdt.internal.core.parser.CodeReaderFactoryAdapter.adapt(fileCreator), index, log,
+                org.eclipse.cdt.core.parser.CodeReaderFactoryAdapter.adapt(fileCreator), index, log,
                 offset);
     }
 }

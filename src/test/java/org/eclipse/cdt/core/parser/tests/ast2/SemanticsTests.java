@@ -15,7 +15,7 @@ import java.util.Set;
 
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPClassType;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPMethod;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil;
 
 /**
  * Directly tests parts of the semantics package

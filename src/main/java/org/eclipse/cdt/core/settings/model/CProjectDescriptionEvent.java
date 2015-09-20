@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.settings.model;
 
-import org.eclipse.cdt.internal.core.settings.model.CConfigurationDescription;
-import org.eclipse.cdt.internal.core.settings.model.CConfigurationDescriptionCache;
-import org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionDelta;
-import org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager;
 import org.eclipse.core.resources.IProject;
 
 /**

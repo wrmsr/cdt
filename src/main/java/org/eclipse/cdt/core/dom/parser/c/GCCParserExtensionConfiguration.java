@@ -14,7 +14,7 @@ package org.eclipse.cdt.core.dom.parser.c;
 
 import org.eclipse.cdt.core.dom.parser.IBuiltinBindingsProvider;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.parser.GCCBuiltinSymbolProvider;
+import org.eclipse.cdt.core.dom.parser.GCCBuiltinSymbolProvider;
 
 /**
  * Configures the parser for c-source code as accepted by gcc.

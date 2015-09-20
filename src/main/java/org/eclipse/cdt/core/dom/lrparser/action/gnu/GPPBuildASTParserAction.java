@@ -28,7 +28,7 @@ import org.eclipse.cdt.core.dom.lrparser.action.ScopedStack;
 import org.eclipse.cdt.core.dom.lrparser.action.TokenMap;
 import org.eclipse.cdt.core.dom.lrparser.action.cpp.CPPBuildASTParserAction;
 import org.eclipse.cdt.core.dom.lrparser.action.cpp.ICPPSecondaryParserFactory;
-import org.eclipse.cdt.internal.core.dom.lrparser.gpp.GPPParsersym;
+import org.eclipse.cdt.core.dom.lrparser.gpp.GPPParsersym;
 
 import java.util.List;
 

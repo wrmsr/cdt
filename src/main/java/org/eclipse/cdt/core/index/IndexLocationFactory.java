@@ -14,8 +14,7 @@ package org.eclipse.cdt.core.index;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.internal.core.index.IndexFileLocation;
-import org.eclipse.cdt.internal.core.resources.ResourceLookup;
+import org.eclipse.cdt.core.resources.ResourceLookup;
 import org.eclipse.cdt.utils.UNCPathConverter;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

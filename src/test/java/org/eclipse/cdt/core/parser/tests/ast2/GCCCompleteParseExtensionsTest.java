@@ -26,10 +26,10 @@ import org.eclipse.cdt.core.dom.ast.IFunctionType;
 import org.eclipse.cdt.core.dom.ast.c.ICASTPointer;
 import org.eclipse.cdt.core.dom.ast.c.ICASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.parser.c.CASTFunctionDefinition;
-import org.eclipse.cdt.internal.core.dom.parser.c.CFunction;
-import org.eclipse.cdt.internal.core.model.ASTStringUtil;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.c.CASTFunctionDefinition;
+import org.eclipse.cdt.core.dom.parser.c.CFunction;
+import org.eclipse.cdt.core.model.ASTStringUtil;
+import org.eclipse.cdt.core.parser.ParserException;
 
 public class GCCCompleteParseExtensionsTest extends AST2TestBase {
 

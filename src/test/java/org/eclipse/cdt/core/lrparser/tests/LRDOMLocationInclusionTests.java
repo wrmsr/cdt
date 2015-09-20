@@ -21,7 +21,7 @@ import org.eclipse.cdt.core.parser.ExtendedScannerInfo;
 import org.eclipse.cdt.core.parser.IScannerInfo;
 import org.eclipse.cdt.core.parser.ParserUtil;
 import org.eclipse.cdt.core.parser.tests.ast2.DOMLocationInclusionTests;
-import org.eclipse.cdt.internal.core.dom.SavedCodeReaderFactory;
+import org.eclipse.cdt.core.dom.SavedCodeReaderFactory;
 import org.eclipse.core.resources.IFile;
 
 @SuppressWarnings("restriction")

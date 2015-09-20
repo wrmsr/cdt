@@ -13,7 +13,7 @@
 package org.eclipse.cdt.utils;
 
 import org.eclipse.cdt.core.IAddress;
-import org.eclipse.cdt.internal.core.Messages;
+import org.eclipse.cdt.core.Messages;
 
 import java.io.Serializable;
 import java.math.BigInteger;

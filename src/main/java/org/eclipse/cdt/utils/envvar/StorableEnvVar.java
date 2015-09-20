@@ -14,7 +14,7 @@ package org.eclipse.cdt.utils.envvar;
 
 import org.eclipse.cdt.core.envvar.EnvironmentVariable;
 import org.eclipse.cdt.core.settings.model.ICStorageElement;
-import org.eclipse.cdt.internal.core.SafeStringInterner;
+import org.eclipse.cdt.core.SafeStringInterner;
 import org.osgi.service.prefs.Preferences;
 
 /**

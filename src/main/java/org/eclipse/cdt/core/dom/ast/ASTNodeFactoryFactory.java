@@ -12,8 +12,8 @@ package org.eclipse.cdt.core.dom.ast;
 
 import org.eclipse.cdt.core.dom.ast.c.ICNodeFactory;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPNodeFactory;
-import org.eclipse.cdt.internal.core.dom.parser.c.CNodeFactory;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
+import org.eclipse.cdt.core.dom.parser.c.CNodeFactory;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPNodeFactory;
 
 /**
  * Provides access to the node factories.

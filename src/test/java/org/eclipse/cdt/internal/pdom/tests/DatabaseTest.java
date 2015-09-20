@@ -19,13 +19,13 @@ import junit.framework.Test;
 
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.pdom.db.BTree;
-import org.eclipse.cdt.internal.core.pdom.db.ChunkCache;
-import org.eclipse.cdt.internal.core.pdom.db.Database;
-import org.eclipse.cdt.internal.core.pdom.db.IBTreeComparator;
-import org.eclipse.cdt.internal.core.pdom.db.IBTreeVisitor;
-import org.eclipse.cdt.internal.core.pdom.db.IString;
-import org.eclipse.cdt.internal.core.pdom.db.ShortString;
+import org.eclipse.cdt.core.pdom.db.BTree;
+import org.eclipse.cdt.core.pdom.db.ChunkCache;
+import org.eclipse.cdt.core.pdom.db.Database;
+import org.eclipse.cdt.core.pdom.db.IBTreeComparator;
+import org.eclipse.cdt.core.pdom.db.IBTreeVisitor;
+import org.eclipse.cdt.core.pdom.db.IString;
+import org.eclipse.cdt.core.pdom.db.ShortString;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 

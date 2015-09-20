@@ -27,8 +27,8 @@ import org.eclipse.cdt.core.parser.NullLogService;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ParserMode;
 import org.eclipse.cdt.core.parser.ScannerInfo;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTTranslationUnit;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTTranslationUnit;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
 
 public class PreprocessorSpeedTest  {
 	

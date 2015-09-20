@@ -35,8 +35,8 @@ import org.eclipse.cdt.core.dom.ast.gnu.c.ICASTKnRFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.gnu.c.IGCCASTArrayRangeDesignator;
 import org.eclipse.cdt.core.parser.GCCKeywords;
 import org.eclipse.cdt.core.parser.Keywords;
-import org.eclipse.cdt.internal.core.dom.parser.ASTProblem;
-import org.eclipse.cdt.internal.core.model.ASTStringUtil;
+import org.eclipse.cdt.core.dom.parser.ASTProblem;
+import org.eclipse.cdt.core.model.ASTStringUtil;
 
 /**
  * This is a utility class to help convert AST elements to Strings corresponding to the AST

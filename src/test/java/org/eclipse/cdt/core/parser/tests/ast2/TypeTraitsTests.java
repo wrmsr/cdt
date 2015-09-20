@@ -15,8 +15,8 @@ import java.io.IOException;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPClassType;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.TypeTraits;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.TypeTraits;
+import org.eclipse.cdt.core.parser.ParserException;
 
 /**
  * Tests for ClassTypeHelper class.

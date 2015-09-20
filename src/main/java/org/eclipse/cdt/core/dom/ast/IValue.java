@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.dom.ast;
 
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPEvaluation;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPEvaluation;
 
 /**
  * Models a value of a variable, enumerator or expression.

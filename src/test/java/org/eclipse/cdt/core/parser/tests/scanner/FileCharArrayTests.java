@@ -20,9 +20,9 @@ import java.io.OutputStream;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.parser.scanner.AbstractCharArray;
-import org.eclipse.cdt.internal.core.parser.scanner.FileCharArray;
-import org.eclipse.cdt.internal.core.parser.scanner.LazyCharArray;
+import org.eclipse.cdt.core.parser.scanner.AbstractCharArray;
+import org.eclipse.cdt.core.parser.scanner.FileCharArray;
+import org.eclipse.cdt.core.parser.scanner.LazyCharArray;
 
 public class FileCharArrayTests extends BaseTestCase {
 	

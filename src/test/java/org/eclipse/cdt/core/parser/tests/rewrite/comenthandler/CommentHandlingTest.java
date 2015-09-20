@@ -27,8 +27,8 @@ import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.core.parser.tests.rewrite.RewriteBaseTest;
 import org.eclipse.cdt.core.parser.tests.rewrite.TestSourceFile;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.ASTCommenter;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.NodeCommentMap;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.ASTCommenter;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.NodeCommentMap;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 

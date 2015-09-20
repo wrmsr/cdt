@@ -13,8 +13,8 @@ package org.eclipse.cdt.utils.envvar;
 
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.settings.model.ICStorageElement;
-import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
-import org.eclipse.cdt.internal.core.settings.model.ExceptionFactory;
+import org.eclipse.cdt.core.envvar.EnvironmentVariableManager;
+import org.eclipse.cdt.core.settings.model.ExceptionFactory;
 import org.eclipse.cdt.utils.envvar.StorableEnvironmentLoader.ISerializeInfo;
 
 import java.util.HashMap;

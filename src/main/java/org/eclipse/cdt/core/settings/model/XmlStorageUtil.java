@@ -11,7 +11,7 @@
 
 package org.eclipse.cdt.core.settings.model;
 
-import org.eclipse.cdt.internal.core.settings.model.xml.XmlStorageElement;
+import org.eclipse.cdt.core.settings.model.xml.XmlStorageElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

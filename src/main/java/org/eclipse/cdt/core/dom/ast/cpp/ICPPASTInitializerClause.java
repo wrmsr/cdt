@@ -11,7 +11,7 @@
 package org.eclipse.cdt.core.dom.ast.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IASTInitializerClause;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPEvaluation;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPEvaluation;
 
 /**
  * C++ specific initializer clause.

@@ -14,7 +14,7 @@ package org.eclipse.cdt.core.language.settings.providers;
 import org.eclipse.cdt.core.AbstractExecutableExtensionBase;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
-import org.eclipse.cdt.internal.core.settings.model.SettingsModelMessages;
+import org.eclipse.cdt.core.settings.model.SettingsModelMessages;
 import org.eclipse.core.resources.IResource;
 
 import java.util.ArrayList;

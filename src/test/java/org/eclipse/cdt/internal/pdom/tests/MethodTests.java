@@ -24,8 +24,8 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPMember;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPMethod;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
-import org.eclipse.cdt.internal.core.CCoreInternals;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
+import org.eclipse.cdt.core.CCoreInternals;
+import org.eclipse.cdt.core.pdom.PDOM;
 
 /**
  * Tests for verifying whether the PDOM correctly stores information about

@@ -12,8 +12,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.envvar;
 
-import org.eclipse.cdt.internal.core.SafeStringInterner;
-import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
+import org.eclipse.cdt.core.SafeStringInterner;
 
 /**
  * A trivial implementation of {@link IEnvironmentVariable}

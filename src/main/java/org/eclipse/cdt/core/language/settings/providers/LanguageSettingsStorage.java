@@ -12,8 +12,8 @@ package org.eclipse.cdt.core.language.settings.providers;
 
 import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
 import org.eclipse.cdt.core.settings.model.ICSettingEntry;
-import org.eclipse.cdt.internal.core.WeakHashSet;
-import org.eclipse.cdt.internal.core.WeakHashSetSynchronized;
+import org.eclipse.cdt.core.WeakHashSet;
+import org.eclipse.cdt.core.WeakHashSetSynchronized;
 
 import java.util.ArrayList;
 import java.util.Collections;

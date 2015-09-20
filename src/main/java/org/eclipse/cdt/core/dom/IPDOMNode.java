@@ -12,7 +12,7 @@
 
 package org.eclipse.cdt.core.dom;
 
-import org.eclipse.cdt.internal.core.pdom.dom.PDOMLinkage;
+import org.eclipse.cdt.core.pdom.dom.PDOMLinkage;
 import org.eclipse.core.runtime.CoreException;
 
 /**

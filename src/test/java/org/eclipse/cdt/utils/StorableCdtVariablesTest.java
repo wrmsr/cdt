@@ -26,7 +26,7 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.core.testplugin.ResourceHelper;
-import org.eclipse.cdt.internal.core.cdtvariables.StorableCdtVariable;
+import org.eclipse.cdt.core.cdtvariables.StorableCdtVariable;
 import org.eclipse.core.resources.IProject;
 
 public class StorableCdtVariablesTest extends TestCase {

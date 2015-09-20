@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
-import org.eclipse.cdt.internal.core.model.CShiftData;
-
 import java.util.EventObject;
 
 /**

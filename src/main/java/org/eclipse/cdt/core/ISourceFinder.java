@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core;
 
-import org.eclipse.cdt.internal.core.model.Binary;
+import org.eclipse.cdt.core.model.Binary;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 

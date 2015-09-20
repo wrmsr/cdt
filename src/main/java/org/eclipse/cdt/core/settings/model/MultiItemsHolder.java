@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.settings.model;
 
-import org.eclipse.cdt.internal.core.settings.model.MultiConfigDescription;
-import org.eclipse.cdt.internal.core.settings.model.MultiFileDescription;
-import org.eclipse.cdt.internal.core.settings.model.MultiFolderDescription;
-
 /**
  *
  *

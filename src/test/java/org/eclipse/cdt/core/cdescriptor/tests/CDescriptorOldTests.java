@@ -28,7 +28,7 @@ import org.eclipse.cdt.core.ICDescriptorOperation;
 import org.eclipse.cdt.core.ICExtensionReference;
 import org.eclipse.cdt.core.ICOwnerInfo;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
-import org.eclipse.cdt.internal.core.pdom.PDOMManager;
+import org.eclipse.cdt.core.pdom.PDOMManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;

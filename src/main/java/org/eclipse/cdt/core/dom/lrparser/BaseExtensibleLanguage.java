@@ -35,11 +35,11 @@ import org.eclipse.cdt.core.parser.IncludeFileContentProvider;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.util.ASTPrinter;
 import org.eclipse.cdt.core.parser.util.DebugUtil;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
-import org.eclipse.cdt.internal.core.pdom.dom.IPDOMLinkageFactory;
-import org.eclipse.cdt.internal.core.pdom.dom.c.PDOMCLinkageFactory;
-import org.eclipse.cdt.internal.core.pdom.dom.cpp.PDOMCPPLinkageFactory;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.pdom.dom.IPDOMLinkageFactory;
+import org.eclipse.cdt.core.pdom.dom.c.PDOMCLinkageFactory;
+import org.eclipse.cdt.core.pdom.dom.cpp.PDOMCPPLinkageFactory;
 import org.eclipse.core.runtime.CoreException;
 
 import java.io.PrintWriter;

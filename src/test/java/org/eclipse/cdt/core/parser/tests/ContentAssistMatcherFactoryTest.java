@@ -15,7 +15,7 @@ package org.eclipse.cdt.core.parser.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.cdt.core.parser.util.IContentAssistMatcher;
-import org.eclipse.cdt.internal.core.parser.util.ContentAssistMatcherFactory;
+import org.eclipse.cdt.core.parser.util.ContentAssistMatcherFactory;
 
 public class ContentAssistMatcherFactoryTest extends TestCase {
 

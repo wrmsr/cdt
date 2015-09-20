@@ -14,7 +14,7 @@ package org.eclipse.cdt.utils.cdtvariables;
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.core.cdtvariables.ICdtVariable;
 import org.eclipse.cdt.core.cdtvariables.ICdtVariableStatus;
-import org.eclipse.cdt.internal.core.cdtvariables.CdtMacroSupplier;
+import org.eclipse.cdt.core.cdtvariables.CdtMacroSupplier;
 
 import java.util.ArrayList;
 import java.util.Arrays;

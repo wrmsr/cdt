@@ -11,7 +11,7 @@
 package org.eclipse.cdt.core.index;
 
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.internal.core.CCoreInternals;
+import org.eclipse.cdt.core.CCoreInternals;
 
 /**
  * Abstract base class for indexer setup participants. A participant can delay the

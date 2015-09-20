@@ -70,13 +70,13 @@ import org.eclipse.cdt.core.dom.parser.IBuiltinBindingsProvider;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.parser.IProblem;
 import org.eclipse.cdt.core.parser.IScanner;
-import org.eclipse.cdt.internal.core.dom.parser.ASTInternal;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.ASTQueries;
-import org.eclipse.cdt.internal.core.dom.parser.ASTTranslationUnit;
-import org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser;
-import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguousExpression;
-import org.eclipse.cdt.internal.core.dom.parser.IASTAmbiguousStatement;
+import org.eclipse.cdt.core.dom.parser.ASTInternal;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.ASTQueries;
+import org.eclipse.cdt.core.dom.parser.ASTTranslationUnit;
+import org.eclipse.cdt.core.dom.parser.AbstractGNUSourceCodeParser;
+import org.eclipse.cdt.core.dom.parser.IASTAmbiguousExpression;
+import org.eclipse.cdt.core.dom.parser.IASTAmbiguousStatement;
 
 import java.util.List;
 

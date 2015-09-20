@@ -16,7 +16,7 @@ import org.eclipse.cdt.core.dom.lrparser.gnu.GPPLanguage;
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.tests.ast2.AST2CPPTests;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.parser.ParserException;
 
 import junit.framework.TestSuite;
 

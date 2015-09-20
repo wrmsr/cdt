@@ -20,7 +20,7 @@ import org.eclipse.cdt.core.dom.lrparser.action.AbstractParserAction;
 import org.eclipse.cdt.core.dom.lrparser.action.ITokenStream;
 import org.eclipse.cdt.core.dom.lrparser.action.ScopedStack;
 import org.eclipse.cdt.core.dom.lrparser.action.TokenMap;
-import org.eclipse.cdt.internal.core.dom.lrparser.gcc.GCCParsersym;
+import org.eclipse.cdt.core.dom.lrparser.gcc.GCCParsersym;
 
 import java.util.List;
 

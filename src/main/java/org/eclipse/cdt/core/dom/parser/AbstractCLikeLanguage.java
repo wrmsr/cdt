@@ -36,9 +36,9 @@ import org.eclipse.cdt.core.parser.ParseError;
 import org.eclipse.cdt.core.parser.ParseError.ParseErrorKind;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ParserMode;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
-import org.eclipse.cdt.internal.core.util.ICancelable;
-import org.eclipse.cdt.internal.core.util.ICanceler;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.util.ICancelable;
+import org.eclipse.cdt.core.util.ICanceler;
 import org.eclipse.core.runtime.CoreException;
 
 import java.util.ArrayList;

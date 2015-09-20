@@ -30,8 +30,8 @@ import org.eclipse.cdt.core.parser.IncludeFileContentProvider;
 import org.eclipse.cdt.core.parser.ParserUtil;
 import org.eclipse.cdt.core.parser.ScannerInfo;
 import org.eclipse.cdt.core.parser.tests.ast2.AST2TestBase;
-import org.eclipse.cdt.internal.core.dom.parser.c.CVisitor;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
+import org.eclipse.cdt.core.dom.parser.c.CVisitor;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTNameBase;
 import org.eclipse.core.runtime.CoreException;
 
 /**

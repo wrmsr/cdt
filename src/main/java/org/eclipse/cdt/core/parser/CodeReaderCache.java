@@ -14,8 +14,6 @@ package org.eclipse.cdt.core.parser;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexFileLocation;
-import org.eclipse.cdt.internal.core.parser.CodeReaderLRUCache;
-import org.eclipse.cdt.internal.core.parser.InternalParserUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;

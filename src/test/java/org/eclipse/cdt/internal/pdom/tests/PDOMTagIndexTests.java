@@ -18,11 +18,11 @@ import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.index.IIndexLocationConverter;
 import org.eclipse.cdt.core.model.LanguageManager;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.dom.ast.tag.Tag;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
-import org.eclipse.cdt.internal.core.pdom.WritablePDOM;
-import org.eclipse.cdt.internal.core.pdom.tag.PDOMTag;
-import org.eclipse.cdt.internal.core.pdom.tag.PDOMTagIndex;
+import org.eclipse.cdt.core.dom.ast.tag.Tag;
+import org.eclipse.cdt.core.pdom.PDOM;
+import org.eclipse.cdt.core.pdom.WritablePDOM;
+import org.eclipse.cdt.core.pdom.tag.PDOMTag;
+import org.eclipse.cdt.core.pdom.tag.PDOMTagIndex;
 
 import junit.framework.Test;
 

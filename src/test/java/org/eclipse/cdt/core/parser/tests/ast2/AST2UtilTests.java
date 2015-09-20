@@ -21,8 +21,8 @@ import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IASTTypeIdExpression;
 import org.eclipse.cdt.core.dom.ast.IFunction;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.model.ASTStringUtil;
-import org.eclipse.cdt.internal.core.parser.scanner.ExpressionEvaluator;
+import org.eclipse.cdt.core.model.ASTStringUtil;
+import org.eclipse.cdt.core.parser.scanner.ExpressionEvaluator;
 
 /**
  * @author dsteffle

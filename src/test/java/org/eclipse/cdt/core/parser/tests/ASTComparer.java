@@ -22,7 +22,7 @@ import java.util.Set;
 import junit.framework.AssertionFailedError;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
 import org.junit.Assert;
 
 public class ASTComparer extends Assert {

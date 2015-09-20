@@ -18,9 +18,9 @@ import org.eclipse.cdt.core.parser.IProblem;
 import org.eclipse.cdt.core.parser.IToken;
 import org.eclipse.cdt.core.parser.tests.ast2.TestLexerLog;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
-import org.eclipse.cdt.internal.core.parser.scanner.Lexer;
-import org.eclipse.cdt.internal.core.parser.scanner.Lexer.LexerOptions;
-import org.eclipse.cdt.internal.core.parser.scanner.Token;
+import org.eclipse.cdt.core.parser.scanner.Lexer;
+import org.eclipse.cdt.core.parser.scanner.Lexer.LexerOptions;
+import org.eclipse.cdt.core.parser.scanner.Token;
 
 
 public class LexerTests extends BaseTestCase {

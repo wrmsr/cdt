@@ -21,9 +21,9 @@ import org.eclipse.cdt.core.parser.ScannerInfo;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
-import org.eclipse.cdt.internal.core.parser.scanner.MacroExpander;
-import org.eclipse.cdt.internal.core.parser.scanner.MacroExpansionTracker;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.parser.scanner.MacroExpander;
+import org.eclipse.cdt.core.parser.scanner.MacroExpansionTracker;
 import org.eclipse.text.edits.ReplaceEdit;
 
 import junit.framework.TestSuite;

@@ -23,7 +23,6 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.core.settings.model.util.CDataUtil;
 import org.eclipse.cdt.core.testplugin.ResourceHelper;
-import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
 import org.eclipse.cdt.utils.envvar.IEnvironmentChangeEvent;
 import org.eclipse.cdt.utils.envvar.IEnvironmentChangeListener;
 import org.eclipse.core.resources.IProject;

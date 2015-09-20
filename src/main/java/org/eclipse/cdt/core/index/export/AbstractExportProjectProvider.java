@@ -11,7 +11,7 @@
 package org.eclipse.cdt.core.index.export;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.internal.core.pdom.export.CLIUtil;
+import org.eclipse.cdt.core.pdom.export.CLIUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

@@ -21,7 +21,7 @@ import org.eclipse.cdt.core.dom.parser.cpp.GPPScannerExtensionConfiguration;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.parser.IScanner;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.lrparser.gpp.GPPParser;
+import org.eclipse.cdt.core.dom.lrparser.gpp.GPPParser;
 
 import java.util.Map;
 

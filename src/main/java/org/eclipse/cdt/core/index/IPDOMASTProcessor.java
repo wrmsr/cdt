@@ -2,7 +2,7 @@ package org.eclipse.cdt.core.index;
 
 import org.eclipse.cdt.core.dom.ILinkage;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
-import org.eclipse.cdt.internal.core.pdom.dom.IPDOMLinkageFactory;
+import org.eclipse.cdt.core.pdom.dom.IPDOMLinkageFactory;
 import org.eclipse.core.runtime.CoreException;
 
 /**

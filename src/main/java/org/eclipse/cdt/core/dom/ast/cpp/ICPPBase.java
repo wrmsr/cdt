@@ -16,7 +16,7 @@ import org.eclipse.cdt.core.dom.IName;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPUnknownType;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPUnknownType;
 
 /**
  * Represents the relationship between a class and one of its base classes.

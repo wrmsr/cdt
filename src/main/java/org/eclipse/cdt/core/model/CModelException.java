@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.model;
 
-import org.eclipse.cdt.internal.core.model.CModelStatus;
 import org.eclipse.core.runtime.CoreException;
 
 /**

@@ -14,7 +14,7 @@ import org.eclipse.cdt.core.model.ICLanguageKeywords;
 import org.eclipse.cdt.core.parser.KeywordSetKey;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.util.CharArrayIntMap;
-import org.eclipse.cdt.internal.core.parser.token.KeywordSets;
+import org.eclipse.cdt.core.parser.token.KeywordSets;
 
 import java.util.HashSet;
 import java.util.Iterator;

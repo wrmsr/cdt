@@ -15,11 +15,11 @@ import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.lrparser.ISecondaryParser;
 import org.eclipse.cdt.core.dom.lrparser.action.ITokenStream;
-import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPExpressionParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPNoCastExpressionParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPNoFunctionDeclaratorParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPSizeofExpressionParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.cpp.CPPTemplateTypeParameterParser;
+import org.eclipse.cdt.core.dom.lrparser.cpp.CPPExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.cpp.CPPNoCastExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.cpp.CPPNoFunctionDeclaratorParser;
+import org.eclipse.cdt.core.dom.lrparser.cpp.CPPSizeofExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.cpp.CPPTemplateTypeParameterParser;
 
 import java.util.Map;
 

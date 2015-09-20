@@ -12,17 +12,17 @@ package org.eclipse.cdt.core.dom.ast.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IType;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPInheritance;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPInheritance.FinalOverriderMap;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPTemplates;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.CPPInheritance;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.CPPInheritance.FinalOverriderMap;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.CPPTemplates;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.CVTYPE;
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
+import static org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil.CVTYPE;
+import static org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
 
 /**
  * This class exposes semantic queries about C++ code to clients such

@@ -15,7 +15,7 @@ import junit.framework.TestSuite;
 import org.eclipse.cdt.core.dom.ast.ITypedef;
 import org.eclipse.cdt.core.dom.ast.gnu.cpp.GPPLanguage;
 import org.eclipse.cdt.core.testplugin.TestScannerProvider;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPBasicType;
 
 /**
  * For testing resolution of bindings in C++ code with GNU extensions.

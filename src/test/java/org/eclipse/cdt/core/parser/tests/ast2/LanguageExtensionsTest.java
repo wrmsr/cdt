@@ -36,10 +36,10 @@ import org.eclipse.cdt.core.parser.IScanner;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ParserMode;
 import org.eclipse.cdt.core.parser.ScannerInfo;
-import org.eclipse.cdt.internal.core.dom.parser.c.GNUCSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.GNUCPPSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.dom.parser.c.GNUCSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.GNUCPPSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.CPPVisitor;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
 
 /**
  * Testcases for non-gnu language extensions.

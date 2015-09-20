@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static org.eclipse.cdt.internal.core.ByteUtils.makeInt;
-import static org.eclipse.cdt.internal.core.ByteUtils.makeLong;
-import static org.eclipse.cdt.internal.core.ByteUtils.makeShort;
+import static org.eclipse.cdt.core.ByteUtils.makeInt;
+import static org.eclipse.cdt.core.ByteUtils.makeLong;
+import static org.eclipse.cdt.core.ByteUtils.makeShort;
 
 public class Elf
 {

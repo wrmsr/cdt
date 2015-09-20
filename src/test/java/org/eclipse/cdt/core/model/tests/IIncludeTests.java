@@ -38,7 +38,7 @@ public class IIncludeTests extends IntegratedCModelTest {
 	}
 
 	/**
-	 * @see org.eclipse.cdt.internal.core.model.IntegratedCModelTest
+	 * @see org.eclipse.cdt.core.model.IntegratedCModelTest
 	 */
 	@Override
 	public String getSourcefileSubdir() {
@@ -46,7 +46,7 @@ public class IIncludeTests extends IntegratedCModelTest {
 	}
 
 	/**
-	 * @see org.eclipse.cdt.internal.core.model.IntegratedCModelTest
+	 * @see org.eclipse.cdt.core.model.IntegratedCModelTest
 	 */
 	@Override
 	public String getSourcefileResource() {

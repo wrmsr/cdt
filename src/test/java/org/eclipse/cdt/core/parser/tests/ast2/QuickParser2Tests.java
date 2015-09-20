@@ -33,12 +33,12 @@ import org.eclipse.cdt.core.parser.NullLogService;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ParserMode;
 import org.eclipse.cdt.core.parser.ScannerInfo;
-import org.eclipse.cdt.internal.core.dom.parser.c.CVisitor;
-import org.eclipse.cdt.internal.core.dom.parser.c.GNUCSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.GNUCPPSourceParser;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.c.CVisitor;
+import org.eclipse.cdt.core.dom.parser.c.GNUCSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTNameBase;
+import org.eclipse.cdt.core.dom.parser.cpp.GNUCPPSourceParser;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.CPPVisitor;
+import org.eclipse.cdt.core.parser.ParserException;
 
 /**
  * @author jcamelon

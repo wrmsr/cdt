@@ -13,7 +13,7 @@ package org.eclipse.cdt.core.dom.rewrite;
 import org.eclipse.cdt.core.dom.ast.IASTFileLocation;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IMacroBinding;
-import org.eclipse.cdt.internal.core.parser.scanner.MultiMacroExpansionExplorer;
+import org.eclipse.cdt.core.parser.scanner.MultiMacroExpansionExplorer;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.text.edits.ReplaceEdit;
 

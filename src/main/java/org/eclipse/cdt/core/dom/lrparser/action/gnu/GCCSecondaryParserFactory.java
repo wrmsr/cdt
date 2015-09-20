@@ -14,9 +14,9 @@ import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.lrparser.ISecondaryParser;
 import org.eclipse.cdt.core.dom.lrparser.action.ISecondaryParserFactory;
 import org.eclipse.cdt.core.dom.lrparser.action.ITokenStream;
-import org.eclipse.cdt.internal.core.dom.lrparser.c99.C99ExpressionParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.c99.C99NoCastExpressionParser;
-import org.eclipse.cdt.internal.core.dom.lrparser.gcc.GCCSizeofExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.c99.C99ExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.c99.C99NoCastExpressionParser;
+import org.eclipse.cdt.core.dom.lrparser.gcc.GCCSizeofExpressionParser;
 
 import java.util.Map;
 

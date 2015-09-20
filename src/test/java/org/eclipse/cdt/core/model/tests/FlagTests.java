@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.model.Flags;
-import org.eclipse.cdt.internal.core.model.IConstants;
+import org.eclipse.cdt.core.model.IConstants;
 
 /**
  * @author Peter Graves

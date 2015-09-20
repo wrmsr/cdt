@@ -12,8 +12,6 @@
 package org.eclipse.cdt.core.index;
 
 import org.eclipse.cdt.core.dom.ast.IBinding;
-import org.eclipse.cdt.internal.core.index.IIndexFragment;
-import org.eclipse.cdt.internal.core.index.IndexFileSet;
 import org.eclipse.core.runtime.CoreException;
 
 /**

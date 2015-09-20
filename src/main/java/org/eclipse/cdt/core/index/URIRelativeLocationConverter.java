@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.index;
 
-import org.eclipse.cdt.internal.core.index.IndexFileLocation;
 import org.eclipse.core.filesystem.URIUtil;
 
 import java.net.URI;

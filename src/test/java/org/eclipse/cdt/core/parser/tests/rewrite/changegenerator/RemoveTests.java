@@ -12,7 +12,7 @@
 
 package org.eclipse.cdt.core.parser.tests.rewrite.changegenerator;
 
-import static org.eclipse.cdt.internal.core.dom.rewrite.ASTModification.ModificationKind.REPLACE;
+import static org.eclipse.cdt.core.dom.rewrite.ASTModification.ModificationKind.REPLACE;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;

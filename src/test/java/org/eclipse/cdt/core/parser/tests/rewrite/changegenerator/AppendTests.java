@@ -12,7 +12,7 @@
 
 package org.eclipse.cdt.core.parser.tests.rewrite.changegenerator;
 
-import static org.eclipse.cdt.internal.core.dom.rewrite.ASTModification.ModificationKind.APPEND_CHILD;
+import static org.eclipse.cdt.core.dom.rewrite.ASTModification.ModificationKind.APPEND_CHILD;
 import static org.eclipse.cdt.core.dom.ast.IASTLiteralExpression.lk_integer_constant;
 
 import junit.framework.TestSuite;
@@ -51,7 +51,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNewExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleDeclSpecifier;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModificationStore;
+import org.eclipse.cdt.core.dom.rewrite.ASTModificationStore;
 
 public class AppendTests extends ChangeGeneratorTest {
 

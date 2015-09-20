@@ -23,8 +23,8 @@ import org.eclipse.cdt.core.parser.IScannerInfo;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.ScannerInfo;
 import org.eclipse.cdt.core.parser.tests.ast2.AST2SelectionParseTest;
-import org.eclipse.cdt.internal.core.dom.SavedCodeReaderFactory;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.SavedCodeReaderFactory;
+import org.eclipse.cdt.core.parser.ParserException;
 import org.eclipse.core.resources.IFile;
 
 @SuppressWarnings("restriction")

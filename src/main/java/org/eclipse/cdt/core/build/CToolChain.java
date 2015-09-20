@@ -9,8 +9,6 @@ package org.eclipse.cdt.core.build;
 
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.parser.IScannerInfo;
-import org.eclipse.cdt.internal.core.build.ScannerInfoData;
-import org.eclipse.cdt.internal.core.build.ToolChainScannerInfo;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;

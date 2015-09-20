@@ -28,7 +28,7 @@ import org.eclipse.cdt.core.errorparsers.AbstractErrorParser;
 import org.eclipse.cdt.core.errorparsers.ErrorPattern;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.ResourceHelper;
-import org.eclipse.cdt.internal.core.Cygwin;
+import org.eclipse.cdt.core.Cygwin;
 import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

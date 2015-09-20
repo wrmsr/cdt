@@ -16,7 +16,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.cdt.internal.core.PositionTracker;
+import org.eclipse.cdt.core.PositionTracker;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 

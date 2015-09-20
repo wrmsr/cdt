@@ -14,8 +14,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.cdt.internal.core.WeakHashSet;
-import org.eclipse.cdt.internal.core.WeakHashSetSynchronized;
+import org.eclipse.cdt.core.WeakHashSet;
+import org.eclipse.cdt.core.WeakHashSetSynchronized;
 
 /**
  * Test suite to test {@link WeakHashSet}.

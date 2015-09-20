@@ -20,9 +20,9 @@ package org.eclipse.cdt.core.parser.tests.ast2;
 
 import static org.eclipse.cdt.core.parser.ParserLanguage.CPP;
 import static org.eclipse.cdt.core.parser.tests.VisibilityAsserts.assertVisibility;
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.getNestedType;
-import static org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil.getUltimateType;
+import static org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil.TDEF;
+import static org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil.getNestedType;
+import static org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil.getUltimateType;
 
 import java.io.IOException;
 
@@ -94,16 +94,16 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateTypeParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPUsingDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPVariable;
 import org.eclipse.cdt.core.parser.util.ObjectMap;
-import org.eclipse.cdt.internal.core.dom.parser.Value;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPReferenceType;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ClassTypeHelper;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalUnknownScope;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPUnknownBinding;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.SemanticUtil;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.Value;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTNameBase;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPBasicType;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPReferenceType;
+import org.eclipse.cdt.core.dom.parser.cpp.ClassTypeHelper;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPDeferredClassInstance;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPInternalUnknownScope;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPUnknownBinding;
+import org.eclipse.cdt.core.dom.parser.cpp.semantics.SemanticUtil;
+import org.eclipse.cdt.core.parser.ParserException;
 
 import junit.framework.TestSuite;
 

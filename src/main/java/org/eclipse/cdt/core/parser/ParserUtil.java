@@ -12,10 +12,8 @@
 package org.eclipse.cdt.core.parser;
 
 import org.eclipse.cdt.core.model.IWorkingCopy;
-import org.eclipse.cdt.internal.core.model.DebugLogConstants;
-import org.eclipse.cdt.internal.core.parser.InternalParserUtil;
-import org.eclipse.cdt.internal.core.parser.ParserLogService;
-import org.eclipse.cdt.internal.core.resources.ResourceLookup;
+import org.eclipse.cdt.core.model.DebugLogConstants;
+import org.eclipse.cdt.core.resources.ResourceLookup;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;

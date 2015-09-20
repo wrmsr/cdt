@@ -15,7 +15,7 @@ import org.eclipse.cdt.core.settings.model.extension.CLanguageData;
 import org.eclipse.cdt.core.settings.model.util.CDataUtil;
 import org.eclipse.cdt.core.settings.model.util.EntryStore;
 import org.eclipse.cdt.core.settings.model.util.KindBasedStore;
-import org.eclipse.cdt.internal.core.settings.model.CLanguageSettingCache;
+import org.eclipse.cdt.core.settings.model.CLanguageSettingCache;
 
 import java.util.Arrays;
 

@@ -13,7 +13,7 @@ package org.eclipse.cdt.utils.envvar;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.settings.model.ICStorageElement;
-import org.eclipse.cdt.internal.core.envvar.EnvironmentChangeEvent;
+import org.eclipse.cdt.core.envvar.EnvironmentChangeEvent;
 import org.eclipse.cdt.utils.envvar.StorableEnvironmentLoader.ISerializeInfo;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;

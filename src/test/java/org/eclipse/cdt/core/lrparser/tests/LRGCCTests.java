@@ -18,7 +18,7 @@ import org.eclipse.cdt.core.dom.lrparser.gnu.GPPLanguage;
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.parser.ParserLanguage;
 import org.eclipse.cdt.core.parser.tests.ast2.GCCTests;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.parser.ParserException;
 
 @SuppressWarnings("restriction")
 public class LRGCCTests extends GCCTests {

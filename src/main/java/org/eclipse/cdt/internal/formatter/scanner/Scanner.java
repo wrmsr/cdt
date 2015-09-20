@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.internal.formatter.scanner;
 
-import org.eclipse.cdt.internal.core.CharOperation;
+import org.eclipse.cdt.core.CharOperation;
 
 import java.io.CharArrayReader;
 import java.io.Reader;

@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.cdtvariables;
 
-import org.eclipse.cdt.internal.core.SafeStringInterner;
+import org.eclipse.cdt.core.SafeStringInterner;
 import org.eclipse.cdt.utils.cdtvariables.CdtVariableResolver;
 
 /**

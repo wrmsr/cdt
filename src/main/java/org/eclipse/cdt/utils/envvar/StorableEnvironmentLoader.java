@@ -13,7 +13,7 @@ package org.eclipse.cdt.utils.envvar;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.settings.model.ICStorageElement;
-import org.eclipse.cdt.internal.core.settings.model.xml.XmlStorageElement;
+import org.eclipse.cdt.core.settings.model.xml.XmlStorageElement;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

@@ -27,9 +27,9 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPVariable;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.internal.core.CCoreInternals;
-import org.eclipse.cdt.internal.core.index.IIndexFragmentBinding;
-import org.eclipse.cdt.internal.core.pdom.PDOM;
+import org.eclipse.cdt.core.CCoreInternals;
+import org.eclipse.cdt.core.index.IIndexFragmentBinding;
+import org.eclipse.cdt.core.pdom.PDOM;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 

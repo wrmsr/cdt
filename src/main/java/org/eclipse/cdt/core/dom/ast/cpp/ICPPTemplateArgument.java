@@ -13,7 +13,7 @@ package org.eclipse.cdt.core.dom.ast.cpp;
 
 import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.IValue;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPEvaluation;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPEvaluation;
 
 /**
  * Models the value of a template parameter or for the argument of a template-id.

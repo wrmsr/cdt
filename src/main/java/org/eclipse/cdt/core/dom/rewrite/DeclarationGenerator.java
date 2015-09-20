@@ -14,7 +14,6 @@ import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.INodeFactory;
 import org.eclipse.cdt.core.dom.ast.IType;
-import org.eclipse.cdt.internal.core.dom.rewrite.DeclarationGeneratorImpl;
 
 /**
  * This class handles the creation of {@link IASTDeclarator}s and {@link IASTDeclSpecifier}s

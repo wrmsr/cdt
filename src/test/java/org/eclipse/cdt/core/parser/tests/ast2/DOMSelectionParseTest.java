@@ -36,9 +36,9 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPMethod;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPNamespace;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPVariable;
 import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
-import org.eclipse.cdt.internal.core.model.CProject;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTNameBase;
+import org.eclipse.cdt.core.model.CProject;
 import org.eclipse.core.resources.IFile;
 
 /**

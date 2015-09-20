@@ -13,7 +13,7 @@
 package org.eclipse.cdt.core.parser.tests.rewrite.changegenerator;
 
 import static org.eclipse.cdt.core.dom.ast.IASTLiteralExpression.lk_integer_constant;
-import static org.eclipse.cdt.internal.core.dom.rewrite.ASTModification.ModificationKind.INSERT_BEFORE;
+import static org.eclipse.cdt.core.dom.rewrite.ASTModification.ModificationKind.INSERT_BEFORE;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
@@ -45,9 +45,9 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNewExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleDeclSpecifier;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModification;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModification.ModificationKind;
-import org.eclipse.cdt.internal.core.dom.rewrite.astwriter.ContainerNode;
+import org.eclipse.cdt.core.dom.rewrite.ASTModification;
+import org.eclipse.cdt.core.dom.rewrite.ASTModification.ModificationKind;
+import org.eclipse.cdt.core.dom.rewrite.astwriter.ContainerNode;
 
 public class InsertBeforeTests extends ChangeGeneratorTest {
 

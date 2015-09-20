@@ -18,7 +18,7 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.cdt.core.parser.tests.rewrite.TestSourceFile;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.NodeCommentMap;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.NodeCommentMap;
 import org.eclipse.text.edits.TextEditGroup;
 
 public class CommentHandlingWithRewriteTest extends CommentHandlingTest {

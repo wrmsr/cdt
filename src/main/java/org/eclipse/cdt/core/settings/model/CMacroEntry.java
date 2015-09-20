@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.settings.model;
 
-import org.eclipse.cdt.internal.core.SafeStringInterner;
+import org.eclipse.cdt.core.SafeStringInterner;
 
 /**
  * Representation in the project model of macro settings entries.

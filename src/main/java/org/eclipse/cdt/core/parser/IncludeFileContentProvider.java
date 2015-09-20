@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.cdt.core.parser;
 
-import org.eclipse.cdt.internal.core.parser.EmptyFilesProvider;
-import org.eclipse.cdt.internal.core.parser.SavedFilesProvider;
-
 /**
  * A file content provider is used to create file content objects for include
  * directives.
@@ -46,6 +43,6 @@ public abstract class IncludeFileContentProvider
     @Deprecated
     public static IncludeFileContentProvider adapt(org.eclipse.cdt.core.dom.ICodeReaderFactory factory)
     {
-        return org.eclipse.cdt.internal.core.parser.FileContentProviderAdapter.adapt(factory);
+        return org.eclipse.cdt.core.parser.FileContentProviderAdapter.adapt(factory);
     }
 }

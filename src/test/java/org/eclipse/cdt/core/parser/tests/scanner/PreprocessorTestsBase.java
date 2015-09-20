@@ -31,8 +31,8 @@ import org.eclipse.cdt.core.parser.util.CharArrayUtils;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
-import org.eclipse.cdt.internal.core.parser.scanner.CPreprocessor;
-import org.eclipse.cdt.internal.core.parser.scanner.ILocationResolver;
+import org.eclipse.cdt.core.parser.scanner.CPreprocessor;
+import org.eclipse.cdt.core.parser.scanner.ILocationResolver;
 
 import junit.framework.ComparisonFailure;
 

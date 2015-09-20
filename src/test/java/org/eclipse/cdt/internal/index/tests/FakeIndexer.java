@@ -13,7 +13,7 @@ package org.eclipse.cdt.internal.index.tests;
 
 import org.eclipse.cdt.core.dom.IPDOMIndexerTask;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.internal.core.pdom.indexer.AbstractPDOMIndexer;
+import org.eclipse.cdt.core.pdom.indexer.AbstractPDOMIndexer;
 
 public class FakeIndexer extends AbstractPDOMIndexer {
 	static final String ID = "org.eclipse.cdt.core.tests.FakeIndexer";

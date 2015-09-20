@@ -15,13 +15,9 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTProblem;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTLiteralNode;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModification;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModification.ModificationKind;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTModificationStore;
-import org.eclipse.cdt.internal.core.dom.rewrite.ASTRewriteAnalyzer;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.ASTCommenter;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.NodeCommentMap;
+import org.eclipse.cdt.core.dom.rewrite.ASTModification.ModificationKind;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.ASTCommenter;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.NodeCommentMap;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.text.edits.TextEditGroup;
 

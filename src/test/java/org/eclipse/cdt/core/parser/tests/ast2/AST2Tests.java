@@ -123,12 +123,12 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPNamespace;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateInstance;
 import org.eclipse.cdt.core.parser.IToken;
 import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.c.CFunction;
-import org.eclipse.cdt.internal.core.dom.parser.c.CVisitor;
-import org.eclipse.cdt.internal.core.dom.parser.c.ICInternalBinding;
-import org.eclipse.cdt.internal.core.model.ASTStringUtil;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.c.CFunction;
+import org.eclipse.cdt.core.dom.parser.c.CVisitor;
+import org.eclipse.cdt.core.dom.parser.c.ICInternalBinding;
+import org.eclipse.cdt.core.model.ASTStringUtil;
+import org.eclipse.cdt.core.parser.ParserException;
 
 import junit.framework.TestSuite;
 

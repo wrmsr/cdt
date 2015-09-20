@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.cdt.utils;
 
-import org.eclipse.cdt.internal.core.Cygwin;
+import org.eclipse.cdt.core.Cygwin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 

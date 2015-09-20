@@ -60,9 +60,9 @@ import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.IBuffer;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.core.model.IWorkingCopy;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPTemplateTypeArgument;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ClassTypeHelper;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInstanceCache;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPTemplateTypeArgument;
+import org.eclipse.cdt.core.dom.parser.cpp.ClassTypeHelper;
+import org.eclipse.cdt.core.dom.parser.cpp.ICPPInstanceCache;
 
 /**
  * For testing PDOM binding resolution

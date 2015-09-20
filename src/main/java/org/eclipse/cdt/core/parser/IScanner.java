@@ -13,8 +13,8 @@
 package org.eclipse.cdt.core.parser;
 
 import org.eclipse.cdt.core.dom.ast.IMacroBinding;
-import org.eclipse.cdt.internal.core.parser.scanner.ILocationResolver;
-import org.eclipse.cdt.internal.core.parser.scanner.Lexer;
+import org.eclipse.cdt.core.parser.scanner.ILocationResolver;
+import org.eclipse.cdt.core.parser.scanner.Lexer;
 
 import java.util.Map;
 

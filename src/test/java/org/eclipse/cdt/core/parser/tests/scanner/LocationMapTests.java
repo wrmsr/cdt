@@ -45,13 +45,13 @@ import org.eclipse.cdt.core.dom.ast.IMacroBinding;
 import org.eclipse.cdt.core.testplugin.CTestPlugin;
 import org.eclipse.cdt.core.testplugin.util.BaseTestCase;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
-import org.eclipse.cdt.internal.core.dom.Linkage;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTTranslationUnit;
-import org.eclipse.cdt.internal.core.parser.scanner.CharArray;
-import org.eclipse.cdt.internal.core.parser.scanner.ILocationCtx;
-import org.eclipse.cdt.internal.core.parser.scanner.ImageLocationInfo;
-import org.eclipse.cdt.internal.core.parser.scanner.Lexer.LexerOptions;
-import org.eclipse.cdt.internal.core.parser.scanner.LocationMap;
+import org.eclipse.cdt.core.dom.Linkage;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTTranslationUnit;
+import org.eclipse.cdt.core.parser.scanner.CharArray;
+import org.eclipse.cdt.core.parser.scanner.ILocationCtx;
+import org.eclipse.cdt.core.parser.scanner.ImageLocationInfo;
+import org.eclipse.cdt.core.parser.scanner.Lexer.LexerOptions;
+import org.eclipse.cdt.core.parser.scanner.LocationMap;
 
 public class LocationMapTests extends BaseTestCase {
 	public class Loc implements IASTFileLocation, IName {

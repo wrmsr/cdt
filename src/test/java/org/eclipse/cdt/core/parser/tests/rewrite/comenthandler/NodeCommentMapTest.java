@@ -15,9 +15,9 @@ import junit.framework.TestCase;
 
 import org.eclipse.cdt.core.dom.ast.IASTComment;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.ASTNode;
-import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTName;
-import org.eclipse.cdt.internal.core.dom.rewrite.commenthandler.NodeCommentMap;
+import org.eclipse.cdt.core.dom.parser.ASTNode;
+import org.eclipse.cdt.core.dom.parser.cpp.CPPASTName;
+import org.eclipse.cdt.core.dom.rewrite.commenthandler.NodeCommentMap;
 
 /**
  * @author Guido Zgraggen IFS

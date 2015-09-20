@@ -13,7 +13,7 @@
 package org.eclipse.cdt.core.dom;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.internal.core.pdom.IndexerProgress;
+import org.eclipse.cdt.core.pdom.IndexerProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
