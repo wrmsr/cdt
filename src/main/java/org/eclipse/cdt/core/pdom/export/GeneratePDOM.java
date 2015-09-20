@@ -167,6 +167,7 @@ public class GeneratePDOM
     private void fail(String message)
             throws CoreException
     {
-        GeneratePDOMApplication.fail(message);
+        // GeneratePDOMApplication.fail(message);
+        throw new RuntimeException(message);
     }
 }

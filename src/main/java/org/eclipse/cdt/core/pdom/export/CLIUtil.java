@@ -42,7 +42,7 @@ public class CLIUtil
         List<String> list = arguments.get(opt);
         if (list == null || list.size() != number) {
             String msg = MessageFormat.format(Messages.CLIUtil_OptionParametersMismatch, new Object[] {opt, "" + number}); //$NON-NLS-1$
-            GeneratePDOMApplication.fail(msg);
+            throw new RuntimeException(msg);
         }
         return list;
     }

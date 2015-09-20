@@ -25,7 +25,7 @@ public class ResourceExclusion
     @Override
     public synchronized String getName()
     {
-        return Messages.ResourceExclusion_name;
+        return "ErrorParserExtensionManager";
     }
 
     @Override
